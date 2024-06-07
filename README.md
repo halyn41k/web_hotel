@@ -1,29 +1,62 @@
-# web_hotel
 
-This template should help get you started developing with Vue 3 in Vite.
+# new-hotel-website
+[![GitHub open issues](https://img.shields.io/github/issues/halyn41k/new-hotel-website.svg?maxAge=2592000)](https://github.com/halyn41k/new-hotel-website/issues)
+[![Npm version](https://img.shields.io/npm/v/new-hotel-website.svg?maxAge=2592000)](https://www.npmjs.com/package/new-hotel-website)
 
-## Recommended IDE Setup
+## Usage
+```HTML
+<HomePage :text="hello"></HomePage>
+```
+```javascript
+import { HomePage } from 'new-hotel-website'
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+export default {
+  components: {
+    HomePage
+  }
+}
+```
+## API
 
-## Customize configuration
+## Installation
+```
+npm install new-hotel-website
+```
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
+## Project setup
+```
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+### Compiles and hot-reloads for development
+```
+npm run serve
 ```
 
-### Compile and Minify for Production
-
-```sh
+### Compiles and minifies for production
+```
 npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Update the API section of README.md with generated documentation
+```
+npm run doc:build
+```
+
+### Run style guide dev server
+```
+npm run styleguide
+```
+
+### Generate a static HTML style guide
+```
+npm run styleguide:build
 ```
