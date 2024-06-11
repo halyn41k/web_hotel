@@ -18,7 +18,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Виконання запиту до бази даних
-    $statement = $pdo->query('SELECT * FROM rooms');
+    $statement = $pdo->query('SELECT * FROM get_rooms');
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     // Встановлюємо заголовок Content-Type

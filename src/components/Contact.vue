@@ -178,9 +178,11 @@ export default {
 
 @media (max-width: 768px) {
   .contact {
-    padding: 15px;
-    margin-top: 50px;
-  }
+  padding: 20px;
+  max-width: 800px;
+  margin: 50px auto 0 auto; /* Заберемо 30 пікселів верхнього відступу */
+  position: relative;
+}
 
   .about-us h1 {
     font-size: 2em;
@@ -212,9 +214,11 @@ export default {
 }
 
 @media (max-width: 480px) {
+
   .contact {
-    padding: 10px;
-    margin-top: 30px; 
+    padding: 10px; /* Змінено з 20px на 10px */
+    max-width: 800px;
+    margin-top: 30px; /* Змінено з 20px на 30px */
   }
 
   .about-us h1 {

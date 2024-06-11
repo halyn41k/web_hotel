@@ -1,9 +1,8 @@
 <template>
   <div class="room-list">
     <div v-for="(room, index) in rooms" :key="index" class="room-card">
-      <!-- Виправлення шляхів до компонентів -->
-      <img :src="require(`@/components/${room.photo}`)" class="room-photo" :alt="room.name" @click="toggleZoom(index)"
-        :class="{ 'zoomed': isZoomed[index] }" />
+      <!-- Використовуйте require для динамічного завантаження зображень -->
+      <img :src="`http://localhost/new-hotel-website/src/assets/${room.photo}`" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
       <div class="room-details">
         <h2 class="room-name">{{ room.name }}</h2>
         <p class="room-description">{{ room.description }}</p>
@@ -34,7 +33,7 @@ export default {
   },
   methods: {
     fetchRooms() {
-      fetch('http://localhost/rooms.php') // Виправлення шляху до серверного запиту
+      fetch('http://localhost/new-hotel-website/room.php')
         .then(response => response.json())
         .then(data => {
           this.rooms = data;
@@ -47,10 +46,11 @@ export default {
     },
     openBookingForm() {
       this.$router.push('/booking');
-    }
+    },
   }
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
