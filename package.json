@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
     "build": "vue-cli-service build --name new-hotel-website --entry ./src/index.js --target lib",
-    "lint": "vue-cli-service lint",
+    "lint": "eslint .",
     "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/HomePage.vue",
     "prepublishOnly": "npm run lint && npm run build && npm run styleguide:build && npm run doc:build",
     "styleguide": "vue-styleguidist server",
@@ -43,7 +43,7 @@
     "@vuedoc/md": "^1.5.0",
     "component-fixture": "^1.12.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vue": "^8.7.1",
     "lint-staged": "^11.1.2",
     "vue-cli-plugin-component": "~1.12.2",
     "vue-styleguidist": "^1.7.13"
