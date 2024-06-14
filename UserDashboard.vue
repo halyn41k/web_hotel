@@ -14,8 +14,6 @@
           <h2>{{ name }} {{ surname }}</h2>
           <p>Email: {{ email }}</p>
           <p>Номер телефону: {{ phone }}</p>
-          <p>Спосіб оплати: {{ paymentMethod }}</p>
-          <button class="change-payment-button" @click="togglePaymentMethod">Змінити спосіб оплати</button>
         </div>
       </div>
       <div class="bookings-section">
@@ -24,9 +22,11 @@
           <li v-for="(booking, index) in bookings" :key="index">
             <p><strong>Дата заїзду:</strong> {{ booking.checkin }}</p>
             <p><strong>Дата виїзду:</strong> {{ booking.checkout }}</p>
-            <p><strong>Номер кімнати:</strong> {{ booking.room }}</p>
-            <p><strong>Ціна:</strong> {{ booking.price }} грн/ніч</p>
-            <button class="delete-booking-button" @click="deleteBooking(index)">Видалити бронювання</button>
+            <p><strong>Номер кімнати:</strong> {{ booking.room_name }}</p>
+            <p><strong>Ціна:</strong> {{ booking.room_price }} грн/ніч</p>
+            <p><strong>Статус:</strong> {{ booking.paid ? 'Оплачено' : 'Не оплачено' }}</p>
+            <button v-if="!booking.paid" class="pay-booking-button" @click="payBooking(booking)">Оплатити</button>
+            <button class="delete-booking-button" @click="deleteBooking(index, booking.id)">Видалити бронювання</button>
           </li>
         </ul>
         <p v-else>У вас немає бронювань.</p>
@@ -45,11 +45,10 @@ export default {
       surname: '',
       email: '',
       phone: '',
-      paymentMethod: '',
       profileImage: '',
-      defaultProfileImage: require('@/assets/2431414134.png'),
       bookings: [],
-      uploadingImage: false
+      uploadingImage: false,
+      userId: ''
     };
   },
   methods: {
@@ -57,86 +56,128 @@ export default {
       this.$refs.fileInput.click();
     },
     async handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.uploadingImage = true;
-        const formData = new FormData();
-        formData.append('profile_photo', file);
+  const file = event.target.files[0];
+  if (file) {
+    this.uploadingImage = true;
+    const formData = new FormData();
+    formData.append('photo', file); // Змінив 'profile_photo' на 'photo' для відповідності серверному скрипту
 
-        try {
-          const response = await fetch('http://localhost/new-hotel-website/user.php?action=uploadProfilePhoto', {
-            method: 'POST',
-            body: formData
-          });
-          const data = await response.json();
-          if (data.profile_photo) {
-            this.profileImage = data.profile_photo;
-          } else {
-            console.error(data.error);
-          }
-        } catch (error) {
-          console.error('Помилка завантаження фото:', error);
-        } finally {
-          this.uploadingImage = false;
-        }
+    try {
+      const response = await fetch('http://localhost/new-hotel-website/user.php', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      if (data.success) {
+        this.profileImage = data.photo; // Оновлено з 'profile_photo' на 'photo' відповідно до серверного скрипту
+      } else {
+        console.error(data.error);
       }
-    },
+    } catch (error) {
+      console.error('Помилка завантаження фото:', error.response || error.message || error);
+    } finally {
+      this.uploadingImage = false;
+    }
+  }
+},
     bookRoom() {
       this.$router.push('/booking');
     },
-    togglePaymentMethod() {
-      const availablePaymentMethods = ['Оплата в готелі', 'Картка'];
-      const currentIndex = availablePaymentMethods.indexOf(this.paymentMethod);
-      const nextIndex = (currentIndex + 1) % availablePaymentMethods.length;
-      this.paymentMethod = availablePaymentMethods[nextIndex];
-      this.updatePaymentMethod();
-    },
-    async updatePaymentMethod() {
+    async payBooking(booking) {
       try {
-        const response = await fetch('http://localhost/new-hotel-website/user.php?action=updatePaymentMethod', {
+        const payload = {
+          bookingId: booking.id,
+          roomId: booking.room_id
+        };
+
+        const response = await fetch('http://localhost/new-hotel-website/payment.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ paymentMethod: this.paymentMethod })
+          body: JSON.stringify(payload)
         });
+
         const data = await response.json();
         if (data.success) {
-          console.log('Спосіб оплати оновлено');
+          this.$router.push(`/payment?bookingId=${booking.id}&roomName=${booking.room_name}&roomPrice=${booking.room_price}`);
         } else {
           console.error(data.error);
         }
       } catch (error) {
-        console.error('Помилка оновлення способу оплати:', error);
+        console.error('Помилка оплати бронювання:', error);
       }
     },
-    deleteBooking(index) {
-      this.bookings.splice(index, 1);
-      localStorage.setItem('userData', JSON.stringify({
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        phone: this.phone,
-        paymentMethod: this.paymentMethod,
-        profileImage: this.profileImage,
-        bookings: this.bookings
-      }));
+    async deleteBooking(index, bookingId) {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id: bookingId })
+        });
+        const data = await response.json();
+        if (data.success) {
+          this.bookings.splice(index, 1);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Помилка видалення бронювання:', error);
+      }
+    },
+    async fetchBookings() {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        this.$router.push('/registration');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost/new-hotel-website/booking.php?user_id=${userData.id}`, {
+          method: 'GET'
+        });
+        const data = await response.json();
+        if (data.success) {
+          this.bookings = data.bookings.map(booking => ({
+            checkin: booking.checkin,
+            checkout: booking.checkout,
+            room_name: booking.room_name,
+            room_price: booking.room_price,
+            paid: booking.paid,
+            id: booking.id,
+            room_id: booking.room_id
+          }));
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Помилка завантаження фото:', error.response || error.message || error);
+    console.log(error); // Додано для виведення деталей помилки у консоль
+      }
+    },
+    fetchUserData() {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        this.$router.push('/registration');
+        return;
+      }
+
+      this.name = userData.name;
+      this.surname = userData.surname;
+      this.email = userData.email;
+      this.phone = userData.phone;
+      this.profileImage = userData.profile_photo;
+      this.userId = userData.id;
     }
   },
   created() {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const { name, surname, email, phone, paymentMethod, profileImage, bookings } = JSON.parse(userData);
-      this.name = name;
-      this.surname = surname;
-      this.email = email;
-      this.phone = phone;
-      this.paymentMethod = paymentMethod;
-      this.profileImage = profileImage || this.defaultProfileImage;
-      this.bookings = bookings || [];
-    } else {
-      this.$router.push('/registration');
-    }
+    this.fetchUserData();
+    this.fetchBookings();
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | User';
   }
 };
 </script>
@@ -228,7 +269,8 @@ export default {
   color: #333;
 }
 
-.user-info p:first-child {
+.user-info p:first-child
+{
   font-family: 'Gabriela', serif; /* Apply Gabriela font to the first paragraph */
 }
 
@@ -266,6 +308,17 @@ export default {
   margin-bottom: 5px;
   font-family: 'Gabriela', serif; /* Change this to your desired classic font */
   position: relative;
+}
+
+.pay-booking-button {
+  padding: 5px 10px;
+  background-color: #28a745; /* Green color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Gabriela', serif;
+  margin-top: 10px;
 }
 
 .delete-booking-button {
@@ -331,4 +384,3 @@ export default {
   }
 }
 </style>
-
