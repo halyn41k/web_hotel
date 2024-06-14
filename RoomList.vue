@@ -30,6 +30,7 @@ export default {
   },
   mounted() {
     this.fetchRooms();
+    document.title = 'Amethyst Hotel | Room List';
   },
   methods: {
     fetchRooms() {

@@ -14,6 +14,9 @@
 <script>
 export default {
   name: 'Location',
+  mounted() {
+    document.title = 'Amethyst Hotel | Location';
+  }
 }
 </script>
 

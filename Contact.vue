@@ -60,6 +60,9 @@ export default {
       this.form.email = '';
       this.form.message = '';
     }
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | About Us';
   }
 }
 </script>

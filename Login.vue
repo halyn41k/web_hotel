@@ -93,6 +93,9 @@ export default {
         return true;
       }
     }
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | Login';
   }
 };
 </script>
