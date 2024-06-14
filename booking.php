@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:8080");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -24,22 +24,57 @@ try {
             $user_id = $data['user_id'];
             $room_id = $data['room_id'];
 
-            // Insert booking into database
+            // Перевірити, чи є в користувача активні бронювання
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM bookings WHERE user_id = ? AND checkout >= CURDATE()");
+            $stmt->execute([$user_id]);
+            $activeBookingsCount = $stmt->fetchColumn();
+
+            if ($activeBookingsCount > 0) {
+                echo json_encode(['success' => false, 'error' => 'У вас вже є активне бронювання. Неможливо здійснити нове бронювання.']);
+                exit();
+            }
+
+            // Вставити бронювання в базу даних
             $stmt = $pdo->prepare("INSERT INTO bookings (user_id, room_id, checkin, checkout, adults, children) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute([$user_id, $room_id, $checkin, $checkout, $adults, $children]);
 
-            // Update room availability
+            // Отримати ID вставленого бронювання
+            $bookingId = $pdo->lastInsertId();
+
+            // Оновити доступність кімнати
             $stmt = $pdo->prepare("UPDATE rooms SET available = available - 1 WHERE id = ?");
             $stmt->execute([$room_id]);
 
-            echo json_encode(['success' => true, 'message' => 'Бронювання успішно завершено.']);
+            echo json_encode(['success' => true, 'bookingId' => $bookingId]);
         } else {
             echo json_encode(['success' => false, 'error' => 'Некоректні дані.']);
         }
     } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $stmt = $pdo->query("SELECT * FROM rooms WHERE available > 0");
-        $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['success' => true, 'rooms' => $rooms]);
+        if (isset($_GET['user_id'])) {
+            $user_id = $_GET['user_id'];
+            // Об'єднати таблиці бронювань та кімнат для отримання необхідних деталей
+            $stmt = $pdo->prepare("SELECT bookings.*, rooms.name AS room_name, rooms.price AS room_price FROM bookings JOIN rooms ON bookings.room_id = rooms.id WHERE bookings.user_id = ?");
+            $stmt->execute([$user_id]);
+            $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(['success' => true, 'bookings' => $bookings]);
+        } else {
+            $stmt = $pdo->query("SELECT * FROM rooms WHERE available > 0");
+            $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(['success' => true, 'rooms' => $rooms]);
+        }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['id'])) {
+            $id = $data['id'];
+
+            // Видалити бронювання з бази даних
+            $stmt = $pdo->prepare("DELETE FROM bookings WHERE id = ?");
+            $stmt->execute([$id]);
+
+            echo json_encode(['success' => true, 'message' => 'Бронювання успішно видалено.']);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Некоректні дані.']);
+        }
     }
 } catch (PDOException $e) {
     echo json_encode(['error' => 'Помилка: ' . $e->getMessage()]);
