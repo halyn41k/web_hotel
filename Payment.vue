@@ -22,12 +22,12 @@
           </div>
           <div class="form-group">
             <label for="expiryDate">Рік дії до:</label>
-            <input type="text" id="expiryDate" v-model="expiryDate" @input="formatExpiryDate" required>
+            <input type="text" id="expiryDate" v-model="expiryDate" @input="formatExpiryDate" maxlength="5" placeholder="MM/YY" required>
             <p v-if="!isValidExpiryDate" class="error-message">Будь ласка, введіть коректний термін дії картки (наприклад, 06/24).</p>
           </div>
           <div class="form-group">
             <label for="cvv">CVV:</label>
-            <input type="text" id="cvv" v-model="cvv" @input="validateCvv" required>
+            <input type="text" id="cvv" v-model="cvv" @input="validateCvv" maxlength="3" required>
             <p v-if="!isValidCvv" class="error-message">Будь ласка, введіть коректний CVV (три цифри).</p>
           </div>
         </div>
@@ -49,9 +49,9 @@ export default {
       cardNumber: '',
       expiryDate: '',
       cvv: '',
-      roomName: this.$route.query.roomName || 'Не вказано',
-      price: this.$route.query.price || 0,
-      bookingId: this.$route.query.bookingId,
+      roomName: '',
+      price: 0,
+      bookingId: null,
       paymentSuccessful: false,
       isValidCardNumber: true,
       isValidExpiryDate: true,
@@ -64,15 +64,15 @@ export default {
       this.isValidCardNumber = /^\d{16}$/.test(this.cardNumber.replace(/\s/g, ''));
     },
     formatExpiryDate() {
-      this.expiryDate = this.expiryDate.replace(/[^\d/]/g, '');
-      const currentDate = new Date();
-      const currentYear = currentDate.getFullYear() % 100;
-      const currentMonth = currentDate.getMonth() + 1;
-      const [inputMonth, inputYear] = this.expiryDate.split('/').map(item => parseInt(item, 10));
-      this.isValidExpiryDate = /^(0[1-9]|1[0-2])\/\d{2}$/.test(this.expiryDate) && (inputYear > currentYear || (inputYear === currentYear && inputMonth >= currentMonth));
+      this.expiryDate = this.expiryDate.replace(/[^\d/]/g, '').substr(0, 5);
+      if (/^\d{2}$/.test(this.expiryDate) && this.expiryDate.indexOf('/') === -1) {
+        this.expiryDate = this.expiryDate.substr(0, 2) + '/';
+      }
+      this.isValidExpiryDate = /^(0[1-9]|1[0-2])\/\d{2}$/.test(this.expiryDate);
     },
     validateCvv() {
       this.cvv = this.cvv.replace(/\D/g, '');
+      this.cvv = this.cvv.substr(0, 3);
       this.isValidCvv = /^\d{3}$/.test(this.cvv);
     },
     async processPayment() {
@@ -94,7 +94,10 @@ export default {
         const data = await response.json();
         if (data.success) {
           this.paymentSuccessful = true;
-          // Оновлення статусу бронювання
+          if (this.selectedPaymentMethod === 'cash' || this.isValidCardNumber && this.isValidExpiryDate && this.isValidCvv) {
+            alert('Оплата здійснена успішно!');
+            window.location.href = '/user'; // Перенаправлення на /user після успішної оплати
+          }
           const userData = JSON.parse(localStorage.getItem('userData'));
           if (userData) {
             userData.bookings = userData.bookings.map(booking => {
@@ -114,6 +117,12 @@ export default {
     }
   },
   mounted() {
+    const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+    if (bookingData) {
+      this.roomName = bookingData.room_name;
+      this.price = bookingData.price;
+      this.bookingId = bookingData.id;
+    }
     document.title = 'Amethyst Hotel | Payment';
   }
 };
@@ -125,7 +134,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('/src/assets/Знімок екрана 2024-06-13 113316.png'); /* Шлях до вашого фонового зображення */
+  background-image: url('/src/assets/Знімок екрана 2024-06-13 113316.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -134,12 +143,12 @@ export default {
 
 .payment-form {
   width: 100%;
-  max-width: 600px; /* Максимальна ширина форми */
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.9); /* Прозорість білого кольору */
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px; /* Заокруглені кути */
+  border-radius: 20px;
   font-family: 'Gabriela', serif;
 }
 
@@ -159,7 +168,7 @@ export default {
 }
 
 .payment-form input[type="text"] {
-  width: 100%;
+  width: calc(100% - 22px);
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -182,12 +191,18 @@ export default {
 .payment-form button {
   width: 100%;
   padding: 15px;
-  background-color: #8a2be2;
+  background-color: #e67e22;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 18px;
   cursor: pointer;
+  font-family: 'Gabriela', serif;
+  transition: background-color 0.3s ease;
+}
+
+.payment-form button:hover {
+  background-color: #d35400;
 }
 
 .payment-form .success-message {
