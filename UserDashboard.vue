@@ -3,13 +3,6 @@
     <div id="background-image"></div>
     <div class="dashboard-content">
       <div class="profile-section">
-        <div class="profile-photo-wrapper">
-          <img :src="profileImage" alt="Profile Photo" class="profile-photo" :class="{ 'uploading': uploadingImage }">
-          <button class="upload-button" @click="uploadImage" :disabled="uploadingImage">
-            {{ uploadingImage ? 'Завантаження...' : 'Завантажити фото' }}
-          </button>
-          <input type="file" ref="fileInput" style="display: none;" @change="handleImageUpload">
-        </div>
         <div class="user-info">
           <h2>{{ name }} {{ surname }}</h2>
           <p>Email: {{ email }}</p>
@@ -45,41 +38,11 @@ export default {
       surname: '',
       email: '',
       phone: '',
-      profileImage: '',
       bookings: [],
-      uploadingImage: false,
       userId: ''
     };
   },
   methods: {
-    uploadImage() {
-      this.$refs.fileInput.click();
-    },
-    async handleImageUpload(event) {
-  const file = event.target.files[0];
-  if (file) {
-    this.uploadingImage = true;
-    const formData = new FormData();
-    formData.append('photo', file); // Змінив 'profile_photo' на 'photo' для відповідності серверному скрипту
-
-    try {
-      const response = await fetch('http://localhost/new-hotel-website/user.php', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
-      if (data.success) {
-        this.profileImage = data.photo; // Оновлено з 'profile_photo' на 'photo' відповідно до серверного скрипту
-      } else {
-        console.error(data.error);
-      }
-    } catch (error) {
-      console.error('Помилка завантаження фото:', error.response || error.message || error);
-    } finally {
-      this.uploadingImage = false;
-    }
-  }
-},
     bookRoom() {
       this.$router.push('/booking');
     },
@@ -153,8 +116,7 @@ export default {
           console.error(data.error);
         }
       } catch (error) {
-        console.error('Помилка завантаження фото:', error.response || error.message || error);
-    console.log(error); // Додано для виведення деталей помилки у консоль
+        console.error('Помилка завантаження бронювань:', error.response || error.message || error);
       }
     },
     fetchUserData() {
@@ -168,7 +130,6 @@ export default {
       this.surname = userData.surname;
       this.email = userData.email;
       this.phone = userData.phone;
-      this.profileImage = userData.profile_photo;
       this.userId = userData.id;
     }
   },
@@ -222,38 +183,6 @@ export default {
   margin-bottom: 20px;
 }
 
-.profile-photo-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 20px;
-  margin-left: 50px;
-}
-
-.profile-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.profile-photo.uploading {
-  opacity: 0.5;
-}
-
-.upload-button {
-  padding: 10px 20px;
-  background-color: #6a0dad;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Gabriela', serif;
-}
-
 .user-info {
   flex: 1;
 }
@@ -267,22 +196,6 @@ export default {
 .user-info p {
   font-family: 'Gabriela', serif; /* Change this to your desired classic font */
   color: #333;
-}
-
-.user-info p:first-child
-{
-  font-family: 'Gabriela', serif; /* Apply Gabriela font to the first paragraph */
-}
-
-.change-payment-button {
-  padding: 10px 20px;
-  background-color: #6a0dad;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Gabriela', serif;
-  margin-top: 10px;
 }
 
 .bookings-section {
@@ -303,6 +216,7 @@ export default {
 
 .bookings-section li {
   background: #f8f8f8;
+  margin-bottom: 15px;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
@@ -311,21 +225,18 @@ export default {
 }
 
 .pay-booking-button {
-  padding: 5px 10px;
+  padding:   5px 10px;
   background-color: #28a745; /* Green color */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Gabriela', serif;
-  margin-top: 10px;
+  margin: 10px auto 0; /* Центруємо кнопку по горизонталі з верхнім відступом 10px */
+  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
 }
 
 .delete-booking-button {
-  position: absolute;
-  top: 175px; /* Adjusted to be 10px from the bottom */
-  left: 50%;
-  transform: translateX(-50%);
   padding: 5px 10px;
   background-color: #ff6347;
   color: white;
@@ -333,13 +244,11 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Gabriela', serif;
+  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
+  margin: 10px auto; /* Центруємо кнопку по горизонталі з верхнім і нижнім відступами по 10px */
 }
 
 .book-room-button {
-  position: absolute;
-  bottom: 15px; /* Adjusted to be 15px from the bottom */
-  left: 50%;
-  transform: translateX(-50%);
   padding: 15px 30px;
   background-color: #6a0dad;
   color: white;
@@ -349,6 +258,10 @@ export default {
   font-family: 'Gabriela', serif;
   font-size: 18px;
   transition: background-color 0.3s;
+  margin-top: 20px;
+  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .book-room-button:hover {
@@ -365,11 +278,6 @@ export default {
     margin-bottom: 10px;
   }
   
-  .profile-photo-wrapper {
-    margin: 0;
-    margin-bottom: 10px;
-  }
-  
   .user-info {
     text-align: center;
     margin-top: 10px;
@@ -377,10 +285,8 @@ export default {
   
   .book-room-button,
   .delete-booking-button {
-    position: static;
     margin-top: 20px;
-    transform: none;
-    width: 100%;
   }
 }
 </style>
+
