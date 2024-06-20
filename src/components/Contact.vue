@@ -52,14 +52,34 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      // Handle form submission
-      alert('Дякуємо за ваше повідомлення! Ми зв\'яжемося з вами найближчим часом.');
-      // Clear form fields
-      this.form.name = '';
-      this.form.email = '';
-      this.form.message = '';
+    async submitForm() {
+      try {
+        const response = await fetch('http://localhost/path/to/submit_wish.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.form)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Дякуємо за ваше повідомлення! Ми зв\'яжемося з вами найближчим часом.');
+          this.form.name = '';
+          this.form.email = '';
+          this.form.message = '';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (error) {
+        alert('An error occurred while submitting the form.');
+        console.error(error);
+      }
     }
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | About Us';
   }
 }
 </script>
@@ -71,7 +91,7 @@ export default {
 .contact {
   padding: 20px;
   max-width: 800px;
-  margin: 100px auto 0 auto; /* Додано відступ від верха сторінки */
+  margin: 30px auto 0 auto; /* Додано відступ від верха сторінки */
   position: relative;
 }
 

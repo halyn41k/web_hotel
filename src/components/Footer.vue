@@ -77,6 +77,7 @@ body {
   margin-left: -50vw;
   margin-right: -50vw;
   margin-top: auto; /* Ensures footer stays at the bottom */
+  overflow: hidden; /* Ensure footer does not overflow */
 }
 
 .brand {

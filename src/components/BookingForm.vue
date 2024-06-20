@@ -36,8 +36,12 @@
         <h3>Завершити бронювання?</h3>
         <div class="button-group">
           <button @click="goBack" class="back-button">Повернутися назад</button>
-          <router-link to="/registration" class="complete-booking">Завершити бронювання</router-link>
+          <button @click="completeBooking" class="complete-booking">Завершити бронювання</button>
         </div>
+      </div>
+      <div v-else-if="step === 4">
+        <h3>Оплата</h3>
+        <p>Форма оплати або інформація для користувача про сплату.</p>
       </div>
     </div>
   </div>
@@ -55,89 +59,98 @@ export default {
       children: 0,
       availableRooms: [],
       errorMessage: '',
-      minDate: new Date().toISOString().split('T')[0]
+      minDate: new Date().toISOString().split('T')[0],
+      selectedRoom: null
     };
   },
+  created() {
+    if (this.$route.query.room) {
+      this.selectedRoom = JSON.parse(this.$route.query.room);
+      this.availableRooms = [this.selectedRoom];
+      this.step = 2;
+    }
+  },
   methods: {
-    checkAvailability() {
+    async checkAvailability() {
       if (!this.checkin || !this.checkout || this.adults < 1) {
         this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
         return;
       }
       this.errorMessage = '';
-      this.availableRooms = [
-        {
-          id: 1,
-          name: 'Люкс "Сонячний"',
-          photo: require('@/assets/729a4fa082a5edc17eab279dd41c87f7.jpg'),
-          description: "Просторий люкс з чудовим видом на сонце.",
-          price: 2500,
-          beds: 2,
-          available: 2
-        },
-        {
-          id: 2,
-          name: 'Номер "Мегаполіс Мрій"',
-          photo: require('@/assets/102816Yotel03.webp'),
-          description: "Затишний номер з видом на хмарочоси.",
-          price: 3500,
-          beds: 2,
-          available: 0
-        },
-        {
-          id: 3,
-          name: 'Люкс "Оаза Затишку"',
-          photo: require('@/assets/9954929b8c5f8e5fef03f9acb136498e.jpg'),
-          description: "Елегантний люкс з власним душем та телевізором.",
-          price: 3000,
-          beds: 2,
-          available: 1
-        },
-        {
-          id: 4,
-          name: 'Номер "Романтичний вечір"',
-          photo: require('@/assets/399085717.jpg'),
-          description: "Атмосферний номер для романтичного вечора.",
-          price: 1800,
-          beds: 2,
-          available: 3
-        },
-        {
-          id: 5,
-          name: 'Люкс "Роскішна діяльність"',
-          photo: require('@/assets/cl_xs1.jpg'),
-          description: "Сучасний інтер'єр у поєднанні з вишуканим комфортом.",
-          price: 4000,
-          beds: 2,
-          available: 2
-        },
-        {
-          id: 6,
-          name: 'Номер "Комфортне життя"',
-          photo: require('@/assets/desc_0SUAupCbJIoVoq.jpg'),
-          description: "Номер для сім'ї для комфортного проживання.",
-          price: 5000,
-          beds: 4,
-          available: 1
-        },
-        {
-          id: 7,
-          name: 'Люкс "Фіолетова абстракція"',
-          photo: require('@/assets/hotel-purple (1).jpg'),
-          description: "Ексклюзивний номер з вражаючим інтер’єром у стилі абстракції.",
-          price: 1000,
-          beds: 2,
-          available: 3
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+          method: 'GET',
+        });
+        const data = await response.json();
+        if (data.success) {
+          this.availableRooms = data.rooms;
+          this.step = 2; 
+        } else {
+          this.errorMessage = 'Не вдалося отримати дані про наявні кімнати.';
         }
-      ];
-      this.step = 2;
+      } catch (error) {
+        console.error('Помилка отримання даних:', error);
+        this.errorMessage = 'Сталася помилка під час отримання даних.';
+      }
     },
-    selectRoom(room) {
-      localStorage.setItem('selectedRoom', JSON.stringify(room));
-      this.step = 3;
+    async selectRoom(room) {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        this.$router.push('/registration');
+        return;
+      }
+
+      const bookingData = {
+        checkin: this.checkin,
+        checkout: this.checkout,
+        adults: this.adults,
+        children: this.children,
+        user_id: userData.id,
+        room_id: room.id,
+        room_name: room.name,
+        price: room.price
+      };
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bookingData)
+        });
+        const data = await response.json();
+        if (data.success) {
+          // Оновлення бронювань користувача в localStorage
+          userData.bookings = userData.bookings || [];
+          const newBooking = {
+            id: data.booking_id,
+            checkin: this.checkin,
+            checkout: this.checkout,
+            room: room.name,
+            price: room.price,
+            paid: false
+          };
+          userData.bookings.push(newBooking);
+          localStorage.setItem('userData', JSON.stringify(userData));
+          localStorage.setItem('bookingData', JSON.stringify(bookingData));
+          
+          this.step = 3; // Після успішного бронювання переходимо на етап завершення бронювання
+        } else {
+          this.errorMessage = data.error;
+        }
+      } catch (error) {
+        console.error('Помилка бронювання:', error);
+        this.errorMessage = 'Сталася помилка під час бронювання.';
+      }
     },
     goBack() {
-      this.step = 2;
+      this.step = 2; // Повертаємося назад до вибору номеру після натискання "Повернутися назад"
+    },
+    completeBooking() {
+      this.step = 4; // Переходимо на етап оплати
+      this.$router.push('/payment');
     }
   }
 };
@@ -244,7 +257,7 @@ button:hover {
   color: white;
 }
 
-.complete-booking:hover {
+complete-booking:hover {
   background-color: #d35400;
 }
 
@@ -323,4 +336,3 @@ button:hover {
   }
 }
 </style>
-

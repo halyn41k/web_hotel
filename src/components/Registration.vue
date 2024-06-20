@@ -6,19 +6,28 @@
       <form @submit.prevent="register">
         <div class="form-group">
           <label for="name">Ім'я:</label>
-          <input type="text" v-model="name" required>
+          <input type="text" v-model="name" @input="validateName" required>
+          <span v-if="nameError" class="error-message" v-show="nameErrorVisible">{{ nameError }}</span>
         </div>
         <div class="form-group">
           <label for="surname">Прізвище:</label>
-          <input type="text" v-model="surname" required>
+          <input type="text" v-model="surname" @input="validateSurname" required>
+          <span v-if="surnameError" class="error-message" v-show="surnameErrorVisible">{{ surnameError }}</span>
         </div>
         <div class="form-group">
           <label for="phone">Телефон:</label>
-          <input type="tel" v-model="phone" required>
+          <input type="tel" v-model="phone" @input="validatePhone" required>
+          <span v-if="phoneError" class="error-message" v-show="phoneErrorVisible">{{ phoneError }}</span>
         </div>
         <div class="form-group">
           <label for="email">Електронна пошта:</label>
-          <input type="email" v-model="email" required>
+          <input type="email" v-model="email" @input="validateEmail" required>
+          <span v-if="emailError" class="error-message" v-show="emailErrorVisible">{{ emailError }}</span>
+        </div>
+        <div class="form-group">
+          <label for="password">Пароль:</label>
+          <input type="password" v-model="password" @input="validatePassword" required>
+          <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
         </div>
         <div class="form-group">
           <label for="payment">Спосіб оплати:</label>
@@ -27,7 +36,7 @@
             <option value="hotel">Оплата в готелі</option>
           </select>
         </div>
-        <button type="submit">Завершити реєстрацію</button>
+        <button type="submit" id="submit">Завершити реєстрацію</button>
       </form>
     </div>
   </div>
@@ -35,30 +44,147 @@
 
 <script>
 export default {
-  name: 'Registration',
+  name: 'AppRegistration',
   data() {
     return {
       name: '',
       surname: '',
       phone: '',
       email: '',
-      payment: 'card'
+      password: '',
+      payment: 'card',
+      nameError: '',
+      surnameError: '',
+      phoneError: '',
+      emailError: '',
+      passwordError: ''
     };
   },
-  methods: {
-    register() {
-      // Логіка для обробки реєстрації
-      alert('Реєстрація успішна!');
-      this.$router.push('/user');
+  computed: {
+    nameErrorVisible() {
+      return !!this.nameError;
+    },
+    surnameErrorVisible() {
+      return !!this.surnameError;
+    },
+    phoneErrorVisible() {
+      return !!this.phoneError;
+    },
+    emailErrorVisible() {
+      return !!this.emailError;
+    },
+    passwordErrorVisible() {
+      return !!this.passwordError;
     }
+  },
+  methods: {
+    async register() {
+      if (!this.validateName()) return;
+      if (!this.validateSurname()) return;
+      if (!this.validatePhone()) return;
+      if (!this.validateEmail()) return;
+      if (!this.validatePassword()) return;
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/register.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: this.name,
+            surname: this.surname,
+            phone: this.phone,
+            email: this.email,
+            password: this.password,
+            payment: this.payment
+          })
+        });
+        const data = await response.json();
+        if (data.success) {
+          localStorage.setItem('userData', JSON.stringify({
+            name: this.name,
+            surname: this.surname,
+            email: this.email
+          }));
+          this.$router.push({ name: 'UserDashboard' });
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        alert('Помилка при реєстрації');
+      }
+    },
+    validateName() {
+      const nameRegex = /^[A-ZА-ЯҐЄІЇ][a-zа-яґєії']*$/;
+      if (!this.name.trim()) {
+        this.nameError = "Ім'я є обов'язковим";
+        return false;
+      } else if (!nameRegex.test(this.name.trim())) {
+        this.nameError = "Ім'я повинно починатися з великої літери та містити тільки букви";
+        return false;
+      } else {
+        this.nameError = '';
+        return true;
+      }
+    },
+    validateSurname() {
+      const surnameRegex = /^[A-ZА-ЯҐЄІЇ][a-zа-яґєії']*$/;
+      if (!this.surname.trim()) {
+        this.surnameError = "Прізвище є обов'язковим";
+        return false;
+      } else if (!surnameRegex.test(this.surname.trim())) {
+        this.surnameError = "Прізвище повинно починатися з великої літери та містити тільки букви";
+        return false;
+      } else {
+        this.surnameError = '';
+        return true;
+      }
+    },
+    validatePhone() {
+      const phoneRegex = /^\d{10,}$/;
+      if (!this.phone.trim()) {
+        this.phoneError = 'Телефон є обов\'язковим';
+        return false;
+      } else if (!phoneRegex.test(this.phone.trim())) {
+        this.phoneError = 'Телефон повинен містити мінімум 10 цифр';
+        return false;
+      } else {
+        this.phoneError = '';
+        return true;
+      }
+    },
+    validateEmail() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!this.email.trim()) {
+        this.emailError = 'Електронна пошта є обов\'язковою';
+        return false;
+      } else if (!emailRegex.test(this.email.trim())){
+        this.emailError = 'Введіть дійсну адресу електронної пошти';
+        return false;
+      } else {
+        this.emailError = '';
+        return true;
+      }
+    },
+    validatePassword() {
+      if (!this.password.trim()) {
+        this.passwordError = 'Пароль є обов\'язковим';
+        return false;
+      } else if (this.password.trim().length < 8) {
+        this.passwordError = 'Пароль повинен містити мінімум 8 символів';
+        return false;
+      } else {
+        this.passwordError = '';
+        return true;
+      }
+    }
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | Registration';
   }
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
-
 .registration-wrapper {
   position: relative;
   display: flex;
@@ -85,7 +211,7 @@ export default {
   width: 100%;
   max-width: 600px;
   padding: 20px;
-  margin: 0 20px; /* Ensure margin on all sides */
+  margin: 60px 40px; 
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -138,6 +264,10 @@ button:hover {
   background-color: #d35400;
 }
 
+.error-message {
+  color: red;
+}
+
 @media (max-width: 768px) {
   .registration-form {
     padding: 15px;
@@ -160,4 +290,3 @@ button:hover {
   }
 }
 </style>
-
