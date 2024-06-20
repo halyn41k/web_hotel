@@ -5,14 +5,13 @@ module.exports = {
     },
     extends: [
       'plugin:vue/vue3-essential',
-      'eslint:recommended',
-      '@vue/prettier'
+      'eslint:recommended'
     ],
     parserOptions: {
       parser: 'babel-eslint',
     },
     rules: {
-      // Додайте свої правила тут
+
     },
   };
   
