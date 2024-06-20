@@ -5,14 +5,20 @@
       <h2>Вхід</h2>
       <form @submit.prevent="login">
         <div class="form-group">
-          <label for="email">Електронна пошта:</label>
-          <input type="email" v-model="email" required>
+          <label for="identifier">Електронна пошта або ім'я користувача:</label>
+          <input type="text" v-model="identifier" @input="validateIdentifier" required>
+          <span v-if="identifierError" class="error-message" v-show="identifierErrorVisible">{{ identifierError }}</span>
         </div>
         <div class="form-group">
           <label for="password">Пароль:</label>
-          <input type="password" v-model="password" required>
+          <input type="password" v-model="password" @input="validatePassword" required>
+          <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
         </div>
-        <button type="submit">Увійти</button>
+        <button type="submit" id="submit">Увійти</button>
+        <div class="registration-link">
+          <span>Ви ще не зареєстровані? </span>
+          <router-link to="/registration" class="register-link">Зареєструватися</router-link>
+        </div>
       </form>
     </div>
   </div>
@@ -20,38 +26,92 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'AppLogin',
   data() {
     return {
-      email: '',
-      password: ''
+      identifier: '',
+      password: '',
+      identifierError: '',
+      passwordError: ''
     };
   },
-  methods: {
-    login() {
-      // Логіка для обробки входу
-      alert('Вхід успішний!');
-      this.$router.push('/user');
+  computed: {
+    identifierErrorVisible() {
+      return !!this.identifierError;
+    },
+    passwordErrorVisible() {
+      return !!this.passwordError;
     }
+  },
+  methods: {
+    async login() {
+      if (!this.validateIdentifier()) return;
+      if (!this.validatePassword()) return;
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            identifier: this.identifier,
+            password: this.password
+          })
+        });
+        const data = await response.json();
+        console.log('Response data:', data);
+        if (data.success) {
+          localStorage.setItem('userData', JSON.stringify(data.user));
+          if (data.role === 'admin') {
+            this.$router.push({ name: 'AdminDashboard' });
+          } else {
+            this.$router.push({ name: 'UserDashboard' });
+          }
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        alert('Помилка при вході');
+      }
+    },
+    validateIdentifier() {
+      if (!this.identifier.trim()) {
+        this.identifierError = 'Електронна пошта або ім\'я користувача є обов\'язковими';
+        return false;
+      } else {
+        this.identifierError = '';
+        return true;
+      }
+    },
+    validatePassword() {
+      if (!this.password.trim()) {
+        this.passwordError = 'Пароль є обов\'язковим';
+        return false;
+      } else if (this.password.trim().length < 8) {
+        this.passwordError = 'Пароль повинен містити мінімум 8 символів';
+        return false;
+      } else {
+        this.passwordError = '';
+        return true;
+      }
+    }
+  },
+  mounted() {
+    document.title = 'Amethyst Hotel | Login';
   }
 };
 </script>
 
+
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 .login-wrapper {
   position: relative;
-  max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 #background-image {
@@ -67,22 +127,22 @@ export default {
 }
 
 .login-form {
+  width: 100%;
   max-width: 600px;
-  margin: 200px auto 0 auto;
   padding: 20px;
+  margin: 40px 20px; 
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  font-family: 'Gabriela', sans-serif;
-  position: relative;
-  z-index: 1;
+  font-family: 'Gabriela', serif;
+  box-sizing: border-box;
 }
 
 .login-form h2 {
-  font-family: 'Gabriela', serif;
   margin-bottom: 20px;
   color: #6a0dad;
   text-align: center;
+  font-family: 'Gabriela', serif;
 }
 
 .form-group {
@@ -97,13 +157,15 @@ export default {
 
 .form-group input {
   width: 100%;
-  padding: 10px; /* Adjusted padding */
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 button {
+  width: 100%;
   background-color: #e67e22;
   font-family: 'Gabriela', serif;
   color: white;
@@ -113,48 +175,29 @@ button {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
-  width: 100%; /* Ensures button width adjusts in smaller screens */
+  box-sizing: border-box;
 }
 
 button:hover {
   background-color: #d35400;
 }
 
-@media (max-width: 768px) {
-  .login-form {
-    margin: 50px 20px;
-    padding: 15px;
-  }
-
-  .login-form h2 {
-    font-size: 24px;
-  }
-
-  .form-group input {
-    font-size: 14px;
-  }
-
-  button {
-    font-size: 14px;
-  }
+.error-message {
+  color: red;
 }
 
-@media (max-width: 480px) {
-  .login-form {
-    margin: 20px 10px;
-    padding: 10px;
-  }
+.registration-link {
+  text-align: center;
+  margin-top: 10px;
+}
 
-  .login-form h2 {
-    font-size: 20px;
-  }
+.register-link {
+  color: #6a0dad;
+  font-weight: bold;
+  text-decoration: none;
+}
 
-  .form-group input {
-    font-size: 12px;
-  }
-
-  button {
-    font-size: 12px;
-  }
+.register-link:hover {
+  text-decoration: underline;
 }
 </style>

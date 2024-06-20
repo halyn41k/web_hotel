@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <Header @userLoggedIn="updateHeader" ref="header" />
     <router-view></router-view>
     <Loader v-if="isLoading" /> 
     <Footer />
@@ -9,9 +9,11 @@
 
 <script>
 import axios from 'axios';
-import Header from '@/components/AppHeader.vue';
+import Header from '@/components/AppHeader.vue'; // Assuming the correct path is 'Header.vue'
 import Footer from '@/components/Footer.vue';
 import Loader from '@/components/Loader.vue';
+import { provide } from 'vue';
+import { authStore } from '@/authStore';
 
 export default {
   name: 'App',
@@ -30,17 +32,23 @@ export default {
     async fetchData() {
       this.isLoading = true;
       try {
-        const response = await axios.get('http://localhost:3000/api/data');
+        const response = await axios.get('http://localhost:8080/api/data');
         this.data = response.data;
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         this.isLoading = false;
       }
+    },
+    updateHeader() {
+      this.$refs.header.checkAuth();
     }
   },
   mounted() {
     this.fetchData(); 
+  },
+  setup() {
+    provide('authStore', authStore);
   }
 }
 </script>
