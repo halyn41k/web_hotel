@@ -9,27 +9,80 @@
         </div>
       </div>
       <div class="admin-bookings-section">
-        <h3>Активні Бронювання:</h3>
-        <ul v-if="bookings.length > 0">
-          <li v-for="(booking, index) in bookings" :key="index">
-            <p><strong>ID бронювання:</strong> {{ booking.id }}</p>
-            <p><strong>Дата заїзду:</strong> {{ booking.checkin }}</p>
-            <p><strong>Дата виїзду:</strong> {{ booking.checkout }}</p>
-            <p><strong>Номер кімнати:</strong> {{ booking.room_id }}</p>
-            <p><strong>Користувач:</strong> {{ booking.user_id }}</p>
-          </li>
-        </ul>
+        <h3>Активні Бронювання:
+          <span class="filter-label">Фільтр</span>
+          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
+        </h3>
+        <div v-if="showSortBookingsDropdown" class="sort-dropdown">
+          <ul>
+            <li @click="sortBookings('id')">ID бронювання</li>
+            <li @click="sortBookings('checkin')">Дата заїзду</li>
+            <li @click="sortBookings('checkout')">Дата виїзду</li>
+            <li @click="sortBookings('room_id')">Номер кімнати</li>
+            <li @click="sortBookings('user_id')">Користувач</li>
+          </ul>
+        </div>
+        <table v-if="bookings.length > 0">
+          <thead>
+            <tr>
+              <th>ID бронювання</th>
+              <th>Дата заїзду</th>
+              <th>Дата виїзду</th>
+              <th>Номер кімнати</th>
+              <th>Користувач</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(booking, index) in bookings" :key="index">
+              <td>{{ booking.id }}</td>
+              <td>{{ booking.checkin }}</td>
+              <td>{{ booking.checkout }}</td>
+              <td>{{ booking.room_id }}</td>
+              <td>{{ booking.user_id }}</td>
+              <td>
+                <img src="@/assets/image-removebg-preview (3).png" @click="deleteBooking(booking.id)" alt="Delete" class="delete-icon">
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p v-else>Немає активних бронювань.</p>
       </div>
       <div class="admin-wishes-section">
-        <h3>Побажання Користувачів:</h3>
-        <ul v-if="wishes.length > 0">
-          <li v-for="(wish, index) in wishes" :key="index">
-            <p><strong>ID побажання:</strong> {{ wish.id }}</p>
-            <p><strong>Користувач:</strong> {{ wish.user_id }}</p>
-            <p><strong>Побажання:</strong> {{ wish.wish }}</p>
-          </li>
-        </ul>
+        <h3>Побажання Користувачів:
+          <span class="filter-label">Фільтр</span>
+          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('wishes')" alt="Sort" class="sort-icon-common">
+        </h3>
+        <div v-if="showSortWishesDropdown" class="sort-dropdown">
+          <ul>
+            <li @click="sortWishes('id')">ID побажання</li>
+            <li @click="sortWishes('name')">Ім'я</li>
+            <li @click="sortWishes('email')">Електронна пошта</li>
+            <li @click="sortWishes('message')">Побажання</li>
+          </ul>
+        </div>
+        <table v-if="wishes.length > 0">
+          <thead>
+            <tr>
+              <th>ID побажання</th>
+              <th>Ім'я</th>
+              <th>Електронна пошта</th>
+              <th>Побажання</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(wish, index) in wishes" :key="index">
+              <td>{{ wish.id }}</td>
+              <td>{{ wish.name }}</td>
+              <td>{{ wish.email }}</td>
+              <td>{{ wish.message }}</td>
+              <td>
+                <img src="@/assets/image-removebg-preview (3).png" @click="deleteWish(wish.id)" alt="Delete" class="delete-icon">
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p v-else>Немає побажань користувачів.</p>
       </div>
     </div>
@@ -38,39 +91,105 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
       bookings: [],
       wishes: [],
       error: null,
+      showSortBookingsDropdown: false,
+      showSortWishesDropdown: false,
+      currentSortSection: '',
     };
   },
   created() {
-    document.title = 'Amethyst Hotel | Admin'; 
-    axios
-      .get('http://localhost/new-hotel-website/admin.php')
-      .then(response => {
-        if (response.data.error) {
-          this.error = response.data.error;
-        } else {
-          this.bookings = response.data.bookings.map(booking => ({
-            id: booking.id,
-            checkin: booking.checkin,
-            checkout: booking.checkout,
-            room_id: booking.room_id,
-            user_id: booking.user_id,
-          }));
-          this.wishes = response.data.wishes.map(wish => ({
-            id: wish.id,
-            user_id: wish.user_id,
-            wish: wish.wish,
-          }));
-        }
-      })
-      .catch(error => {
-        this.error = 'Помилка отримання даних.';
-      });
+    document.title = 'Amethyst Hotel | Admin';
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      axios
+        .get('http://localhost/new-hotel-website/admin.php')
+        .then((response) => {
+          if (response.data.error) {
+            this.error = response.data.error;
+          } else {
+            this.bookings = response.data.bookings;
+            this.wishes = response.data.wishes;
+          }
+        })
+        .catch((error) => {
+          this.error = 'Помилка отримання даних.';
+        });
+    },
+    deleteBooking(id) {
+      axios
+        .post('http://localhost/new-hotel-website/delete_booking.php', { type: 'booking', id: id })
+        .then((response) => {
+          if (response.data.success) {
+            this.fetchData();
+          } else {
+            this.error = response.data.error;
+          }
+        })
+        .catch((error) => {
+          this.error = 'Помилка видалення бронювання.';
+        });
+    },
+    deleteWish(id) {
+      axios
+        .post('http://localhost/new-hotel-website/delete_booking.php', { type: 'wish', id: id })
+        .then((response) => {
+          if (response.data.success) {
+            this.fetchData();
+          } else {
+            this.error = response.data.error;
+          }
+        })
+        .catch((error) => {
+          this.error = 'Помилка видалення побажання.';
+        });
+    },
+    toggleSortDropdown(section) {
+      if (section === 'bookings') {
+        this.showSortBookingsDropdown = !this.showSortBookingsDropdown;
+        this.showSortWishesDropdown = false;
+      } else if (section === 'wishes') {
+        this.showSortWishesDropdown = !this.showSortWishesDropdown;
+        this.showSortBookingsDropdown = false;
+      }
+    },
+    sortBookings(field) {
+      axios
+        .get(`http://localhost/new-hotel-website/sort_bookings.php?field=${field}`)
+        .then((response) => {
+          if (response.data.error) {
+            this.error = response.data.error;
+          } else {
+            this.bookings = response.data.bookings;
+            this.showSortBookingsDropdown = false; // Hide the dropdown after sorting
+          }
+        })
+        .catch((error) => {
+          this.error = 'Помилка сортування бронювань.';
+        });
+    },
+    sortWishes(field) {
+      axios
+        .get(`http://localhost/new-hotel-website/sort_wishes.php?field=${field}`)
+        .then((response) => {
+          if (response.data.error) {
+            this.error = response.data.error;
+          } else {
+            this.wishes = response.data.wishes;
+            this.showSortWishesDropdown = false; // Hide the dropdown after sorting
+          }
+        })
+        .catch((error) => {
+          this.error = 'Помилка сортування побажань.';
+        });
+    },
   },
 };
 </script>
@@ -126,32 +245,75 @@ export default {
 }
 
 .admin-user-info p {
-  font-family: 'Gabriela', serif; 
+  font-family: 'Gabriela', serif;
   color: #333;
 }
 
-.admin-bookings-section, .admin-wishes-section {
+.admin-bookings-section,
+.admin-wishes-section {
   margin-top: 10px;
   text-align: center;
 }
 
-.admin-bookings-section h3, .admin-wishes-section h3 {
+.admin-bookings-section h3,
+.admin-wishes-section h3 {
   font-family: 'Gabriela', serif;
   color: #6a0dad;
   margin-bottom: 10px;
+  position: relative; /* Add relative positioning */
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.filter-label {
+  margin-right: 5px;
+  font-size: 16px;
+  vertical-align: middle;
+  position: absolute; /* Use absolute positioning */
+  right: 30px; /* Move 200px to the right */
 }
 
-li {
-  background: #f8f8f8;
-  margin-bottom: 15px;
+.sort-dropdown {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  right: 0; /* Align dropdown to the right */
+}
+
+.sort-dropdown ul {
+  list-style: none;
   padding: 10px;
-  border-radius: 5px;
-  font-family: 'Gabriela', serif; 
+  margin: 0;
+  text-align: right; /* Align text to the right */
+}
+
+.sort-dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+sort-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: 'Gabriela', serif;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #49146F;
+  color: white;
+  cursor: pointer; /* Add cursor pointer to indicate sortability */
 }
 
 p {
@@ -162,19 +324,51 @@ p strong {
   font-weight: bold;
 }
 
+.sort-icon {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+
+.sort-icon-common {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  position: absolute; /* Use absolute positioning */
+  right: 10px; /* Move 200px to the right */
+}
+
+.sort-icon-common:hover {
+  filter: invert(31%) sepia(91%) saturate(2813%) hue-rotate(262deg) brightness(78%) contrast(97%);
+}
+
+.delete-icon{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
 @media screen and (max-width: 768px) {
   .admin-dashboard-content {
     padding: 10px;
   }
-  
+
   .admin-profile-section {
     flex-direction: column;
     margin-bottom: 10px;
   }
-  
+
   .admin-user-info {
     text-align: center;
     margin-top: 10px;
+  }
+
+  .filter-label,
+  .sort-icon-common {
+    position: static; /* Reset position to default for mobile */
+    margin-left: 0;
   }
 }
 </style>
