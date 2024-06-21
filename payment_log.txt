@@ -1,0 +1,154 @@
+2024-06-19 08:09:26 - Received data: 
+2024-06-19 08:09:27 - Received data: 
+2024-06-19 08:09:27 - Received data: 
+2024-06-19 08:11:34 - Received data: 
+2024-06-19 08:12:56 - Received data: 
+2024-06-19 08:14:54 - Received data: 
+2024-06-19 08:25:11 - Received data: 
+2024-06-19 08:26:04 - Received data: 
+2024-06-19 08:26:05 - Received data: 
+2024-06-19 08:26:14 - Received data: 
+2024-06-19 08:26:14 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:26:15 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:26:19 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:26:19 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:26:20 - Received data: 
+2024-06-19 08:26:20 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:27:59 - Received data: 
+2024-06-19 08:28:00 - Received data: 
+2024-06-19 08:28:08 - Received data: 
+2024-06-19 08:28:08 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:28:08 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:28:08 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:36:11 - Received data: 
+2024-06-19 08:36:11 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:36:12 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"paymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:47:05 - Received data: 
+2024-06-19 08:47:14 - Received data: 
+2024-06-19 08:47:14 - Received data: {"bookingData":{"checkin":"2024-06-18","checkout":"2024-06-18","adults":1,"children":0,"user_id":3,"room_id":3,"room_name":"Люкс \"Оаза Затишку\"","price":"3000.00"},"totalCost":"3000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:47:31 - Received data: 
+2024-06-19 08:47:31 - Received data: {"bookingId":49,"roomId":5}
+2024-06-19 08:47:31 - Received data: {"bookingId":49,"roomId":5}
+2024-06-19 08:47:32 - Received data: {"bookingId":49,"roomId":5}
+2024-06-19 08:47:32 - Received data: {"bookingId":49,"roomId":5}
+2024-06-19 08:47:37 - Received data: 
+2024-06-19 08:47:48 - Received data: 
+2024-06-19 08:47:48 - Received data: {"bookingId":49,"roomId":5}
+2024-06-19 08:48:52 - Received data: 
+2024-06-19 08:48:52 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:49:17 - Received data: 
+2024-06-19 08:49:17 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 08:53:46 - Received data: 
+2024-06-19 08:53:46 - Received data: 
+2024-06-19 08:53:46 - Received data: 
+2024-06-19 08:56:16 - Received data: 
+2024-06-19 09:02:50 - Received data: 
+2024-06-19 09:02:50 - Invalid input data: null
+2024-06-19 09:10:07 - Received data: 
+2024-06-19 09:10:07 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:10:08 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:10:08 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:10:09 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:22:33 - Received data: 
+2024-06-19 09:22:34 - Received data: 
+2024-06-19 09:22:34 - Received data: 
+2024-06-19 09:22:34 - Received data: 
+2024-06-19 09:22:34 - Received data: 
+2024-06-19 09:28:58 - Received data: 
+2024-06-19 09:28:59 - Received data: 
+2024-06-19 09:29:19 - Received data: 
+2024-06-19 09:29:19 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:29:19 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:30:59 - Received data: 
+2024-06-19 09:30:59 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:30:59 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:32:56 - Received data: 
+2024-06-19 09:32:56 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-19 09:35:07 - Received data: 
+2024-06-19 09:35:07 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"card","cardNumber":"1222222222222222","expiryDate":"06/24","cvv":"123"}
+2024-06-19 09:39:22 - Received data: 
+2024-06-19 09:39:22 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":5,"room_name":"Люкс \"Роскішна діяльність\"","price":"4000.00"},"totalCost":"4000.00","selectedPaymentMethod":"card","cardNumber":"2222222222222222","expiryDate":"06/24","cvv":"123"}
+2024-06-19 11:26:19 - Received data: 
+2024-06-19 11:26:19 - Received data: {"bookingId":56,"roomId":1}
+2024-06-19 11:26:19 - Received data: {"bookingId":56,"roomId":1}
+2024-06-19 11:26:38 - Received data: 
+2024-06-19 11:26:38 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/27","cvv":"123"}
+2024-06-19 11:32:45 - Received data: 
+2024-06-19 11:32:45 - Received data: {"bookingId":59,"roomId":1}
+2024-06-19 11:32:45 - Received data: {"bookingId":59,"roomId":1}
+2024-06-19 11:36:59 - Received data: 
+2024-06-19 11:36:59 - Received data: {"bookingId":61,"roomId":2}
+2024-06-19 11:36:59 - Received data: {"bookingId":61,"roomId":2}
+2024-06-19 11:37:34 - Received data: 
+2024-06-19 11:37:34 - Received data: {"bookingData":{"checkin":"2024-06-19","checkout":"2024-06-19","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"01/25","cvv":"123"}
+2024-06-20 13:37:15 - Received data: 
+2024-06-20 13:37:15 - Received data: {"bookingId":62,"roomId":2}
+2024-06-20 13:37:15 - Received data: {"bookingId":62,"roomId":2}
+2024-06-20 13:37:16 - Received data: {"bookingId":62,"roomId":2}
+2024-06-20 13:37:41 - Received data: 
+2024-06-20 13:37:41 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-20","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"01/26","cvv":"123"}
+2024-06-20 13:53:39 - Received data: 
+2024-06-20 13:53:39 - Received data: {"bookingId":63,"roomId":2}
+2024-06-20 13:53:39 - Received data: {"bookingId":63,"roomId":2}
+2024-06-20 13:53:39 - Received data: {"bookingId":63,"roomId":2}
+2024-06-20 13:53:50 - Received data: 
+2024-06-20 13:53:50 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-20","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-20 13:53:55 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:55 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:55 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:55 - Received data: 
+2024-06-20 13:53:55 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:56 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:56 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:56 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:56 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:56 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:57 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:53:57 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:54:39 - Received data: 
+2024-06-20 13:54:39 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:54:39 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:54:40 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:55:53 - Received data: 
+2024-06-20 13:55:53 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:55:53 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:55:53 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 13:55:54 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:18 - Received data: 
+2024-06-20 14:01:18 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:18 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:18 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:18 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:18 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:23 - Received data: 
+2024-06-20 14:01:23 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:23 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:23 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:01:24 - Received data: {"bookingId":64,"roomId":2}
+2024-06-20 14:13:37 - Received data: 
+2024-06-20 14:14:19 - Received data: 
+2024-06-20 14:14:19 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-20 14:14:43 - Received data: 
+2024-06-20 14:14:43 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/26","cvv":"123"}
+2024-06-20 14:14:43 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/26","cvv":"123"}
+2024-06-20 14:14:43 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/26","cvv":"123"}
+2024-06-20 14:14:52 - Received data: 
+2024-06-20 14:14:52 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/26","cvv":"123"}
+2024-06-20 14:14:53 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-21","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"03/26","cvv":"123"}
+2024-06-20 14:16:22 - Received data: 
+2024-06-20 14:16:22 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:16:23 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:16:23 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:47:44 - Received data: 
+2024-06-20 14:47:44 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:47:44 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:47:45 - Received data: {"bookingId":65,"roomId":2}
+2024-06-20 14:47:57 - Received data: 
+2024-06-20 14:47:57 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-20","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-20 14:48:00 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-20","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-20 14:48:14 - Received data: 
+2024-06-20 14:48:14 - Received data: {"bookingId":66,"roomId":2}
+2024-06-20 14:48:14 - Received data: {"bookingId":66,"roomId":2}
+2024-06-20 14:48:42 - Received data: 
+2024-06-20 14:48:42 - Received data: {"bookingData":{"checkin":"2024-06-20","checkout":"2024-06-20","adults":1,"children":0,"user_id":3,"room_id":2,"room_name":"Номер \"Мегаполіс Мрій\"","price":"3500.00"},"totalCost":"3500.00","selectedPaymentMethod":"card","cardNumber":"3333333333333333","expiryDate":"02/26","cvv":"123"}
+2024-06-20 15:48:47 - Received data: 

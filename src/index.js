@@ -33,7 +33,7 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'Admin',
+    name: 'AdminDashboard',
     component: () => import('@/components/Admin.vue')
   },
   {
@@ -50,8 +50,13 @@ const routes = [
     path: '/loader',
     name: 'Loader',
     component: () => import('@/components/Loader.vue')
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: () => import('@/components/Payment.vue')
   }
-
+  
 ];
 
 const router = createRouter({
