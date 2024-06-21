@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "new-hotel-website",
   "version": "0.1.0",
@@ -62,3 +63,69 @@
   "author": "",
   "license": "ISC"
 }
+=======
+{
+  "name": "new-hotel-website",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve ./example/main.js --open",
+    "build": "vue-cli-service build --name new-hotel-website --entry ./src/index.js --target lib",
+    "lint": "eslint .",
+    "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/HomePage.vue",
+    "prepublishOnly": "npm run lint && npm run build && npm run styleguide:build && npm run doc:build",
+    "styleguide": "vue-styleguidist server",
+    "styleguide:build": "vue-styleguidist build"
+  },
+  "main": "dist/new-hotel-website.umd.js",
+  "module": "dist/new-hotel-website.common.min.js",
+  "files": [
+    "dist/*.css",
+    "dist/*.map",
+    "dist/*.js",
+    "src/*"
+  ],
+  "dependencies": {
+    "@azure/msal-browser": "^3.15.0",
+    "axios": "^1.7.2",
+    "core-js": "^3.8.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "msal": "^1.4.18",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.10.0",
+    "vue": "^3.2.13",
+    "vue-awesome-swiper": "^5.0.1",
+    "vue-google-oauth2": "^1.5.10",
+    "vue-router": "^4.3.2",
+    "vue3-google-oauth2": "^1.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vuedoc/md": "^1.5.0",
+    "component-fixture": "^1.12.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "lint-staged": "^11.1.2",
+    "vue-cli-plugin-component": "~1.12.2",
+    "vue-styleguidist": "^1.7.13"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "keywords": [
+    "vue",
+    "component"
+  ],
+  "description": "[![GitHub open issues](https://img.shields.io/github/issues/halyn41k/new-hotel-website.svg?maxAge=2592000)](https://github.com/halyn41k/new-hotel-website/issues)\r [![Npm version](https://img.shields.io/npm/v/new-hotel-website.svg?maxAge=2592000)](https://www.npmjs.com/package/new-hotel-website)",
+  "directories": {
+    "example": "example"
+  },
+  "author": "",
+  "license": "ISC"
+}
+>>>>>>> database

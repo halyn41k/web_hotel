@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <div class="booking-form-wrapper">
     <div class="booking-form">
@@ -324,3 +325,343 @@ button:hover {
 }
 </style>
 
+=======
+<template>
+  <div class="booking-form-wrapper">
+    <div class="booking-form">
+      <h2>Забронювати кімнату</h2>
+      <div v-if="step === 1">
+        <div class="form-group">
+          <label for="checkin">Дата заїзду:</label>
+          <input type="date" v-model="checkin" :min="minDate" required>
+        </div>
+        <div class="form-group">
+          <label for="checkout">Дата виїзду:</label>
+          <input type="date" v-model="checkout" :min="checkin" required>
+        </div>
+        <div class="form-group">
+          <label for="adults">Дорослі:</label>
+          <input type="number" v-model="adults" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="children">Діти:</label>
+          <input type="number" v-model="children" min="0" required>
+        </div>
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <button @click="checkAvailability">Перевірити наявність</button>
+      </div>
+      <div v-else-if="step === 2">
+        <h3>Доступні кімнати</h3>
+        <div v-for="room in availableRooms" :key="room.id" class="room-option">
+          <h4>{{ room.name }}</h4>
+          <p>Ціна: {{ room.price }} грн/ніч</p>
+          <p>Доступно: {{ room.available }} кімнат</p>
+          <p>Ліжок: {{ room.beds }}</p>
+          <button @click="selectRoom(room)">Обрати номер</button>
+        </div>
+      </div>
+      <div v-else-if="step === 3">
+        <h3>Завершити бронювання?</h3>
+        <div class="button-group">
+          <button @click="goBack" class="back-button">Повернутися назад</button>
+          <button @click="completeBooking" class="complete-booking">Завершити бронювання</button>
+        </div>
+      </div>
+      <div v-else-if="step === 4">
+        <h3>Оплата</h3>
+        <p>Форма оплати або інформація для користувача про сплату.</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BookingForm',
+  data() {
+    return {
+      step: 1,
+      checkin: '',
+      checkout: '',
+      adults: 1,
+      children: 0,
+      availableRooms: [],
+      errorMessage: '',
+      minDate: new Date().toISOString().split('T')[0],
+      selectedRoom: null
+    };
+  },
+  created() {
+    if (this.$route.query.room) {
+      this.selectedRoom = JSON.parse(this.$route.query.room);
+      this.availableRooms = [this.selectedRoom];
+      this.step = 2;
+    }
+  },
+  methods: {
+    async checkAvailability() {
+      if (!this.checkin || !this.checkout || this.adults < 1) {
+        this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
+        return;
+      }
+      this.errorMessage = '';
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+          method: 'GET',
+        });
+        const data = await response.json();
+        if (data.success) {
+          this.availableRooms = data.rooms;
+          this.step = 2; 
+        } else {
+          this.errorMessage = 'Не вдалося отримати дані про наявні кімнати.';
+        }
+      } catch (error) {
+        console.error('Помилка отримання даних:', error);
+        this.errorMessage = 'Сталася помилка під час отримання даних.';
+      }
+    },
+    async selectRoom(room) {
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      if (!userData) {
+        this.$router.push('/registration');
+        return;
+      }
+
+      const bookingData = {
+        checkin: this.checkin,
+        checkout: this.checkout,
+        adults: this.adults,
+        children: this.children,
+        user_id: userData.id,
+        room_id: room.id,
+        room_name: room.name,
+        price: room.price
+      };
+
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bookingData)
+        });
+        const data = await response.json();
+        if (data.success) {
+          // Оновлення бронювань користувача в localStorage
+          userData.bookings = userData.bookings || [];
+          const newBooking = {
+            id: data.booking_id,
+            checkin: this.checkin,
+            checkout: this.checkout,
+            room: room.name,
+            price: room.price,
+            paid: false
+          };
+          userData.bookings.push(newBooking);
+          localStorage.setItem('userData', JSON.stringify(userData));
+          localStorage.setItem('bookingData', JSON.stringify(bookingData));
+          
+          this.step = 3; // Після успішного бронювання переходимо на етап завершення бронювання
+        } else {
+          this.errorMessage = data.error;
+        }
+      } catch (error) {
+        console.error('Помилка бронювання:', error);
+        this.errorMessage = 'Сталася помилка під час бронювання.';
+      }
+    },
+    goBack() {
+      this.step = 2; // Повертаємося назад до вибору номеру після натискання "Повернутися назад"
+    },
+    completeBooking() {
+      this.step = 4; // Переходимо на етап оплати
+      this.$router.push('/payment');
+    }
+  }
+};
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.booking-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('@/assets/Знімок екрана 2024-05-31 152043.png');
+  background-size: cover;
+  background-position: center;
+  padding: 10px;
+}
+
+.booking-form {
+  max-width: 600px;
+  width: 100%;
+  margin: 50px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-family: 'Gabriela', serif;
+}
+
+.booking-form h2 {
+  margin-bottom: 20px;
+  color: #6a0dad;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: 'Gabriela', serif;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d35400;
+}
+
+.room-option {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.room-option h4 {
+  margin-bottom: 10px;
+}
+
+.room-option p {
+  margin: 5px 0;
+}
+
+.complete-booking, .back-button {
+  display: block;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: 'Gabriela', serif;
+}
+
+.complete-booking {
+  background-color: #e67e22;
+  color: white;
+}
+
+complete-booking:hover {
+  background-color: #d35400;
+}
+
+.back-button {
+  background-color: #6a0dad;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: #4a0b85;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Media Queries for Responsive Design */
+
+@media (max-width: 768px) {
+  .booking-form {
+    padding: 15px;
+    margin: 30px auto;
+  }
+
+  button, .complete-booking, .back-button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .room-option {
+    padding: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .back-button,
+  .button-group .complete-booking {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    padding: 10px;
+    margin: 20px auto;
+  }
+
+  button, .complete-booking, .back-button {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .room-option {
+    padding: 8px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .back-button,
+  .button-group .complete-booking {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+}
+</style>
+>>>>>>> database

@@ -1,4 +1,5 @@
 module.exports = {
+<<<<<<< HEAD
   root: true,
   env: {
     node: true
@@ -15,3 +16,21 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 }
+=======
+    root: true,
+    env: {
+      node: true,
+    },
+    extends: [
+      'plugin:vue/vue3-essential',
+      'eslint:recommended'
+    ],
+    parserOptions: {
+      parser: 'babel-eslint',
+    },
+    rules: {
+
+    },
+  };
+  
+>>>>>>> database

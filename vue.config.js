@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack'); 
 const path = require('path');
@@ -25,3 +26,14 @@ module.exports = defineConfig({
     });
   }
 });
+=======
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+  transpileDependencies: true,
+  configureWebpack: {
+    devServer: {
+      proxy: 'http://localhost:8080'
+    }
+  }
+})
+>>>>>>> database
