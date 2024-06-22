@@ -19,7 +19,13 @@
       <template v-if="authStore.isLoggedIn">
         <span class="welcome-message">Вітаємо, {{ authStore.user.name }}!</span>
         <img src="@/assets/image-removebg-preview (1аукау).png" alt="Login Icon" class="login-icon"/>
-        <router-link to="/user" class="nav-link" exact-active-class="active">Профіль</router-link>
+        <router-link
+          :to="authStore.user.role === 'admin' ? '/admin' : '/user'"
+          class="nav-link"
+          exact-active-class="active"
+        >
+          Профіль
+        </router-link>
         <button class="logout-button" @click="logout">Вийти</button>
       </template>
       <button class="menu-toggle" @click="toggleMenu">
@@ -33,11 +39,13 @@
 
 <script>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
   name: 'Header',
   setup() {
+    const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
 
@@ -52,7 +60,7 @@ export default {
     const logout = () => {
       localStorage.removeItem('userData');
       authStore.clearUser();
-      this.$router.push('/login');
+      router.push('/login');
     };
 
     const checkAuth = () => {
@@ -68,9 +76,9 @@ export default {
       () => authStore.isLoggedIn,
       (newVal) => {
         if (newVal) {
-          // Handle any additional logic when user logs in
+          // Handle actions when user logs in
         } else {
-          // Handle any additional logic when user logs out
+          // Handle actions when user logs out
         }
       },
       { immediate: true }
@@ -88,7 +96,7 @@ export default {
     };
   },
   unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', handleScroll);
   }
 };
 </script>

@@ -1,13 +1,14 @@
 <?php
 if(isset($_POST['submit'])){
-    $username = $_POST['username'];
-    $password = $_POST['password'];
     $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $phone = $_POST['phone'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
 
     // Підключення до бази даних
     $host = 'localhost';
-    $dbname = 'web_hotel';
+    $dbname = 'hotel_w';
     $username_db = 'root';
     $password_db = '';
 
@@ -19,8 +20,8 @@ if(isset($_POST['submit'])){
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Підготовка SQL запиту для вставки нового адміністратора
-        $stmt = $pdo->prepare("INSERT INTO admins (username, password, name, email) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$username, $hashed_password, $name, $email]);
+        $stmt = $pdo->prepare("INSERT INTO users (name, surname, phone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $surname, $phone, $email, $hashed_password, 'admin']);
 
         echo '<p style="color: green;">Адміністратор успішно доданий до бази даних!</p>';
     } catch (PDOException $e) {
@@ -87,20 +88,24 @@ if(isset($_POST['submit'])){
         <h2>Додати нового адміністратора</h2>
         <form action="admin_form.php" method="post">
             <div class="form-group">
-                <label for="username">Ім'я користувача:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="name">Повне ім'я:</label>
+                <label for="name">Ім'я:</label>
                 <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Прізвище:</label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="text" id="phone" name="phone" required>
             </div>
             <div class="form-group">
                 <label for="email">Електронна пошта:</label>
                 <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
                 <button type="submit" name="submit">Додати адміністратора</button>
