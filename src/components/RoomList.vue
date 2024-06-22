@@ -46,7 +46,6 @@ export default {
   },
   mounted() {
     this.fetchRooms();
-    document.title = 'Amethyst Hotel | Room List';
   },
   methods: {
     fetchRooms() {
@@ -61,8 +60,8 @@ export default {
     toggleZoom(index) {
       this.isZoomed[index] = !this.isZoomed[index];
     },
-    openBookingForm(room) {
-      this.$router.push({ path: '/booking', query: { room: JSON.stringify(room) } });
+    openBookingForm() {
+      this.$router.push('/booking');
     },
     toggleSortDropdown(section) {
       if (section === 'rooms') {

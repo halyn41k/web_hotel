@@ -1,5 +1,5 @@
 <?php
-// Enable error reporting for debugging
+// Включення виведення всіх помилок
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -9,86 +9,87 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-// Логування отриманих даних
-$inputData = file_get_contents('php://input');
-file_put_contents('payment_log.txt', date('Y-m-d H:i:s') . " - Received data: " . $inputData . PHP_EOL, FILE_APPEND);
-
-// Налаштування бази даних
+// Параметри підключення до бази даних
 $host = 'localhost';
 $dbname = 'web_hotel';
 $username = 'root';
 $password = '';
 
-// Підключення до бази даних
 try {
+    // Підключення до бази даних
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Database connection failed']);
-    exit();
-}
+    echo "Database connection established.\n";
 
-// Encryption configuration
-$encryption_key = 'your-encryption-key'; // Replace this with a securely generated key
-$encryption_method = 'AES-256-CBC';
+    // Перевірка, чи є POST запит
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Отримання даних з JSON
+        $rawData = file_get_contents('php://input');
+        $data = json_decode($rawData, true);
 
-// Function to securely encrypt data
-function encryptData($data, $key, $method) {
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
-    $encryptedData = openssl_encrypt($data, $method, $key, 0, $iv);
-    return base64_encode($encryptedData . '::' . $iv);
-}
+        // Перевірка, чи вдалося розпакувати JSON
+        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(["success" => false, "error" => "Invalid JSON data received"]);
+            exit;
+        }
 
-// Обробка даних з запиту
-$data = json_decode($inputData, true);
+        // Виведення отриманих даних для дебагу
+        echo "Received data:\n";
+        var_dump($rawData); // Виведення raw даних
+        var_dump($data); // Виведення розпакованих даних для перевірки
 
-// Перевірка отриманих даних
-if (!isset($data['selectedPaymentMethod'], $data['totalCost'])) {
-    echo json_encode(['success' => false, 'error' => 'Invalid input data']);
-    exit();
-}
+        // Валідація даних
+        if (isset($data['payment_method'], $data['card_number'], $data['expiry_date'], $data['cvv'], $data['amount'], $data['booking_id'])) {
+            $paymentMethod = $data['payment_method'];
+            $cardNumber = $data['card_number'];
+            $expiryDate = $data['expiry_date'];
+            $cvv = $data['cvv'];
+            $totalCost = $data['amount'];
+            $bookingId = $data['booking_id'];
 
-// Додаткова перевірка для платіжних карт
-if ($data['selectedPaymentMethod'] === 'card') {
-    if (!isset($data['cardNumber'], $data['expiryDate'], $data['cvv']) ||
-        empty($data['cardNumber']) || empty($data['expiryDate']) || empty($data['cvv'])) {
-        echo json_encode(['success' => false, 'error' => 'Invalid card details']);
-        exit();
+            echo "Validated data:\n";
+            echo "Payment Method: $paymentMethod\n";
+            echo "Card Number: $cardNumber\n";
+            echo "Expiry Date: $expiryDate\n";
+            echo "CVV: $cvv\n";
+            echo "Total Cost: $totalCost\n";
+            echo "Booking ID: $bookingId\n";
+
+            // Валідація даних
+            if ($paymentMethod == 'card') {
+                if (!preg_match('/^\d{16}$/', str_replace(' ', '', $cardNumber))) {
+                    echo "Invalid card number format.\n";
+                    echo json_encode(["success" => false, "error" => "Invalid card number format"]);
+                    exit;
+                }
+                if (!preg_match('/^(0[1-9]|1[0-2])\/\d{2}$/', $expiryDate)) {
+                    echo "Invalid expiry date format.\n";
+                    echo json_encode(["success" => false, "error" => "Invalid expiry date format"]);
+                    exit;
+                }
+                if (!preg_match('/^\d{3}$/', $cvv)) {
+                    echo "Invalid CVV format.\n";
+                    echo json_encode(["success" => false, "error" => "Invalid CVV format"]);
+                    exit;
+                }
+            }
+
+            // Збереження інформації про платіж
+            $stmt = $pdo->prepare("INSERT INTO payments (booking_id, payment_method, card_number, expiry_date, cvv, amount) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$bookingId, $paymentMethod, $cardNumber, $expiryDate, $cvv, $totalCost]);
+            echo "Payment record inserted successfully.\n";
+
+            // Оновлення статусу оплати в бронюванні
+            $stmt = $pdo->prepare("UPDATE bookings SET paid = 1 WHERE id = ?");
+            $stmt->execute([$bookingId]);
+            echo "Booking status updated successfully.\n";
+
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "error" => "Invalid data"]);
+        }
     }
-
-    // Mask and encrypt card number
-    $cardNumber = $data['cardNumber'];
-    $maskedCardNumber = substr($cardNumber, 0, 3) . str_repeat('*', strlen($cardNumber) - 6) . substr($cardNumber, -3);
-    $encryptedCardNumber = encryptData($maskedCardNumber, $encryption_key, $encryption_method);
-
-    // Encrypt CVV
-    $cvv = $data['cvv'];
-    $encryptedCvv = encryptData($cvv, $encryption_key, $encryption_method);
-
-    $data['cardNumber'] = $encryptedCardNumber;
-    $data['cvv'] = $encryptedCvv;
-} else {
-    // Якщо оплата не карткою, встановлюємо ці значення в null
-    $data['cardNumber'] = null;
-    $data['expiryDate'] = null;
-    $data['cvv'] = null;
-}
-
-// Збереження даних про платіж у базі даних
-try {
-    $stmt = $pdo->prepare("INSERT INTO payments (payment_method, card_number, expiry_date, cvv, amount) VALUES (:payment_method, :card_number, :expiry_date, :cvv, :amount)");
-    $stmt->execute([
-        ':payment_method' => $data['selectedPaymentMethod'],
-        ':card_number' => $data['cardNumber'],
-        ':expiry_date' => $data['expiryDate'],
-        ':cvv' => $data['cvv'],
-        ':amount' => $data['totalCost']
-    ]);
-    echo json_encode(['success' => true]);
 } catch (PDOException $e) {
-    // Логування помилки PDO
-    file_put_contents('payment_error_log.txt', date('Y-m-d H:i:s') . " - PDO error: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
-    echo json_encode(['success' => false, 'error' => 'Database query failed', 'details' => $e->getMessage()]);
-    exit();
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
 ?>

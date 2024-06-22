@@ -1,6 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -54,12 +55,10 @@ if ($result) {
             echo json_encode(['success' => false, 'error' => 'Невірний пароль.']);
         }
     } else {
-        echo json_encode(['success' => false, 'error' => 'Користувач не знайдений.']);
+        echo json_encode(['error' => 'Невірні дані.']);
     }
 } else {
     error_log('Query error: ' . $conn->error);
     echo json_encode(['success' => false, 'error' => 'Помилка бази даних.']);
 }
-
-$conn->close();
 ?>
