@@ -1,19 +1,32 @@
 <<<<<<< Updated upstream
 <template>
   <div class="room-list">
-    <div v-for="(room, index) in rooms" :key="index" class="room-card">
-      <!-- Використовуйте require для динамічного завантаження зображень -->
-      <img :src="`http://localhost/new-hotel-website/src/assets/${room.photo}`" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
-      <div class="room-details">
-        <h2 class="room-name">{{ room.name }}</h2>
-        <p class="room-description">{{ room.description }}</p>
-        <p class="room-price">Ціна за ніч: {{ room.price }} грн</p>
-        <p class="room-bed-type">Тип ліжка: {{ room.bedType }}</p>
-        <p class="room-availability">Доступність: {{ room.availability }}</p>
-        <p class="room-max-guests">Максимальна кількість гостей: {{ room.maxGuests }}</p>
-        <p class="room-additional-services">Додаткові послуги: {{ room.additionalServices }}</p>
-        <div class="button-container">
-          <button class="details-button" @click="openBookingForm(room)">Забронювати</button>
+    <h3 class="sort-header">
+      <span class="filter-label">Фільтр</span>
+      <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('rooms')" alt="Sort" class="sort-icon">
+    </h3>
+    <div v-if="showSortRoomsDropdown" class="sort-dropdown">
+      <ul>
+        <li @click="sortRooms('price', 'asc')">Ціна за зростанням</li>
+        <li @click="sortRooms('price', 'desc')">Ціна за спаданням</li>
+        <li @click="sortRooms('bedType', 'asc')">Тип ліжка за зростанням</li>
+        <li @click="sortRooms('bedType', 'desc')">Тип ліжка за спаданням</li>
+      </ul>
+    </div>
+    <div class="rooms-container">
+      <div v-for="(room, index) in rooms" :key="index" class="room-card">
+        <img :src="`http://localhost/new-hotel-website/src/assets/${room.photo}`" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
+        <div class="room-details">
+          <h2 class="room-name">{{ room.name }}</h2>
+          <p class="room-description">{{ room.description }}</p>
+          <p class="room-price">Ціна за ніч: {{ room.price }} грн</p>
+          <p class="room-bed-type">Тип ліжка: {{ room.bedType }}</p>
+          <p class="room-availability">Доступність: {{ room.availability }}</p>
+          <p class="room-max-guests">Максимальна кількість гостей: {{ room.maxGuests }}</p>
+          <p class="room-additional-services">Додаткові послуги: {{ room.additionalServices }}</p>
+          <div class="button-container">
+            <button class="details-button" @click="openBookingForm(room)">Забронювати</button>
+          </div>
         </div>
       </div>
     </div>
@@ -26,7 +39,10 @@ export default {
   data() {
     return {
       rooms: [],
-      isZoomed: []
+      isZoomed: [],
+      showSortRoomsDropdown: false,
+      sortField: '',
+      sortOrder: ''
     };
   },
   mounted() {
@@ -35,7 +51,7 @@ export default {
   },
   methods: {
     fetchRooms() {
-      fetch('http://localhost/new-hotel-website/room.php')
+      fetch('http://localhost/new-hotel-website/backend/room.php')
         .then(response => response.json())
         .then(data => {
           this.rooms = data;
@@ -49,32 +65,96 @@ export default {
     openBookingForm(room) {
       this.$router.push({ path: '/booking', query: { room: JSON.stringify(room) } });
     },
+    toggleSortDropdown(section) {
+      if (section === 'rooms') {
+        this.showSortRoomsDropdown = !this.showSortRoomsDropdown;
+      }
+    },
+    sortRooms(field, order) {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.rooms.sort((a, b) => {
+        let comparison = 0;
+        if (a[field] > b[field]) {
+          comparison = 1;
+        } else if (a[field] < b[field]) {
+          comparison = -1;
+        }
+        return order === 'asc' ? comparison : -comparison;
+      });
+      this.showSortRoomsDropdown = false; // Hide the dropdown after sorting
+    }
   }
 };
 </script>
 
-
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
 
 .room-list {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 90px 10px;
   background-color: #f0f0f0;
 }
 
+.sort-header {
+  display: flex;
+  align-items: center;
+}
+
+.filter-label {
+  font-family: 'Gabriela', serif;
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.sort-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+.sort-dropdown {
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.sort-dropdown ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.sort-dropdown li {
+  font-family: 'Gabriela', serif;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sort-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.rooms-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .room-card {
+  display: flex;
+  flex-direction: row;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
-  width: calc(25% - 40px);
+  width: calc(50% - 50px);
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background-color: #fff;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -86,13 +166,12 @@ export default {
 }
 
 .room-photo {
-  width: 100%;
+  width: 40%;
   border-radius: 10px;
+  margin-right: 20px;
 }
 
 .room-details {
-  margin-top: 10px;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -105,7 +184,7 @@ export default {
 .room-availability,
 .room-max-guests,
 .room-additional-services {
-  font-family: 'Lora', serif;
+  font-family: 'Gabriela', serif;
   margin: 4px 0;
 }
 
@@ -142,61 +221,6 @@ export default {
 
 .details-button:hover {
   background-color: #6a5acd;
-}
-
-.room-photo.zoomed {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  max-width: 50%;
-  max-height: 70%;
-  cursor: zoom-out;
-}
-
-.room-photo.zoomed:hover {
-  cursor: zoom-out;
-}
-
-/* Media Queries for Responsive Design */
-
-@media (max-width: 1200px) {
-  .room-card {
-    width: calc(33.33% - 40px); /* Adjusted width for tablets and small desktops */
-  }
-}
-
-@media (max-width: 768px) {
-  .room-list {
-    padding: 20px;
-  }
-  .room-card {
-    width: calc(50% - 40px); 
-  }
-}
-
-@media (max-width: 480px) {
-  .room-list {
-    padding: 10px;
-  }
-  .room-card {
-    width: calc(100% - 40px); 
-  }
-  .room-name {
-    font-size: 1.2em; 
-  }
-  .room-description,
-  .room-price,
-  .room-bed-type,
-  .room-availability,
-  .room-max-guests,
-  .room-additional-services {
-    font-size: 0.9em; 
-  }
-  .details-button {
-    font-size: 16px; 
-  }
 }
 </style>
 =======
