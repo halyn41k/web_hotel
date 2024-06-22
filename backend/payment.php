@@ -15,7 +15,7 @@ file_put_contents('payment_log.txt', date('Y-m-d H:i:s') . " - Received data: " 
 
 // Налаштування бази даних
 $host = 'localhost';
-$dbname = 'web_hotel';
+$dbname = 'hotel_w';
 $username = 'root';
 $password = '';
 
@@ -26,6 +26,17 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => 'Database connection failed']);
     exit();
+}
+
+// Encryption configuration
+$encryption_key = 'your-encryption-key'; // Replace this with a securely generated key
+$encryption_method = 'AES-256-CBC';
+
+// Function to securely encrypt data
+function encryptData($data, $key, $method) {
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
+    $encryptedData = openssl_encrypt($data, $method, $key, 0, $iv);
+    return base64_encode($encryptedData . '::' . $iv);
 }
 
 // Обробка даних з запиту
@@ -44,7 +55,18 @@ if ($data['selectedPaymentMethod'] === 'card') {
         echo json_encode(['success' => false, 'error' => 'Invalid card details']);
         exit();
     }
-    // Додаткові перевірки можуть бути додані тут (наприклад, перевірка формату номеру картки, терміну дії і CVV)
+
+    // Mask and encrypt card number
+    $cardNumber = $data['cardNumber'];
+    $maskedCardNumber = substr($cardNumber, 0, 3) . str_repeat('*', strlen($cardNumber) - 6) . substr($cardNumber, -3);
+    $encryptedCardNumber = encryptData($maskedCardNumber, $encryption_key, $encryption_method);
+
+    // Encrypt CVV
+    $cvv = $data['cvv'];
+    $encryptedCvv = encryptData($cvv, $encryption_key, $encryption_method);
+
+    $data['cardNumber'] = $encryptedCardNumber;
+    $data['cvv'] = $encryptedCvv;
 } else {
     // Якщо оплата не карткою, встановлюємо ці значення в null
     $data['cardNumber'] = null;

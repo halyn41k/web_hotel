@@ -54,7 +54,8 @@ export default {
       paymentSuccessful: false,
       isValidCardNumber: true,
       isValidExpiryDate: true,
-      isValidCvv: true
+      isValidCvv: true,
+      bookingId: null // Add bookingId to data
     };
   },
   methods: {
@@ -88,15 +89,15 @@ export default {
       }
 
       try {
-        const response = await fetch('http://localhost/new-hotel-website/payment.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/payment.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            bookingData,
-            totalCost: this.price,
             selectedPaymentMethod: this.selectedPaymentMethod,
+            totalCost: this.price,
+            booking_id: this.bookingId, // Send bookingId
             cardNumber: this.selectedPaymentMethod === 'card' ? this.cardNumber.replace(/\s/g, '') : null,
             expiryDate: this.selectedPaymentMethod === 'card' ? this.expiryDate : null,
             cvv: this.selectedPaymentMethod === 'card' ? this.cvv : null
@@ -108,37 +109,9 @@ export default {
         if (data.success) {
           this.paymentSuccessful = true;
 
-          // Оновлення статусу бронювання на оплачено в базі даних
-          const updateResponse = await fetch('http://localhost/new-hotel-website/booking.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              booking_id: bookingData.booking_id,
-              status: 'paid'
-            })
-          });
-
-          const updateData = await updateResponse.json();
-          if (updateData.success) {
-            // Оновлення статусу бронювання на оплачено в localStorage
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            if (userData) {
-              const bookingIndex = userData.bookings.findIndex(b => b.id === bookingData.booking_id);
-              if (bookingIndex !== -1) {
-                userData.bookings[bookingIndex].paid = true;
-                localStorage.setItem('userData', JSON.stringify(userData));
-              }
-            }
-
-            localStorage.removeItem('bookingData');
-            setTimeout(() => {
-              this.$router.push('/user');
-            }, 3000); // Redirect to /user after 3 seconds
-          } else {
-            console.error('Помилка оновлення статусу бронювання:', updateData.error);
-          }
+          setTimeout(() => {
+            this.$router.push('/user');
+          }, 3000); // Redirect to /user after 3 seconds
         } else {
           console.error('Помилка обробки платежу:', data.error);
         }
@@ -152,6 +125,7 @@ export default {
     if (bookingData) {
       this.roomName = bookingData.room_name;
       this.price = bookingData.price;
+      this.bookingId = bookingData.id; // Set bookingId
     } else {
       console.error('Дані про бронювання відсутні у localStorage.');
     }

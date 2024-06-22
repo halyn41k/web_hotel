@@ -46,7 +46,7 @@ export default {
     },
     async deleteBooking(index, bookingId) {
       try {
-        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ export default {
       }
 
       try {
-        const response = await fetch(`http://localhost/new-hotel-website/booking.php?user_id=${userData.id}`, {
+        const response = await fetch(`http://localhost/new-hotel-website/backend/booking.php?user_id=${userData.id}`, {
           method: 'GET'
         });
         const data = await response.json();

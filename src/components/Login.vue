@@ -49,7 +49,7 @@ export default {
       if (!this.validatePassword()) return;
 
       try {
-        const response = await fetch('http://localhost/new-hotel-website/login.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -58,7 +58,6 @@ export default {
           })
         });
         const data = await response.json();
-        console.log('Response data:', data);
         if (data.success) {
           localStorage.setItem('userData', JSON.stringify(data.user));
           if (data.role === 'admin') {
@@ -101,7 +100,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .login-wrapper {

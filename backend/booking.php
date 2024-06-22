@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 $host = 'localhost';
-$dbname = 'web_hotel';
+$dbname = 'hotel_w';
 $username = 'root';
 $password = '';
 
@@ -16,11 +16,9 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
 
-        if (isset($data['checkin']) && isset($data['checkout']) && isset($data['adults']) && isset($data['children']) && isset($data['user_id']) && isset($data['room_id'])) {
+        if (isset($data['checkin']) && isset($data['checkout']) && isset($data['user_id']) && isset($data['room_id'])) {
             $checkin = $data['checkin'];
             $checkout = $data['checkout'];
-            $adults = $data['adults'];
-            $children = $data['children'];
             $user_id = $data['user_id'];
             $room_id = $data['room_id'];
 
@@ -35,25 +33,16 @@ try {
             }
 
             // Вставити бронювання в базу даних
-            $stmt = $pdo->prepare("INSERT INTO bookings (user_id, room_id, checkin, checkout, adults, children, paid) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$user_id, $room_id, $checkin, $checkout, $adults, $children, 0]);
+            $stmt = $pdo->prepare("INSERT INTO bookings (user_id, room_id, checkin, checkout) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$user_id, $room_id, $checkin, $checkout]);
 
             // Оновити доступність кімнати
-            $stmt = $pdo->prepare("UPDATE rooms SET available = available - 1 WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE rooms SET availability = 'Заброньовано' WHERE id = ?");
             $stmt->execute([$room_id]);
 
             $booking_id = $pdo->lastInsertId();
 
             echo json_encode(['success' => true, 'message' => 'Бронювання успішно завершено.', 'booking_id' => $booking_id]);
-        } elseif (isset($data['booking_id']) && isset($data['status'])) {
-            $booking_id = $data['booking_id'];
-            $status = $data['status'];
-
-            // Оновити статус бронювання
-            $stmt = $pdo->prepare("UPDATE bookings SET paid = ? WHERE id = ?");
-            $stmt->execute([$status === 'paid' ? 1 : 0, $booking_id]);
-
-            echo json_encode(['success' => true, 'message' => 'Статус бронювання успішно оновлено.']);
         } else {
             echo json_encode(['success' => false, 'error' => 'Некоректні дані.']);
         }
@@ -61,12 +50,17 @@ try {
         if (isset($_GET['user_id'])) {
             $user_id = $_GET['user_id'];
             // Об'єднати таблиці бронювань та кімнат для отримання необхідних деталей
-            $stmt = $pdo->prepare("SELECT bookings.*, rooms.name AS room_name, rooms.price AS room_price FROM bookings JOIN rooms ON bookings.room_id = rooms.id WHERE bookings.user_id = ?");
+            $stmt = $pdo->prepare("
+                SELECT bookings.*, rooms.name AS room_name, rooms.price AS room_price 
+                FROM bookings 
+                JOIN rooms ON bookings.room_id = rooms.id 
+                WHERE bookings.user_id = ?
+            ");
             $stmt->execute([$user_id]);
             $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'bookings' => $bookings]);
         } else {
-            $stmt = $pdo->query("SELECT * FROM rooms WHERE available > 0");
+            $stmt = $pdo->query("SELECT * FROM rooms WHERE availability = 'Вільно'");
             $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'rooms' => $rooms]);
         }
@@ -86,7 +80,7 @@ try {
 
             // Оновити доступність кімнати
             if ($room_id) {
-                $stmt = $pdo->prepare("UPDATE rooms SET available = available + 1 WHERE id = ?");
+                $stmt = $pdo->prepare("UPDATE rooms SET availability = 'Вільно' WHERE id = ?");
                 $stmt->execute([$room_id]);
             }
 
