@@ -22,17 +22,20 @@ if ($conn->connect_error) {
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (isset($data['name']) && isset($data['email']) && isset($data['message'])) {
-    $name = $conn->real_escape_string($data['name']);
-    $email = $conn->real_escape_string($data['email']);
-    $message = $conn->real_escape_string($data['message']);
+    $name = $data['name'];
+    $email = $data['email'];
+    $message = $data['message'];
 
-    $query = "INSERT INTO wishes (name, email, message) VALUES ('$name', '$email', '$message')";
+    $stmt = $conn->prepare("INSERT INTO wishes (name, email, message) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $email, $message);
 
-    if ($conn->query($query) === TRUE) {
+    if ($stmt->execute()) {
         echo json_encode(['success' => 'Wish submitted successfully.']);
     } else {
-        echo json_encode(['error' => 'Error: ' . $query . '<br>' . $conn->error]);
+        echo json_encode(['error' => 'Error: ' . $stmt->error]);
     }
+
+    $stmt->close();
 } else {
     echo json_encode(['error' => 'Invalid input.']);
 }

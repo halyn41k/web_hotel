@@ -9,21 +9,28 @@ $dbname = 'web_hotel';
 $username = 'root';
 $password = '';
 
+// Create connection
 $conn = new mysqli($host, $username, $password, $dbname);
 
+// Check connection
 if ($conn->connect_error) {
     echo json_encode(['error' => 'Помилка з\'єднання з базою даних.']);
     exit;
 }
 
-$bookingsQuery = "SELECT * FROM bookings WHERE checkin >= CURDATE()";
+$field = isset($_GET['field']) ? $_GET['field'] : 'id';
+$validFields = ['id', 'checkin', 'checkout', 'room_id', 'user_id', 'price'];
+
+if (!in_array($field, $validFields)) {
+    echo json_encode(['error' => 'Недійсне поле сортування.']);
+    exit;
+}
+
+// Fetch sorted bookings
+$bookingsQuery = "SELECT * FROM bookings WHERE checkin >= CURDATE() ORDER BY $field";
 $bookingsResult = $conn->query($bookingsQuery);
 
-$wishesQuery = "SELECT * FROM wishes";
-$wishesResult = $conn->query($wishesQuery);
-
 $bookings = [];
-$wishes = [];
 
 if ($bookingsResult->num_rows > 0) {
     while ($row = $bookingsResult->fetch_assoc()) {
@@ -31,16 +38,7 @@ if ($bookingsResult->num_rows > 0) {
     }
 }
 
-if ($wishesResult->num_rows > 0) {
-    while ($row = $wishesResult->fetch_assoc()) {
-        $wishes[] = $row;
-    }
-}
-
-echo json_encode([
-    'bookings' => $bookings,
-    'wishes' => $wishes,
-]);
+echo json_encode(['bookings' => $bookings]);
 
 $conn->close();
 ?>
