@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <template>
   <div class="registration-wrapper">
     <div id="background-image"></div>
@@ -30,13 +29,6 @@
           <input type="password" v-model="password" @input="validatePassword" required>
           <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
         </div>
-        <div class="form-group">
-          <label for="payment">Спосіб оплати:</label>
-          <select v-model="payment" required>
-            <option value="card">Картка</option>
-            <option value="hotel">Оплата в готелі</option>
-          </select>
-        </div>
         <button type="submit" id="submit">Завершити реєстрацію</button>
       </form>
     </div>
@@ -53,7 +45,6 @@ export default {
       phone: '',
       email: '',
       password: '',
-      payment: 'card',
       nameError: '',
       surnameError: '',
       phoneError: '',
@@ -294,13 +285,6 @@ button:hover {
           <input type="password" v-model="password" @input="validatePassword" required>
           <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
         </div>
-        <div class="form-group">
-          <label for="payment">Спосіб оплати:</label>
-          <select v-model="payment" required>
-            <option value="card">Картка</option>
-            <option value="hotel">Оплата в готелі</option>
-          </select>
-        </div>
         <button type="submit" id="submit">Завершити реєстрацію</button>
       </form>
     </div>
@@ -317,7 +301,6 @@ export default {
       phone: '',
       email: '',
       password: '',
-      payment: 'card',
       nameError: '',
       surnameError: '',
       phoneError: '',
@@ -351,7 +334,7 @@ export default {
       if (!this.validatePassword()) return;
 
       try {
-        const response = await fetch('http://localhost/new-hotel-website/register.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -359,8 +342,7 @@ export default {
             surname: this.surname,
             phone: this.phone,
             email: this.email,
-            password: this.password,
-            payment: this.payment
+            password: this.password
           })
         });
         const data = await response.json();
@@ -555,4 +537,3 @@ button:hover {
   }
 }
 </style>
->>>>>>> database

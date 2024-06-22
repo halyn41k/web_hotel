@@ -1,17 +1,14 @@
-// src/authStore.js
 import { reactive } from 'vue';
 
 export const authStore = reactive({
   isLoggedIn: false,
-  user: {
-    name: 'Ім\'я'
-  },
+  user: null,
   setUser(userData) {
+    this.user = userData;
     this.isLoggedIn = true;
-    this.user.name = userData.name;
   },
   clearUser() {
+    this.user = null;
     this.isLoggedIn = false;
-    this.user.name = 'Ім\'я';
   }
 });
