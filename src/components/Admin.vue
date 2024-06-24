@@ -1,18 +1,18 @@
-
 <template>
   <div class="admin-dashboard-wrapper">
-    <div id="background-image"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="admin-dashboard-content">
       <div class="admin-profile-section">
         <div class="admin-user-info">
-          <h2>Адміністратор</h2>
-          <p>Email: admin@gmail.com</p>
+          <h2>{{ admin.name }} {{ admin.surname }}</h2>
+          <p>Email: {{ admin.email }}</p>
+          <p>Роль: {{ admin.role }}</p>
         </div>
       </div>
       <div class="admin-bookings-section">
         <h3>Активні Бронювання:
           <span class="filter-label">Фільтр</span>
-          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
+          <img :src="sortIcon" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
         </h3>
         <div v-if="showSortBookingsDropdown" class="sort-dropdown">
           <ul>
@@ -29,7 +29,7 @@
               <th>ID бронювання</th>
               <th>Дата заїзду</th>
               <th>Дата виїзду</th>
-              <th>Номер кімнати</th>
+              <th>Назва кімнати</th>
               <th>Користувач</th>
               <th>Дія</th>
             </tr>
@@ -39,47 +39,10 @@
               <td>{{ booking.id }}</td>
               <td>{{ booking.checkin }}</td>
               <td>{{ booking.checkout }}</td>
-              <td>{{ booking.room_id }}</td>
-              <td>{{ booking.user_id }}</td>
+              <td>{{ booking.room_name }}</td>
+              <td>{{ booking.user_name }} {{ booking.user_surname }}</td>
               <td>
-                <img src="@/assets/image-removebg-preview (3).png" @click="deleteBooking(booking.id)" alt="Delete" class="delete-icon">
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Активні Бронювання:
-          <span class="filter-label">Фільтр</span>
-          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
-        </h3>
-        <div v-if="showSortBookingsDropdown" class="sort-dropdown">
-          <ul>
-            <li @click="sortBookings('id')">ID бронювання</li>
-            <li @click="sortBookings('checkin')">Дата заїзду</li>
-            <li @click="sortBookings('checkout')">Дата виїзду</li>
-            <li @click="sortBookings('room_id')">Номер кімнати</li>
-            <li @click="sortBookings('user_id')">Користувач</li>
-          </ul>
-        </div>
-        <table v-if="bookings.length > 0">
-          <thead>
-            <tr>
-              <th>ID бронювання</th>
-              <th>Дата заїзду</th>
-              <th>Дата виїзду</th>
-              <th>Номер кімнати</th>
-              <th>Користувач</th>
-              <th>Дія</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(booking, index) in bookings" :key="index">
-              <td>{{ booking.id }}</td>
-              <td>{{ booking.checkin }}</td>
-              <td>{{ booking.checkout }}</td>
-              <td>{{ booking.room_id }}</td>
-              <td>{{ booking.user_id }}</td>
-              <td>
-                <img src="@/assets/image-removebg-preview (3).png" @click="deleteBooking(booking.id)" alt="Delete" class="delete-icon">
+                <img :src="deleteIcon" @click="deleteBooking(booking.id)" alt="Delete" class="delete-icon">
               </td>
             </tr>
           </tbody>
@@ -89,7 +52,7 @@
       <div class="admin-wishes-section">
         <h3>Побажання Користувачів:
           <span class="filter-label">Фільтр</span>
-          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('wishes')" alt="Sort" class="sort-icon-common">
+          <img :src="sortIcon" @click="toggleSortDropdown('wishes')" alt="Sort" class="sort-icon-common">
         </h3>
         <div v-if="showSortWishesDropdown" class="sort-dropdown">
           <ul>
@@ -116,41 +79,7 @@
               <td>{{ wish.email }}</td>
               <td>{{ wish.message }}</td>
               <td>
-                <img src="@/assets/image-removebg-preview (3).png" @click="deleteWish(wish.id)" alt="Delete" class="delete-icon">
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <h3>Побажання Користувачів:
-          <span class="filter-label">Фільтр</span>
-          <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('wishes')" alt="Sort" class="sort-icon-common">
-        </h3>
-        <div v-if="showSortWishesDropdown" class="sort-dropdown">
-          <ul>
-            <li @click="sortWishes('id')">ID побажання</li>
-            <li @click="sortWishes('name')">Ім'я</li>
-            <li @click="sortWishes('email')">Електронна пошта</li>
-            <li @click="sortWishes('message')">Побажання</li>
-          </ul>
-        </div>
-        <table v-if="wishes.length > 0">
-          <thead>
-            <tr>
-              <th>ID побажання</th>
-              <th>Ім'я</th>
-              <th>Електронна пошта</th>
-              <th>Побажання</th>
-              <th>Дія</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(wish, index) in wishes" :key="index">
-              <td>{{ wish.id }}</td>
-              <td>{{ wish.name }}</td>
-              <td>{{ wish.email }}</td>
-              <td>{{ wish.message }}</td>
-              <td>
-                <img src="@/assets/image-removebg-preview (3).png" @click="deleteWish(wish.id)" alt="Delete" class="delete-icon">
+                <img :src="deleteIcon" @click="deleteWish(wish.id)" alt="Delete" class="delete-icon">
               </td>
             </tr>
           </tbody>
@@ -166,22 +95,30 @@ import axios from 'axios';
 
 
 export default {
+  name: 'AdminPanel',
   data() {
     return {
+      admin: {
+        name: '',
+        surname: '',
+        email: '',
+        role: '',
+      },
       bookings: [],
       wishes: [],
       error: null,
       showSortBookingsDropdown: false,
       showSortWishesDropdown: false,
       currentSortSection: '',
-      showSortBookingsDropdown: false,
-      showSortWishesDropdown: false,
-      currentSortSection: '',
+      backgroundImage: '',
+      sortIcon: '',
+      deleteIcon: '',
     };
   },
   created() {
     document.title = 'Amethyst Hotel | Admin';
     this.fetchData();
+    this.fetchImages();
   },
   methods: {
     fetchData() {
@@ -191,17 +128,54 @@ export default {
           if (response.data.error) {
             this.error = response.data.error;
           } else {
+            console.log('Data fetched from backend:', response.data);
+            this.admin.name = response.data.admin.name;
+            this.admin.surname = response.data.admin.surname;
+            this.admin.email = response.data.admin.email;
+            this.admin.role = response.data.admin.role;
             this.bookings = response.data.bookings;
             this.wishes = response.data.wishes;
           }
         })
         .catch((error) => {
           this.error = 'Помилка отримання даних.';
+          console.error('Error fetching data:', error);
+        });
+    },
+    fetchImages() {
+      axios
+        .get('http://localhost/new-hotel-website/backend/get_images.php')
+        .then((response) => {
+          const images = response.data;
+          const backgroundImage = images.find(img => img.category === 'login' && img.image_name === 'login.png');
+          const sortIconImage = images.find(img => img.category === 'admin' && img.image_name === 'image-removebg-preview 213.png');
+          const deleteIconImage = images.find(img => img.category === 'admin' && img.image_name === 'image-removebg-preview (3).png');
+
+          if (backgroundImage) {
+            this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${backgroundImage.image_name}`;
+          } else {
+            console.error('Background image not found.');
+          }
+
+          if (sortIconImage) {
+            this.sortIcon = `http://localhost/new-hotel-website/src/assets/${sortIconImage.image_name}`;
+          } else {
+            console.error('Sort icon image not found.');
+          }
+
+          if (deleteIconImage) {
+            this.deleteIcon = `http://localhost/new-hotel-website/src/assets/${deleteIconImage.image_name}`;
+          } else {
+            console.error('Delete icon image not found.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching images:', error);
         });
     },
     deleteBooking(id) {
       axios
-        .post('http://localhost/new-hotel-website/delete_booking.php', { type: 'booking', id: id })
+        .post('http://localhost/new-hotel-website/backend/delete_booking.php', { type: 'booking', id: id })
         .then((response) => {
           if (response.data.success) {
             this.fetchData();
@@ -211,11 +185,12 @@ export default {
         })
         .catch((error) => {
           this.error = 'Помилка видалення бронювання.';
+          console.error('Error deleting booking:', error);
         });
     },
     deleteWish(id) {
       axios
-        .post('http://localhost/new-hotel-website/delete_booking.php', { type: 'wish', id: id })
+        .post('http://localhost/new-hotel-website/backend/delete_booking.php', { type: 'wish', id: id })
         .then((response) => {
           if (response.data.success) {
             this.fetchData();
@@ -225,6 +200,7 @@ export default {
         })
         .catch((error) => {
           this.error = 'Помилка видалення побажання.';
+          console.error('Error deleting wish:', error);
         });
     },
     toggleSortDropdown(section) {
@@ -235,35 +211,38 @@ export default {
         this.showSortWishesDropdown = !this.showSortWishesDropdown;
         this.showSortBookingsDropdown = false;
       }
+      this.currentSortSection = section;
     },
     sortBookings(field) {
       axios
-        .get(`http://localhost/new-hotel-website/sort_bookings.php?field=${field}`)
+        .get(`http://localhost/new-hotel-website/backend/sort_bookings.php?field=${field}`)
         .then((response) => {
           if (response.data.error) {
             this.error = response.data.error;
           } else {
             this.bookings = response.data.bookings;
-            this.showSortBookingsDropdown = false; // Hide the dropdown after sorting
+            this.showSortBookingsDropdown = false;
           }
         })
         .catch((error) => {
           this.error = 'Помилка сортування бронювань.';
+          console.error('Error sorting bookings:', error);
         });
     },
     sortWishes(field) {
       axios
-        .get(`http://localhost/new-hotel-website/sort_wishes.php?field=${field}`)
+        .get(`http://localhost/new-hotel-website/backend/sort_wishes.php?field=${field}`)
         .then((response) => {
           if (response.data.error) {
             this.error = response.data.error;
           } else {
             this.wishes = response.data.wishes;
-            this.showSortWishesDropdown = false; // Hide the dropdown after sorting
+            this.showSortWishesDropdown = false;
           }
         })
         .catch((error) => {
           this.error = 'Помилка сортування побажань.';
+          console.error('Error sorting wishes:', error);
         });
     },
   },
@@ -276,8 +255,9 @@ export default {
 .admin-dashboard-wrapper {
   position: relative;
   max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 #background-image {
@@ -286,14 +266,13 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
 }
 
 .admin-dashboard-content {
-  max-width: 800px;
+  max-width: 1200px; /* Increased max-width */
   margin: 150px auto 0 auto;
   padding: 20px;
   background: rgba(255, 255, 255, 0.9);
@@ -302,6 +281,7 @@ export default {
   font-family: 'Gabriela', serif;
   position: relative;
   z-index: 1;
+  min-height: calc(100vh - 150px); /* Ensures the content box covers most of the screen height */
 }
 
 .admin-profile-section {
@@ -349,29 +329,7 @@ export default {
   font-size: 16px;
   vertical-align: middle;
   position: absolute; /* Use absolute positioning */
-  right: 30px; /* Move 200px to the right */
-}
-
-.sort-dropdown {
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-  right: 0; /* Align dropdown to the right */
-}
-
-.sort-dropdown ul {
-  list-style: none;
-  position: relative; /* Add relative positioning */
-}
-
-.filter-label {
-  margin-right: 5px;
-  font-size: 16px;
-  vertical-align: middle;
-  position: absolute; /* Use absolute positioning */
-  right: 30px; /* Move 200px to the right */
+  right: 30px; /* Move 30px to the right */
 }
 
 .sort-dropdown {
@@ -395,25 +353,7 @@ export default {
   cursor: pointer;
 }
 
-sort-dropdown li:hover {
-  background-color: #f0f0f0;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-family: 'Gabriela', serif;
-  margin: 0;
-  text-align: right; /* Align text to the right */
-}
-
-.sort-dropdown li {
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-sort-dropdown li:hover {
+.sort-dropdown li:hover {
   background-color: #f0f0f0;
 }
 
@@ -470,40 +410,14 @@ p strong {
   width: 20px;
   height: 20px;
   position: absolute; /* Use absolute positioning */
-  right: 10px; /* Move 200px to the right */
+  right: 10px; /* Move 10px to the right */
 }
 
 .sort-icon-common:hover {
   filter: invert(31%) sepia(91%) saturate(2813%) hue-rotate(262deg) brightness(78%) contrast(97%);
 }
 
-.delete-icon{
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  position: relative;
-}
-
-.sort-icon {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  position: absolute;
-}
-
-.sort-icon-common {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  position: absolute; /* Use absolute positioning */
-  right: 10px; /* Move 200px to the right */
-}
-
-.sort-icon-common:hover {
-  filter: invert(31%) sepia(91%) saturate(2813%) hue-rotate(262deg) brightness(78%) contrast(97%);
-}
-
-.delete-icon{
+.delete-icon {
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -540,4 +454,3 @@ p strong {
   }
 }
 </style>
-

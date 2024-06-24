@@ -18,6 +18,17 @@ if ($conn->connect_error) {
     exit;
 }
 
+// Fetch admin user details from 'users' table
+$adminQuery = "SELECT * FROM users WHERE role = 'admin' LIMIT 1"; // Assuming there's only one admin
+$adminResult = $conn->query($adminQuery);
+
+if ($adminResult->num_rows > 0) {
+    $admin = $adminResult->fetch_assoc();
+} else {
+    echo json_encode(['error' => 'Адміністратор не знайдений.']);
+    exit;
+}
+
 // Fetch active bookings
 $bookingsQuery = "SELECT 
     bookings.id, 
@@ -27,7 +38,6 @@ $bookingsQuery = "SELECT
     bookings.checkout, 
     bookings.price, 
     bookings.created_at, 
-    bookings.paid, 
     users.name AS user_name, 
     users.surname AS user_surname, 
     rooms.name AS room_name 
@@ -48,15 +58,22 @@ if ($bookingsResult->num_rows > 0) {
     while ($row = $bookingsResult->fetch_assoc()) {
         $bookings[] = $row;
     }
+} else {
+    echo json_encode(['error' => 'Немає активних бронювань.']);
+    exit;
 }
 
 if ($wishesResult->num_rows > 0) {
     while ($row = $wishesResult->fetch_assoc()) {
         $wishes[] = $row;
     }
+} else {
+    echo json_encode(['error' => 'Немає побажань користувачів.']);
+    exit;
 }
 
 echo json_encode([
+    'admin' => $admin,
     'bookings' => $bookings,
     'wishes' => $wishes,
 ]);

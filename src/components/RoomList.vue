@@ -1,8 +1,9 @@
+<<<<<<< Updated upstream
 <template>
   <div class="room-list">
     <h3 class="sort-header">
       <span class="filter-label">Фільтр</span>
-      <img src="@/assets/image-removebg-preview 213.png" @click="toggleSortDropdown('rooms')" alt="Sort" class="sort-icon">
+      <img :src="filterIcon" @click="toggleSortDropdown('rooms')" alt="Sort" class="sort-icon">
     </h3>
     <div v-if="showSortRoomsDropdown" class="sort-dropdown">
       <ul>
@@ -14,7 +15,7 @@
     </div>
     <div class="rooms-container">
       <div v-for="(room, index) in rooms" :key="index" class="room-card">
-        <img :src="`http://localhost/new-hotel-website/src/assets/${room.photo}`" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
+        <img :src="room.photo" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
         <div class="room-details">
           <h2 class="room-name">{{ room.name }}</h2>
           <p class="room-description">{{ room.description }}</p>
@@ -41,28 +42,96 @@ export default {
       isZoomed: [],
       showSortRoomsDropdown: false,
       sortField: '',
-      sortOrder: ''
+      sortOrder: '',
+      filterIcon: '',
     };
   },
   mounted() {
+    console.log("Component mounted");
     this.fetchRooms();
+    document.title = 'Amethyst Hotel | Room List';
   },
   methods: {
     fetchRooms() {
+      console.log("Fetching rooms");
       fetch('http://localhost/new-hotel-website/backend/room.php')
-        .then(response => response.json())
+        .then(response => {
+          console.log("Room fetch response received");
+          if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+        })
         .then(data => {
+          console.log("Room data:", data);
           this.rooms = data;
           this.isZoomed = new Array(data.length).fill(false);
+
+          // Fetch images for rooms
+          return fetch('http://localhost/new-hotel-website/backend/get_images.php');
         })
-        .catch(error => console.error('Помилка:', error));
+        .then(response => {
+          console.log("Images fetch response received");
+          if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(images => {
+          console.log("Images data:", images);
+          // Assign images to the respective rooms
+          this.rooms.forEach(room => {
+            const image = images.find(img => parseInt(img.room_id) === room.id); // Приведення room_id до числа
+            if (image) {
+              room.photo = this.getImageUrl(image.image_name);
+              console.log(`Assigned image ${image.image_name} to room ${room.name}`);
+            } else {
+              console.log(`No image found for room ${room.name}`);
+            }
+          });
+
+          // Assign filter icon image
+          const filterIconImage = images.find(img => img.category === 'admin' && img.image_name === 'image-removebg-preview 213.png');
+          if (filterIconImage) {
+            this.filterIcon = this.getImageUrl(filterIconImage.image_name);
+            console.log("Filter icon image assigned");
+          } else {
+            console.log("Filter icon image not found");
+          }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    },
+    getImageUrl(imageName) {
+      // Переконайтеся, що шляхи зображень правильні
+      const imageUrl = `http://localhost/new-hotel-website/src/assets/${imageName}`;
+      console.log("Image URL:", imageUrl);  // Логування URL для перевірки
+      return imageUrl;
     },
     toggleZoom(index) {
       this.isZoomed[index] = !this.isZoomed[index];
     },
-    openBookingForm() {
-      this.$router.push('/booking');
+    openBookingForm(room) {
+      this.$router.push({ path: '/booking', query: { room: JSON.stringify(room) } });
     },
+    toggleSortDropdown(section) {
+      if (section === 'rooms') {
+        this.showSortRoomsDropdown = !this.showSortRoomsDropdown;
+      }
+    },
+    sortRooms(field, order) {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.rooms.sort((a, b) => {
+        let comparison = 0;
+        if (a[field] > b[field]) {
+          comparison = 1;
+        } else if (a[field] < b[field]) {
+          comparison = -1;
+        }
+        return order === 'asc' ? comparison : -comparison;
+      });
+      this.showSortRoomsDropdown = false; // Hide the dropdown after sorting
+    }
     toggleSortDropdown(section) {
       if (section === 'rooms') {
         this.showSortRoomsDropdown = !this.showSortRoomsDropdown;
@@ -88,9 +157,12 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
 
 .room-list {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   flex-direction: column;
   align-items: center;
   padding: 90px 10px;
@@ -145,12 +217,63 @@ export default {
   width: 100%;
 }
 
+.sort-header {
+  display: flex;
+  align-items: center;
+}
+
+.filter-label {
+  font-family: 'Gabriela', serif;
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.sort-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+.sort-dropdown {
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.sort-dropdown ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.sort-dropdown li {
+  font-family: 'Gabriela', serif;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sort-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.rooms-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .room-card {
+  display: flex;
+  flex-direction: row;
   display: flex;
   flex-direction: row;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
+  width: calc(50% - 50px);
   width: calc(50% - 50px);
   box-sizing: border-box;
   background-color: #fff;
@@ -164,8 +287,10 @@ export default {
 }
 
 .room-photo {
-  width: 40%;
+  width: 50%;
+  height: auto;
   border-radius: 10px;
+  margin-right: 20px;
   margin-right: 20px;
 }
 
@@ -182,6 +307,7 @@ export default {
 .room-availability,
 .room-max-guests,
 .room-additional-services {
+  font-family: 'Gabriela', serif;
   font-family: 'Gabriela', serif;
   margin: 4px 0;
 }

@@ -1,167 +1,6 @@
-<<<<<<< HEAD
 <template>
   <div class="login-wrapper">
-    <div id="background-image"></div>
-    <div class="login-form">
-      <h2>Вхід</h2>
-      <form @submit.prevent="login">
-        <div class="form-group">
-          <label for="email">Електронна пошта:</label>
-          <input type="email" v-model="email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Пароль:</label>
-          <input type="password" v-model="password" required>
-        </div>
-        <button type="submit">Увійти</button>
-      </form>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'AppLogin',
-  data() {
-    return {
-      email: '',
-      password: ''
-    };
-  },
-  methods: {
-    login() {
-      alert('Вхід успішний!');
-      this.$router.push('/user');
-    }
-  }
-};
-</script>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.login-wrapper {
-  position: relative;
-  max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-}
-
-.login-form {
-  max-width: 600px;
-  margin: 200px auto 0 auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-family: 'Gabriela', sans-serif;
-  position: relative;
-  z-index: 1;
-}
-
-.login-form h2 {
-  font-family: 'Gabriela', serif;
-  margin-bottom: 20px;
-  color: #6a0dad;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px; 
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-button {
-  background-color: #e67e22;
-  font-family: 'Gabriela', serif;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  width: 100%; 
-}
-
-button:hover {
-  background-color: #d35400;
-}
-
-@media (max-width: 768px) {
-  .login-form {
-    margin: 50px 20px;
-    padding: 15px;
-  }
-
-  .login-form h2 {
-    font-size: 24px;
-  }
-
-  .form-group input {
-    font-size: 14px;
-  }
-
-  button {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .login-form {
-    margin: 20px 10px;
-    padding: 10px;
-  }
-
-  .login-form h2 {
-    font-size: 20px;
-  }
-
-  .form-group input {
-    font-size: 12px;
-  }
-
-  button {
-    font-size: 12px;
-  }
-}
-</style>
-=======
-<template>
-  <div class="login-wrapper">
-    <div id="background-image"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="login-form">
       <h2>Вхід</h2>
       <form @submit.prevent="login">
@@ -172,7 +11,10 @@ button:hover {
         </div>
         <div class="form-group">
           <label for="password">Пароль:</label>
-          <input type="password" v-model="password" @input="validatePassword" required>
+          <div class="password-wrapper">
+            <input :type="passwordFieldType" v-model="password" @input="validatePassword" required>
+            <img :src="passwordToggleIcon" @click="togglePasswordVisibility" class="password-toggle-icon" />
+          </div>
           <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
         </div>
         <button type="submit" id="submit">Увійти</button>
@@ -193,7 +35,11 @@ export default {
       identifier: '',
       password: '',
       identifierError: '',
-      passwordError: ''
+      passwordError: '',
+      passwordVisible: false,
+      backgroundImage: '',
+      eyeIcon: '',
+      hideIcon: ''
     };
   },
   computed: {
@@ -202,6 +48,12 @@ export default {
     },
     passwordErrorVisible() {
       return !!this.passwordError;
+    },
+    passwordFieldType() {
+      return this.passwordVisible ? 'text' : 'password';
+    },
+    passwordToggleIcon() {
+      return this.passwordVisible ? this.hideIcon : this.eyeIcon;
     }
   },
   methods: {
@@ -254,9 +106,46 @@ export default {
         this.passwordError = '';
         return true;
       }
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    },
+    async fetchImages() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+
+        const loginImage = images.find(img => img.category === 'login' && img.image_name === 'login.png');
+        const eyeIconImage = images.find(img => img.category === 'login' && img.image_name === 'eye.png');
+        const hideIconImage = images.find(img => img.category === 'login' && img.image_name === 'hide.png');
+
+        if (loginImage) {
+          this.backgroundImage = this.getImageUrl(loginImage.image_name);
+        } else {
+          console.error('Login background image not found.');
+        }
+
+        if (eyeIconImage) {
+          this.eyeIcon = this.getImageUrl(eyeIconImage.image_name);
+        } else {
+          console.error('Eye icon image not found.');
+        }
+
+        if (hideIconImage) {
+          this.hideIcon = this.getImageUrl(hideIconImage.image_name);
+        } else {
+          console.error('Hide icon image not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     }
   },
   mounted() {
+    this.fetchImages();
     document.title = 'Amethyst Hotel | Login';
   }
 };
@@ -279,7 +168,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -323,6 +211,20 @@ export default {
   box-sizing: border-box;
 }
 
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
 button {
   width: 100%;
   background-color: #e67e22;
@@ -360,4 +262,3 @@ button:hover {
   text-decoration: underline;
 }
 </style>
->>>>>>> database

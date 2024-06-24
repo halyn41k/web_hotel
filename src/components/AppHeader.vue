@@ -1,196 +1,5 @@
-<<<<<<< HEAD
-<template>
-  <header class="header" :class="{ 'sticky': isSticky }">
-    <div class="brand">
-      <router-link to="/" class="hotel-name">AMETHYST</router-link>
-    </div>
-    <nav class="nav" :class="{ 'open': isMenuOpen }">
-      <router-link to="/rooms" class="nav-link" exact-active-class="active">Кімнати</router-link>
-      <router-link to="/location" class="nav-link" exact-active-class="active">Локація</router-link>
-      <router-link to="/booking" class="nav-link" exact-active-class="active">Бронювання</router-link>
-      <router-link to="/contacts" class="nav-link" exact-active-class="active">Про нас</router-link>
-      <template v-if="isLoggedIn">
-        <span class="welcome-message">Вітаємо, {{ user.name }}!</span>
-        <router-link to="/user-dashboard" class="nav-link" exact-active-class="active">Профіль</router-link>
-      </template>
-      <template v-else>
-        <router-link to="/login" class="nav-link" exact-active-class="active">Вхід</router-link>
-        <router-link to="/registration" class="nav-link" exact-active-class="active">Реєстрація</router-link>
-      </template>
-    </nav>
-    <button class="menu-toggle" @click="toggleMenu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-  </header>
-</template>
-
-<script>
-export default {
-  name: 'AppHeader',
-  data() {
-    return {
-      isSticky: false,
-      isLoggedIn: false,
-      isMenuOpen: false,
-      user: {
-        name: 'Ім\'я'
-      }
-    };
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-    this.checkAuth();
-  },
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
-  methods: {
-    handleScroll() {
-      this.isSticky = window.scrollY > 0;
-    },
-    checkAuth() {
-      const user = localStorage.getItem('user');
-      if (user) {
-        this.isLoggedIn = true;
-        this.user = JSON.parse(user);
-      }
-    },
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    }
-  }
-}
-</script>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #6a0dad;
-  color: #fff;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  transition: top 0.3s;
-}
-
-.brand {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.hotel-name {
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Voltaire', sans-serif;
-}
-
-.nav {
-  display: flex;
-  font-size: 22px;
-}
-
-.nav-link {
-  margin-left: 20px;
-  margin-right: 40px;
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Gabriela', serif;
-}
-
-.auth {
-  display: flex;
-  align-items: center;
-}
-
-.auth-link {
-  font-size: 22px;
-  margin-left: 20px;
-  margin-right: 40px;
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Gabriela', serif;
-}
-
-.welcome-message {
-  font-size: 22px;
-  margin-right: 20px;
-  font-family: 'Gabriela', serif;
-}
-
-.active {
-  border-bottom: 2px solid #fff;
-  font-weight: bold;
-}
-
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30px;
-  height: 21px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 20px; 
-}
-
-.bar {
-  height: 3px;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 10px;
-}
-
-@media (max-width: 768px) {
-  .nav, .auth {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background-color: #6a0dad;
-  }
-
-  .nav.open, .auth.open {
-    display: flex;
-  }
-
-  .nav-link, .auth-link {
-    margin: 10px 0;
-    text-align: center;
-  }
-
-  .menu-toggle {
-    display: flex;
-  }
-}
-
-@media (min-width: 769px) {
-  .nav {
-    margin: 0 auto; 
-  }
-}
-</style>
-=======
+/* eslint-disable import/no-unresolved */
+/* eslint-disable */ 
 <template>
   <header class="header" :class="{ 'sticky': isSticky }">
     <div class="header-container">
@@ -205,18 +14,17 @@ html, body {
       </nav>
       <div class="auth-container" v-if="!authStore.isLoggedIn">
         <div class="auth-content">
-          <img src="@/assets/image-removebg-preview (1аукау).png" alt="Login Icon" class="login-icon"/>
+          <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
           <router-link to="/login" class="auth-link" exact-active-class="active">Увійти в кабінет</router-link>
         </div>
       </div>
       <template v-if="authStore.isLoggedIn">
         <span class="welcome-message">Вітаємо, {{ authStore.user.name }}!</span>
-        <img src="@/assets/image-removebg-preview (1аукау).png" alt="Login Icon" class="login-icon"/>
+        <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
         <router-link
           :to="authStore.user.role === 'admin' ? '/admin' : '/user'"
           class="nav-link"
-          exact-active-class="active"
-        >
+          exact-active-class="active">
           Профіль
         </router-link>
         <button class="logout-button" @click="logout">Вийти</button>
@@ -233,14 +41,19 @@ html, body {
 <script>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
-  name: 'Header',
+  name: 'AppHeader',
   setup() {
+    const router = useRouter();
     const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
+    const headerImages = ref({
+      loginIcon: ''
+    });
 
     const handleScroll = () => {
       isSticky.value = window.scrollY > 0;
@@ -254,6 +67,7 @@ export default {
       localStorage.removeItem('userData');
       authStore.clearUser();
       router.push('/login');
+      router.push('/login');
     };
 
     const checkAuth = () => {
@@ -265,13 +79,34 @@ export default {
       }
     };
 
+    const fetchHeaderImages = async () => {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+        const loginIconImage = images.find(img => img.category === 'header' && img.image_name === 'image-removebg-preview (1аукау).png');
+        if (loginIconImage) {
+          headerImages.value.loginIcon = getImageUrl(loginIconImage.image_name);
+        } else {
+          console.error('Login icon image not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching header images:', error);
+      }
+    };
+
+    const getImageUrl = (imageName) => {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
+    };
+
     watch(
       () => authStore.isLoggedIn,
       (newVal) => {
         if (newVal) {
-          // Do something if needed when user logs in
+          // Handle actions when user logs in
+          // Handle actions when user logs in
         } else {
-          // Do something if needed when user logs out
+          // Handle actions when user logs out
+          // Handle actions when user logs out
         }
       },
       { immediate: true }
@@ -279,21 +114,22 @@ export default {
 
     window.addEventListener('scroll', handleScroll);
     checkAuth();
+    fetchHeaderImages();
 
     return {
       isSticky,
       isMenuOpen,
       toggleMenu,
       logout,
-      authStore
+      authStore,
+      headerImages
     };
   },
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
+  unmounted() { /* eslint-disable */ 
+    window.removeEventListener('scroll', handleScroll); /* eslint-disable */ 
   }
 };
 </script>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -491,4 +327,3 @@ html, body {
   }
 }
 </style>
->>>>>>> database

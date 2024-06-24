@@ -1,159 +1,6 @@
-<<<<<<< HEAD
 <template>
   <div class="dashboard-wrapper">
-    <div id="background-image"></div>
-    <div class="dashboard-content">
-      <div class="profile-section">
-        <img :src="profileImage" alt="Profile Photo" class="profile-photo" @click="uploadImage">
-        <input type="file" ref="fileInput" style="display: none;" @change="handleImageUpload">
-        <div class="user-info">
-          <h2>{{ name }} {{ surname }}</h2>
-          <p>{{ email }}</p>
-        </div>
-      </div>
-      <div class="bookings-section">
-        <h3>Ваші бронювання:</h3>
-        <ul>
-          <li v-for="(booking, index) in bookings" :key="index">{{ booking }}</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'UserDashboard',
-  data() {
-    return {
-      name: 'Ім\'я',
-      surname: 'Прізвище',
-      email: 'email@example.com',
-      profileImage: require('@/assets/image-removebg-preview (1аукау).png'),
-      bookings: ['Бронювання 1', 'Бронювання 2', 'Бронювання 3']
-    };
-  },
-  methods: {
-    uploadImage() {
-      this.$refs.fileInput.click();
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.profileImage = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  },
-  created() {
-    // Перевіряємо, чи є дані про користувача у localStorage
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      // Якщо дані є, встановлюємо їх у додаток
-      const { name, surname, email } = JSON.parse(userData);
-      this.name = name;
-      this.surname = surname;
-      this.email = email;
-    } else {
-      // Якщо даних немає, перенаправляємо на сторінку реєстрації
-      this.$router.push('/registration');
-    }
-  }
-};
-</script>
-
-<style scoped>
-.dashboard-wrapper {
-  position: relative;
-  max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-}
-
-.dashboard-content {
-  max-width: 800px;
-  margin: 150px auto 0 auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-family: 'Gabriela', sans-serif;
-  position: relative;
-  z-index: 1;
-}
-
-.profile-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.profile-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-  margin-right: 20px;
-}
-
-.user-info {
-  flex: 1;
-}
-
-.user-info h2 {
-  font-family: 'Gabriela', serif;
-  margin-bottom: 10px;
-  color: #6a0dad;
-}
-
-.user-info p {
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-}
-
-.bookings-section {
-  margin-top: 20px;
-}
-
-.bookings-section h3 {
-  font-family: 'Gabriela', serif;
-  color: #6a0dad;
-  margin-bottom: 10px;
-}
-
-.bookings-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.bookings-section li {
-  background: #f8f8f8;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  font-family: 'Roboto', sans-serif;
-}
-</style>
-=======
-<template>
-  <div class="dashboard-wrapper">
-    <div id="background-image"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="dashboard-content">
       <div class="profile-section">
         <div class="user-info">
@@ -190,7 +37,8 @@ export default {
       email: '',
       phone: '',
       bookings: [],
-      userId: ''
+      userId: '',
+      backgroundImage: ''
     };
   },
   methods: {
@@ -199,7 +47,7 @@ export default {
     },
     async deleteBooking(index, bookingId) {
       try {
-        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -224,7 +72,7 @@ export default {
       }
 
       try {
-        const response = await fetch(`http://localhost/new-hotel-website/booking.php?user_id=${userData.id}`, {
+        const response = await fetch(`http://localhost/new-hotel-website/backend/booking.php?user_id=${userData.id}`, {
           method: 'GET'
         });
         const data = await response.json();
@@ -256,11 +104,28 @@ export default {
       this.email = userData.email;
       this.phone = userData.phone;
       this.userId = userData.id;
+    },
+    async fetchBackgroundImage() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php', {
+          method: 'GET'
+        });
+        const data = await response.json();
+        const loginImage = data.find(image => image.category === 'login' && image.image_name === 'login.png');
+        if (loginImage) {
+          this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${loginImage.image_name}`;
+        } else {
+          console.error('Login background image not found.');
+        }
+      } catch (error) {
+        console.error('Помилка завантаження зображення фону:', error);
+      }
     }
   },
   created() {
     this.fetchUserData();
     this.fetchBookings();
+    this.fetchBackgroundImage();
   },
   mounted() {
     document.title = 'Amethyst Hotel | User';
@@ -284,7 +149,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -319,7 +183,7 @@ export default {
 }
 
 .user-info p {
-  font-family: 'Gabriela', serif; /* Change this to your desired classic font */
+  font-family: 'Gabriela', serif;
   color: #333;
 }
 
@@ -345,7 +209,7 @@ export default {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
-  font-family: 'Gabriela', serif; /* Change this to your desired classic font */
+  font-family: 'Gabriela', serif;
   position: relative;
 }
 
@@ -357,8 +221,8 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Gabriela', serif;
-  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
-  margin: 10px auto; /* Центруємо кнопку по горизонталі з верхнім і нижнім відступами по 10px */
+  display: block;
+  margin: 10px auto;
 }
 
 .book-room-button {
@@ -372,7 +236,7 @@ export default {
   font-size: 18px;
   transition: background-color 0.3s;
   margin-top: 20px;
-  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }
@@ -402,4 +266,3 @@ export default {
   }
 }
 </style>
->>>>>>> database

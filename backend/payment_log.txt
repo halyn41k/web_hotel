@@ -1,0 +1,84 @@
+2024-06-22 16:04:44 - Received data: 
+2024-06-22 16:04:44 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"card","cardNumber":"1321423534643646","expiryDate":"03/25","cvv":"123"}
+2024-06-22 16:09:48 - Received data: 
+2024-06-22 16:09:48 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-23","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:40 - Received data: 
+2024-06-22 16:15:40 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:41 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:41 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:42 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:42 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:43 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:15:44 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:17:14 - Received data: 
+2024-06-22 16:17:14 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-23","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:17:14 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-23","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:17:40 - Received data: 
+2024-06-22 16:17:40 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:20:21 - Received data: 
+2024-06-22 16:20:21 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:20:22 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:20:22 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:20:22 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-22","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:22:11 - Received data: 
+2024-06-22 16:22:11 - Received data: {"bookingData":{"checkin":"2024-06-22","checkout":"2024-06-23","adults":1,"children":0,"user_id":"1","room_id":1,"room_name":"Люкс \"Сонячний\"","price":"2500.00"},"totalCost":"2500.00","selectedPaymentMethod":"cash","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:25:23 - Received data: 
+2024-06-22 16:25:23 - Parsed data: 
+2024-06-22 16:25:23 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:25:23 - Parsed data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-22 16:28:47 - Received data: 
+2024-06-22 16:28:47 - Parsed data: 
+2024-06-22 16:28:47 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:28:47 - Parsed data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-22 16:28:59 - Received data: 
+2024-06-22 16:28:59 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-22 16:29:00 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 09:41:15 - Received data: 
+2024-06-24 09:41:15 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 09:41:24 - Received data: 
+2024-06-24 09:41:24 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 15:14:11 - Received data: 
+2024-06-24 15:14:11 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","cardNumber":"1313143242353532","expiryDate":"01/26","cvv":"123"}
+2024-06-24 15:32:32 - Received data: 
+2024-06-24 15:32:32 - Received data: {"selectedPaymentMethod":"card","totalCost":"5000.00","cardNumber":"2423524634635637","expiryDate":"01/30","cvv":"123"}
+2024-06-24 15:32:33 - Received data: {"selectedPaymentMethod":"card","totalCost":"5000.00","cardNumber":"2423524634635637","expiryDate":"01/30","cvv":"123"}
+2024-06-24 15:32:33 - Received data: {"selectedPaymentMethod":"card","totalCost":"5000.00","cardNumber":"2423524634635637","expiryDate":"01/30","cvv":"123"}
+2024-06-24 15:32:34 - Received data: {"selectedPaymentMethod":"card","totalCost":"5000.00","cardNumber":"2423524634635637","expiryDate":"01/30","cvv":"123"}
+2024-06-24 15:33:55 - Received data: 
+2024-06-24 15:33:55 - Received data: {"selectedPaymentMethod":"card","totalCost":"5000.00","cardNumber":"2423524634635637","expiryDate":"01/30","cvv":"123"}
+2024-06-24 20:00:04 - Received data: 
+2024-06-24 20:00:04 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","cardNumber":"3254253454264642","expiryDate":"03/26","cvv":"123"}
+2024-06-24 20:04:54 - Received data: 
+2024-06-24 20:04:54 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 20:13:01 - Received data: 
+2024-06-24 20:13:01 - Received data: {"selectedPaymentMethod":"card","totalCost":"3000.00","user_id":"10","cardNumber":"2423483184813848","expiryDate":"01/25","cvv":"132"}
+2024-06-24 20:13:02 - Received data: {"selectedPaymentMethod":"card","totalCost":"3000.00","user_id":"10","cardNumber":"2423483184813848","expiryDate":"01/25","cvv":"132"}
+2024-06-24 20:15:31 - Received data: 
+2024-06-24 20:15:31 - Received data: {"selectedPaymentMethod":"card","totalCost":"3000.00","user_id":"10","cardNumber":"2323234234234234","expiryDate":"03/25","cvv":"131"}
+2024-06-24 20:23:12 - Received data: 
+2024-06-24 20:23:12 - Received data: {"selectedPaymentMethod":"card","totalCost":"3000.00","user_id":"10","cardNumber":"3242342352352525","expiryDate":"03/25","cvv":"345"}
+2024-06-24 20:24:26 - Received data: 
+2024-06-24 20:24:49 - Received data: 
+2024-06-24 20:24:49 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 20:25:56 - Received data: 
+2024-06-24 20:25:56 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 20:25:57 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 20:25:57 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-24 20:26:30 - Received data: 
+2024-06-24 20:26:30 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}

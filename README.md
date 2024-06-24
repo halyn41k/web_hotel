@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 # new-hotel-website
 [![GitHub open issues](https://img.shields.io/github/issues/halyn41k/new-hotel-website.svg?maxAge=2592000)](https://github.com/halyn41k/new-hotel-website/issues)
@@ -61,7 +60,7 @@ npm run styleguide
 ```
 npm run styleguide:build
 ```
-=======
+
 
 # new-hotel-website
 [![GitHub open issues](https://img.shields.io/github/issues/halyn41k/new-hotel-website.svg?maxAge=2592000)](https://github.com/halyn41k/new-hotel-website/issues)
@@ -124,4 +123,3 @@ npm run styleguide
 ```
 npm run styleguide:build
 ```
->>>>>>> database
