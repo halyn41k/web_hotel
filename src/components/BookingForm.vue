@@ -90,12 +90,12 @@ export default {
     this.fetchBackgroundImage();
   },
   methods: {
-    async checkAvailability() {
-      if (!this.checkin || !this.checkout || this.adults < 1) {
-        this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
-        return;
-      }
-      this.errorMessage = '';
+  async checkAvailability() {
+    if (!this.checkin || !this.checkout || this.adults < 1) {
+      this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
+      return;
+    }
+    this.errorMessage = '';
 
       try {
         const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
@@ -229,6 +229,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
 
@@ -302,8 +303,20 @@ button {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
   padding: 15px;
   border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.room-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 15px;
   border-radius: 5px;
   background: #fff;
 }
@@ -321,9 +334,15 @@ button {
 }
 
 .room-details h4 {
+.room-details {
+  flex: 1;
+}
+
+.room-details h4 {
   margin-bottom: 10px;
 }
 
+.room-details p {
 .room-details p {
   margin: 5px 0;
 }
@@ -353,6 +372,8 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  border: none;
+  cursor: pointer;
 }
 
 .back-button {
@@ -364,6 +385,7 @@ button {
 
 .error-message {
   color: red;
+  margin-top: 10px;
   margin-top: 10px;
 }
 </style>

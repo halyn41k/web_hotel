@@ -41,11 +41,13 @@
 <script>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
   name: 'AppHeader',
   setup() {
+    const router = useRouter();
     const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
@@ -64,6 +66,7 @@ export default {
     const logout = () => {
       localStorage.removeItem('userData');
       authStore.clearUser();
+      router.push('/login');
       router.push('/login');
     };
 
@@ -100,7 +103,9 @@ export default {
       (newVal) => {
         if (newVal) {
           // Handle actions when user logs in
+          // Handle actions when user logs in
         } else {
+          // Handle actions when user logs out
           // Handle actions when user logs out
         }
       },

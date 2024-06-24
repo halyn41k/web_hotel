@@ -116,6 +116,9 @@ export default {
           setTimeout(() => {
             this.$router.push('/user');
           }, 3000); // Redirect to /user after 3 seconds
+          setTimeout(() => {
+            this.$router.push('/user');
+          }, 3000); // Redirect to /user after 3 seconds
         } else {
           console.error('Помилка обробки платежу:', data.error);
         }
@@ -142,6 +145,7 @@ export default {
     if (bookingData) {
       this.roomName = bookingData.room_name;
       this.price = bookingData.price;
+      this.bookingId = bookingData.id; // Set bookingId
       this.bookingId = bookingData.id; // Set bookingId
     } else {
       console.error('Дані про бронювання відсутні у localStorage.');

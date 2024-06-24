@@ -93,6 +93,7 @@
 <script>
 import axios from 'axios';
 
+
 export default {
   name: 'AdminPanel',
   data() {
@@ -301,15 +302,20 @@ export default {
 
 .admin-user-info p {
   font-family: 'Gabriela', serif;
+  font-family: 'Gabriela', serif;
   color: #333;
 }
 
+.admin-bookings-section,
+.admin-wishes-section {
 .admin-bookings-section,
 .admin-wishes-section {
   margin-top: 10px;
   text-align: center;
 }
 
+.admin-bookings-section h3,
+.admin-wishes-section h3 {
 .admin-bookings-section h3,
 .admin-wishes-section h3 {
   font-family: 'Gabriela', serif;
@@ -371,6 +377,19 @@ table th {
   cursor: pointer; /* Add cursor pointer to indicate sortability */
 }
 
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #49146F;
+  color: white;
+  cursor: pointer; /* Add cursor pointer to indicate sortability */
+}
+
 p {
   margin: 5px 0;
 }
@@ -410,14 +429,22 @@ p strong {
     padding: 10px;
   }
 
+
   .admin-profile-section {
     flex-direction: column;
     margin-bottom: 10px;
   }
 
+
   .admin-user-info {
     text-align: center;
     margin-top: 10px;
+  }
+
+  .filter-label,
+  .sort-icon-common {
+    position: static; /* Reset position to default for mobile */
+    margin-left: 0;
   }
 
   .filter-label,

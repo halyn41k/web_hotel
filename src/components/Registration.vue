@@ -92,6 +92,7 @@ export default {
 
       try {
         const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -99,6 +100,7 @@ export default {
             surname: this.surname,
             phone: this.phone,
             email: this.email,
+            password: this.password
             password: this.password
           })
         });
@@ -336,3 +338,4 @@ button:hover {
   text-decoration: underline;
 }
 </style>
+
