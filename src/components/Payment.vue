@@ -1,5 +1,5 @@
 <template>
-  <div class="payment-wrapper">
+  <div class="payment-wrapper" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="payment-form">
       <h2>Оплата</h2>
       <div>
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: 'Payment',
+  name: 'GetPayment',
   data() {
     return {
       selectedPaymentMethod: 'cash',
@@ -54,7 +54,9 @@ export default {
       paymentSuccessful: false,
       isValidCardNumber: true,
       isValidExpiryDate: true,
-      isValidCvv: true
+      isValidCvv: true,
+      bookingId: null, // Add bookingId to data
+      backgroundImage: '' // Add backgroundImage to data
     };
   },
   methods: {
@@ -88,15 +90,18 @@ export default {
       }
 
       try {
-        const response = await fetch('http://localhost/new-hotel-website/payment.php', {
+        const user_id = bookingData.user_id; // Ensure user_id is part of bookingData
+
+        const response = await fetch('http://localhost/new-hotel-website/backend/payment.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            bookingData,
-            totalCost: this.price,
             selectedPaymentMethod: this.selectedPaymentMethod,
+            totalCost: this.price,
+            booking_id: this.bookingId, // Send bookingId
+            user_id: user_id, // Send user_id
             cardNumber: this.selectedPaymentMethod === 'card' ? this.cardNumber.replace(/\s/g, '') : null,
             expiryDate: this.selectedPaymentMethod === 'card' ? this.expiryDate : null,
             cvv: this.selectedPaymentMethod === 'card' ? this.cvv : null
@@ -108,43 +113,28 @@ export default {
         if (data.success) {
           this.paymentSuccessful = true;
 
-          // Оновлення статусу бронювання на оплачено в базі даних
-          const updateResponse = await fetch('http://localhost/new-hotel-website/booking.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              booking_id: bookingData.booking_id,
-              status: 'paid'
-            })
-          });
-
-          const updateData = await updateResponse.json();
-          if (updateData.success) {
-            // Оновлення статусу бронювання на оплачено в localStorage
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            if (userData) {
-              const bookingIndex = userData.bookings.findIndex(b => b.id === bookingData.booking_id);
-              if (bookingIndex !== -1) {
-                userData.bookings[bookingIndex].paid = true;
-                localStorage.setItem('userData', JSON.stringify(userData));
-              }
-            }
-
-            localStorage.removeItem('bookingData');
-            setTimeout(() => {
-              this.$router.push('/user');
-            }, 3000); // Redirect to /user after 3 seconds
-          } else {
-            console.error('Помилка оновлення статусу бронювання:', updateData.error);
-          }
+          setTimeout(() => {
+            this.$router.push('/user');
+          }, 3000); // Redirect to /user after 3 seconds
         } else {
           console.error('Помилка обробки платежу:', data.error);
         }
       } catch (error) {
         console.error('Помилка зв\'язку з сервером:', error);
       }
+    },
+    fetchBackgroundImage() {
+      fetch('http://localhost/new-hotel-website/backend/get_images.php')
+        .then(response => response.json())
+        .then(images => {
+          const paymentImage = images.find(img => img.category === 'payment' && img.image_name === 'payment.png');
+          if (paymentImage) {
+            this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${paymentImage.image_name}`;
+          } else {
+            console.error('Payment background image not found.');
+          }
+        })
+        .catch(error => console.error('Error fetching images:', error));
     }
   },
   mounted() {
@@ -152,9 +142,11 @@ export default {
     if (bookingData) {
       this.roomName = bookingData.room_name;
       this.price = bookingData.price;
+      this.bookingId = bookingData.id; // Set bookingId
     } else {
       console.error('Дані про бронювання відсутні у localStorage.');
     }
+    this.fetchBackgroundImage(); // Fetch background image on mount
   }
 };
 </script>
@@ -165,7 +157,6 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url('/src/assets/Знімок екрана 2024-06-13 113316.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

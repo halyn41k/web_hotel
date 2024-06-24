@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-wrapper">
-    <div id="background-image"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="dashboard-content">
       <div class="profile-section">
         <div class="user-info">
@@ -37,7 +37,8 @@ export default {
       email: '',
       phone: '',
       bookings: [],
-      userId: ''
+      userId: '',
+      backgroundImage: ''
     };
   },
   methods: {
@@ -46,7 +47,7 @@ export default {
     },
     async deleteBooking(index, bookingId) {
       try {
-        const response = await fetch('http://localhost/new-hotel-website/booking.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -71,7 +72,7 @@ export default {
       }
 
       try {
-        const response = await fetch(`http://localhost/new-hotel-website/booking.php?user_id=${userData.id}`, {
+        const response = await fetch(`http://localhost/new-hotel-website/backend/booking.php?user_id=${userData.id}`, {
           method: 'GET'
         });
         const data = await response.json();
@@ -103,11 +104,28 @@ export default {
       this.email = userData.email;
       this.phone = userData.phone;
       this.userId = userData.id;
+    },
+    async fetchBackgroundImage() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php', {
+          method: 'GET'
+        });
+        const data = await response.json();
+        const loginImage = data.find(image => image.category === 'login' && image.image_name === 'login.png');
+        if (loginImage) {
+          this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${loginImage.image_name}`;
+        } else {
+          console.error('Login background image not found.');
+        }
+      } catch (error) {
+        console.error('Помилка завантаження зображення фону:', error);
+      }
     }
   },
   created() {
     this.fetchUserData();
     this.fetchBookings();
+    this.fetchBackgroundImage();
   },
   mounted() {
     document.title = 'Amethyst Hotel | User';
@@ -131,7 +149,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -166,7 +183,7 @@ export default {
 }
 
 .user-info p {
-  font-family: 'Gabriela', serif; /* Change this to your desired classic font */
+  font-family: 'Gabriela', serif;
   color: #333;
 }
 
@@ -192,7 +209,7 @@ export default {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
-  font-family: 'Gabriela', serif; /* Change this to your desired classic font */
+  font-family: 'Gabriela', serif;
   position: relative;
 }
 
@@ -204,8 +221,8 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-family: 'Gabriela', serif;
-  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
-  margin: 10px auto; /* Центруємо кнопку по горизонталі з верхнім і нижнім відступами по 10px */
+  display: block;
+  margin: 10px auto;
 }
 
 .book-room-button {
@@ -219,7 +236,7 @@ export default {
   font-size: 18px;
   transition: background-color 0.3s;
   margin-top: 20px;
-  display: block; /* Зробити кнопку блоковим елементом для коректного вирівнювання */
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }

@@ -4,7 +4,7 @@
   
   <script>
   export default {
-    name: 'Loader',
+    name: 'LoaderPage',
   }
   </script>
   
@@ -13,7 +13,7 @@
     width: 50px;
     aspect-ratio: 1;
     border-radius: 50%;
-    border: 8px solid #514b82;
+    border: 8px solid #a421dc;
     animation:
       l20-1 0.8s infinite linear alternate,
       l20-2 1.6s infinite linear;

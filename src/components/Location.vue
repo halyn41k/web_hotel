@@ -3,7 +3,7 @@
     <div class="text">
       <h2>Запрошуємо Вас до Івано-Франківської області, міста Коломия</h2>
       <h2>Адреса: вул. Бульвар Лесі Українки, 7</h2>
-      <img src="@/assets/21314.png" alt="Коломия" class="location-image">
+      <img :src="locationImage" alt="Коломия" class="location-image">
     </div>
     <div class="google-map">
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2642.1865588704154!2d25.03926067632093!3d48.529656371289455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4736d28545ff23d3%3A0xdea24e7a9f84be24!2z0LHRg9C70YzQstCw0YAg0JvQtdGB0ZYg0KPQutGA0LDRl9C90LrQuCwgNywg0JrQvtC70L7QvNC40Y8sINCG0LLQsNC90L4t0KTRgNCw0L3QutGW0LLRgdGM0LrQsCDQvtCx0LvQsNGB0YLRjCwgNzgyMDA!5e0!3m2!1suk!2sua!4v1717148194051!5m2!1suk!2sua" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -13,8 +13,34 @@
 
 <script>
 export default {
-  name: 'Location',
+  name: 'HotelLocation',
+  data() {
+    return {
+      locationImage: ''
+    };
+  },
+  methods: {
+    async fetchLocationImage() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+
+        const locationImg = images.find(img => img.category === 'location' && img.image_name === '21314.png');
+        if (locationImg) {
+          this.locationImage = this.getImageUrl(locationImg.image_name);
+        } else {
+          console.error('Location image not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching location image:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
+    }
+  },
   mounted() {
+    this.fetchLocationImage();
     document.title = 'Amethyst Hotel | Location';
   }
 }

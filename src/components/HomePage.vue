@@ -10,9 +10,9 @@
     <div class="cta-section">
       <h2>Забронюйте кімнату зараз!</h2>
       <div class="cta-content">
-        <img src="@/assets/purple-neon-arrow-1.png" class="cta-arrow" alt="Arrow"/>
+        <img :src="arrowImage" class="cta-arrow" alt="Arrow"/>
         <router-link to="/booking" class="cta-button">Забронювати</router-link>
-        <img src="@/assets/purple-neon-arrow-1.png" class="cta-arrow mirrored" alt="Mirrored Arrow"/>
+        <img :src="arrowImage" class="cta-arrow mirrored" alt="Mirrored Arrow"/>
       </div>
     </div>
     <div class="menu-section">
@@ -33,7 +33,7 @@
     <div class="reviews-section">
       <h2>Відгуки клієнтів</h2>
       <div class="reviews-container">
-        <img src="@/assets/324234.png" class="reviews-image left" />
+        <img :src="leafImage" class="reviews-image left" />
         <div class="reviews">
           <div class="review" v-for="(review, index) in reviews" :key="index" @mouseover="animateReview" @mouseleave="stopAnimateReview">
             <div class="review-header">
@@ -45,7 +45,7 @@
             <p>{{ review.text }}</p>
           </div>
         </div>
-        <img src="@/assets/324234.png" class="reviews-image right" />
+        <img :src="leafImage" class="reviews-image right" />
       </div>
     </div>
   </div>
@@ -53,16 +53,12 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'HomePage',
   data() {
     return {
-      images: [
-        require('@/assets/extravagant-pool-party-luxurious-mansion-complete-with-vip-cabanas-dj-booth (1).jpg'),
-        require('@/assets/extravagant-pool-party-luxurious-mansion-complete-with-vip-cabanas-dj-booth.jpg'),
-        require('@/assets/pexels-fotoaibe-1743231.jpg')
-      ],
+      images: [],
       currentImageIndex: 0,
-      isLoaded: false, // Додайте стан для відстеження завантаження
+      isLoaded: false,
       currentMenuIndex: 0,
       reviews: [
         {
@@ -81,42 +77,58 @@ export default {
           text: 'Незабутній досвід! Дякуємо всій команді готелю "Аметист".'
         }
       ],
-      menuItems: [
-        {
-          name: 'Салат Цезар',
-          price: 150,
-          image: require('@/assets/caesar-salad.jpg')
-        },
-        {
-          name: 'Борщ український',
-          price: 120,
-          image: require('@/assets/borshch.jpg')
-        },
-        {
-          name: 'Сирники з медом',
-          price: 100,
-          image: require('@/assets/syrnyky.jpg')
-        }
-      ],
+      menuItems: [],
+      arrowImage: '',
+      leafImage: '',
       startX: 0,
       endX: 0
     };
   },
   mounted() {
+    this.fetchImages();
     this.startCarousel();
     this.startMenuCarousel();
-    this.isLoaded = true; // Встановіть isLoaded на true після завантаження
+    this.isLoaded = true;
   },
   methods: {
+    async fetchImages() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+
+        // Set carousel images
+        this.images = images.filter(img => img.category === 'caurosel').map(img => this.getImageUrl(img.image_name));
+
+        // Set menu items
+        const menuItemsData = [
+          { name: 'Салат Цезар', price: 150, image_name: 'caesar-salad.jpg' },
+          { name: 'Борщ український', price: 120, image_name: 'borshch.jpg' },
+          { name: 'Сирники з медом', price: 100, image_name: 'syrnyky.jpg' }
+        ];
+        this.menuItems = menuItemsData.map(item => ({
+          ...item,
+          image: this.getImageUrl(item.image_name)
+        }));
+
+        // Set arrow and leaf images
+        this.arrowImage = this.getImageUrl(images.find(img => img.category === 'arrow' && img.image_name === 'purple-neon-arrow-1.png').image_name);
+        this.leafImage = this.getImageUrl(images.find(img => img.category === 'leef' && img.image_name === '324234.png').image_name);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
+    },
     startCarousel() {
       setInterval(() => {
         this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
-      }, 4000); // змінювати зображення кожні 4 секунди
+      }, 4000);
     },
     startMenuCarousel() {
       setInterval(() => {
         this.currentMenuIndex = (this.currentMenuIndex + 1) % this.menuItems.length;
-      }, 4000); // змінювати меню кожні 4 секунди
+      }, 4000);
     },
     setCurrentMenuIndex(index) {
       this.currentMenuIndex = index;
@@ -153,18 +165,18 @@ export default {
 .home {
   text-align: auto;
   padding: 0%;
-  opacity: 0; /* Початкове значення прозорості для плавної анімації */
-  transition: opacity 1s ease; /* Анімація для зміни прозорості */
+  opacity: 0;
+  transition: opacity 1s ease;
 }
 
 .home.loaded {
-  opacity: 1; /* Встановіть повну прозорість після завантаження */
+  opacity: 1;
 }
 
 .carousel {
   position: relative;
   width: 100%;
-  height: 700px; /* можна змінити висоту під ваші потреби */
+  height: 700px;
   overflow: hidden;
 }
 
@@ -176,7 +188,7 @@ export default {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 3s ease-in-out; /* Збільшення тривалості переходу */
+  transition: opacity 3s ease-in-out;
 }
 
 .carousel img.active {
@@ -190,26 +202,26 @@ export default {
   transform: translate(-50%, -50%);
   color: #fff;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.7); /* Збільшити прозорість темного фону */
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 20px;
   border-radius: 10px;
-  margin-top: 10px; /* Відступ 10 пікселів від хедера */
+  margin-top: 10px;
 }
 
 h1 {
   color: #fff;
-  font-family: 'Gabriela', sans-serif; /* Використовуємо шрифт Gabriela */
+  font-family: 'Gabriela', sans-serif;
 }
 
 .hotel-name {
-  font-family: 'Voltaire', sans-serif; /* Використовуємо шрифт Voltaire для Amethyst */
+  font-family: 'Voltaire', sans-serif;
   color: #fff;
 }
 
 p {
   color: #fff;
-  font-family: 'Gabriela', sans-serif; /* Використовуємо шрифт Gabriela */
-  font-size: 1.2em; /* Збільшити розмір шрифту */
+  font-family: 'Gabriela', sans-serif;
+  font-size: 1.2em;
 }
 
 .cta-section {
@@ -250,7 +262,7 @@ p {
 .cta-arrow {
   width: 50px;
   height: auto;
-  animation: blink 1.5s infinite; /* Додати анімацію миготіння */
+  animation: blink 1.5s infinite;
 }
 
 .mirrored {
@@ -291,7 +303,7 @@ p {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1s ease-in-out; /* Додати плавний перехід */
+  transition: opacity 1s ease-in-out;
 }
 
 .menu-item.active {
@@ -338,7 +350,7 @@ p {
   cursor: pointer;
 }
 
-menu-dots span.active {
+.menu-dots span.active {
   background-color: #6a0dad;
 }
 
@@ -411,7 +423,7 @@ menu-dots span.active {
 
 .star {
   font-size: 1.5em;
-  color: #ffd700; /* Gold color for stars */
+  color: #ffd700;
 }
 
 .star.filled {

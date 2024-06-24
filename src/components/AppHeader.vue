@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable */ 
 <template>
   <header class="header" :class="{ 'sticky': isSticky }">
     <div class="header-container">
@@ -12,14 +14,19 @@
       </nav>
       <div class="auth-container" v-if="!authStore.isLoggedIn">
         <div class="auth-content">
-          <img src="@/assets/image-removebg-preview (1аукау).png" alt="Login Icon" class="login-icon"/>
+          <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
           <router-link to="/login" class="auth-link" exact-active-class="active">Увійти в кабінет</router-link>
         </div>
       </div>
       <template v-if="authStore.isLoggedIn">
         <span class="welcome-message">Вітаємо, {{ authStore.user.name }}!</span>
-        <img src="@/assets/image-removebg-preview (1аукау).png" alt="Login Icon" class="login-icon"/>
-        <router-link to="/user" class="nav-link" exact-active-class="active">Профіль</router-link>
+        <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
+        <router-link
+          :to="authStore.user.role === 'admin' ? '/admin' : '/user'"
+          class="nav-link"
+          exact-active-class="active">
+          Профіль
+        </router-link>
         <button class="logout-button" @click="logout">Вийти</button>
       </template>
       <button class="menu-toggle" @click="toggleMenu">
@@ -33,13 +40,18 @@
 
 <script>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
-  name: 'Header',
+  name: 'AppHeader',
   setup() {
+    const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
+    const headerImages = ref({
+      loginIcon: ''
+    });
 
     const handleScroll = () => {
       isSticky.value = window.scrollY > 0;
@@ -52,7 +64,7 @@ export default {
     const logout = () => {
       localStorage.removeItem('userData');
       authStore.clearUser();
-      this.$router.push('/login');
+      router.push('/login');
     };
 
     const checkAuth = () => {
@@ -64,13 +76,32 @@ export default {
       }
     };
 
+    const fetchHeaderImages = async () => {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+        const loginIconImage = images.find(img => img.category === 'header' && img.image_name === 'image-removebg-preview (1аукау).png');
+        if (loginIconImage) {
+          headerImages.value.loginIcon = getImageUrl(loginIconImage.image_name);
+        } else {
+          console.error('Login icon image not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching header images:', error);
+      }
+    };
+
+    const getImageUrl = (imageName) => {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
+    };
+
     watch(
       () => authStore.isLoggedIn,
       (newVal) => {
         if (newVal) {
-          // Handle any additional logic when user logs in
+          // Handle actions when user logs in
         } else {
-          // Handle any additional logic when user logs out
+          // Handle actions when user logs out
         }
       },
       { immediate: true }
@@ -78,21 +109,22 @@ export default {
 
     window.addEventListener('scroll', handleScroll);
     checkAuth();
+    fetchHeaderImages();
 
     return {
       isSticky,
       isMenuOpen,
       toggleMenu,
       logout,
-      authStore
+      authStore,
+      headerImages
     };
   },
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
+  unmounted() { /* eslint-disable */ 
+    window.removeEventListener('scroll', handleScroll); /* eslint-disable */ 
   }
 };
 </script>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
