@@ -1,9 +1,13 @@
 <template>
   <div class="admin-dashboard-wrapper">
     <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="admin-dashboard-content">
       <div class="admin-profile-section">
         <div class="admin-user-info">
+          <h2>{{ admin.name }} {{ admin.surname }}</h2>
+          <p>Email: {{ admin.email }}</p>
+          <p>Роль: {{ admin.role }}</p>
           <h2>{{ admin.name }} {{ admin.surname }}</h2>
           <p>Email: {{ admin.email }}</p>
           <p>Роль: {{ admin.role }}</p>
@@ -21,6 +25,43 @@
         </router-link>
       </div>
       <div class="admin-bookings-section">
+        <h3>Активні Бронювання:
+          <span class="filter-label">Фільтр</span>
+          <img :src="sortIcon" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
+        </h3>
+        <div v-if="showSortBookingsDropdown" class="sort-dropdown">
+          <ul>
+            <li @click="sortBookings('id')">ID бронювання</li>
+            <li @click="sortBookings('checkin')">Дата заїзду</li>
+            <li @click="sortBookings('checkout')">Дата виїзду</li>
+            <li @click="sortBookings('room_id')">Номер кімнати</li>
+            <li @click="sortBookings('user_id')">Користувач</li>
+          </ul>
+        </div>
+        <table v-if="bookings.length > 0">
+          <thead>
+            <tr>
+              <th>ID бронювання</th>
+              <th>Дата заїзду</th>
+              <th>Дата виїзду</th>
+              <th>Назва кімнати</th>
+              <th>Користувач</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(booking, index) in bookings" :key="index">
+              <td>{{ booking.id }}</td>
+              <td>{{ booking.checkin }}</td>
+              <td>{{ booking.checkout }}</td>
+              <td>{{ booking.room_name }}</td>
+              <td>{{ booking.user_name }} {{ booking.user_surname }}</td>
+              <td>
+                <img :src="deleteIcon" @click="deleteBooking(booking.id)" alt="Delete" class="delete-icon">
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <h3>Активні Бронювання:
           <span class="filter-label">Фільтр</span>
           <img :src="sortIcon" @click="toggleSortDropdown('bookings')" alt="Sort" class="sort-icon-common">
@@ -95,6 +136,40 @@
             </tr>
           </tbody>
         </table>
+        <h3>Побажання Користувачів:
+          <span class="filter-label">Фільтр</span>
+          <img :src="sortIcon" @click="toggleSortDropdown('wishes')" alt="Sort" class="sort-icon-common">
+        </h3>
+        <div v-if="showSortWishesDropdown" class="sort-dropdown">
+          <ul>
+            <li @click="sortWishes('id')">ID побажання</li>
+            <li @click="sortWishes('name')">Ім'я</li>
+            <li @click="sortWishes('email')">Електронна пошта</li>
+            <li @click="sortWishes('message')">Побажання</li>
+          </ul>
+        </div>
+        <table v-if="wishes.length > 0">
+          <thead>
+            <tr>
+              <th>ID побажання</th>
+              <th>Ім'я</th>
+              <th>Електронна пошта</th>
+              <th>Побажання</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(wish, index) in wishes" :key="index">
+              <td>{{ wish.id }}</td>
+              <td>{{ wish.name }}</td>
+              <td>{{ wish.email }}</td>
+              <td>{{ wish.message }}</td>
+              <td>
+                <img :src="deleteIcon" @click="deleteWish(wish.id)" alt="Delete" class="delete-icon">
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p v-else>Немає побажань користувачів.</p>
       </div>
     </div>
@@ -106,8 +181,15 @@ import axios from 'axios';
 
 export default {
   name: 'AdminPanel',
+  name: 'AdminPanel',
   data() {
     return {
+      admin: {
+        name: '',
+        surname: '',
+        email: '',
+        role: '',
+      },
       admin: {
         name: '',
         surname: '',
@@ -250,6 +332,9 @@ export default {
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto; /* Enable vertical scrolling */
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 #background-image {
@@ -265,6 +350,7 @@ export default {
 
 .admin-dashboard-content {
   max-width: 1200px; /* Increased max-width */
+  max-width: 1200px; /* Increased max-width */
   margin: 150px auto 0 auto;
   padding: 20px;
   background: rgba(255, 255, 255, 0.9);
@@ -273,6 +359,7 @@ export default {
   font-family: 'Gabriela', serif;
   position: relative;
   z-index: 1;
+  min-height: calc(100vh - 150px); /* Ensures the content box covers most of the screen height */
   min-height: calc(100vh - 150px); /* Ensures the content box covers most of the screen height */
 }
 
@@ -330,7 +417,47 @@ export default {
 
 .sort-dropdown ul {
   list-style: none;
+  position: relative; /* Add relative positioning */
+}
+
+.filter-label {
+  margin-right: 5px;
+  font-size: 16px;
+  vertical-align: middle;
+  position: absolute; /* Use absolute positioning */
+  right: 30px; /* Move 30px to the right */
+}
+
+.sort-dropdown {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  right: 0; /* Align dropdown to the right */
+}
+
+.sort-dropdown ul {
+  list-style: none;
   padding: 10px;
+  margin: 0;
+  text-align: right; /* Align text to the right */
+}
+
+.sort-dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.sort-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: 'Gabriela', serif;
   margin: 0;
   text-align: right; /* Align text to the right */
 }

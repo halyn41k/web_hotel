@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable */ 
 <template>
   <header class="header" :class="{ 'sticky': isSticky }">
     <div class="header-container">
@@ -12,6 +14,7 @@
       </nav>
       <div class="auth-container" v-if="!authStore.isLoggedIn">
         <div class="auth-content">
+          <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
           <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
           <router-link to="/login" class="auth-link" exact-active-class="active">Увійти в кабінет</router-link>
         </div>
@@ -43,10 +46,14 @@ import { authStore } from '@/authStore';
 
 export default {
   name: 'AppHeader',
+  name: 'AppHeader',
   setup() {
     const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
+    const headerImages = ref({
+      loginIcon: ''
+    });
     const headerImages = ref({
       loginIcon: ''
     });

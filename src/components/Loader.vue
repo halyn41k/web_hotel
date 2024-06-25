@@ -5,6 +5,7 @@
   <script>
   export default {
     name: 'LoaderPage',
+    name: 'LoaderPage',
   }
   </script>
   
@@ -13,6 +14,7 @@
     width: 50px;
     aspect-ratio: 1;
     border-radius: 50%;
+    border: 8px solid #a421dc;
     border: 8px solid #a421dc;
     animation:
       l20-1 0.8s infinite linear alternate,

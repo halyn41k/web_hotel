@@ -1,5 +1,6 @@
 <template>
   <div class="payment-wrapper" :style="{ backgroundImage: `url(${backgroundImage})` }">
+  <div class="payment-wrapper" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="payment-form">
       <h2>Оплата</h2>
       <div>
@@ -42,6 +43,7 @@
 
 <script>
 export default {
+  name: 'GetPayment',
   name: 'GetPayment',
   data() {
     return {
@@ -141,6 +143,19 @@ export default {
           }
         })
         .catch(error => console.error('Error fetching images:', error));
+    },
+    fetchBackgroundImage() {
+      fetch('http://localhost/new-hotel-website/backend/get_images.php')
+        .then(response => response.json())
+        .then(images => {
+          const paymentImage = images.find(img => img.category === 'payment' && img.image_name === 'payment.png');
+          if (paymentImage) {
+            this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${paymentImage.image_name}`;
+          } else {
+            console.error('Payment background image not found.');
+          }
+        })
+        .catch(error => console.error('Error fetching images:', error));
     }
   },
   mounted() {
@@ -148,9 +163,12 @@ export default {
     if (bookingData) {
       this.roomName = bookingData.room_name;
       this.price = bookingData.price;
+      this.bookingId = bookingData.id; // Set bookingId
+      this.bookingId = bookingData.id; // Set bookingId
     } else {
       console.error('Дані про бронювання відсутні у localStorage.');
     }
+    this.fetchBackgroundImage(); // Fetch background image on mount
     this.fetchBackgroundImage(); // Fetch background image on mount
   }
 };
