@@ -1,7 +1,6 @@
 <template>
   <div class="registration-wrapper">
     <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
-    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="registration-form">
       <h2>Реєстрація</h2>
       <form @submit.prevent="register">
@@ -27,10 +26,6 @@
         </div>
         <div class="form-group">
           <label for="password">Пароль:</label>
-          <div class="password-wrapper">
-            <input :type="passwordFieldType" v-model="password" @input="validatePassword" required>
-            <img :src="passwordToggleIcon" @click="togglePasswordVisibility" class="password-toggle-icon" />
-          </div>
           <div class="password-wrapper">
             <input :type="passwordFieldType" v-model="password" @input="validatePassword" required>
             <img :src="passwordToggleIcon" @click="togglePasswordVisibility" class="password-toggle-icon" />
@@ -62,11 +57,6 @@ export default {
       backgroundImage: '',
       eyeIcon: '',
       hideIcon: ''
-      passwordError: '',
-      passwordVisible: false,
-      backgroundImage: '',
-      eyeIcon: '',
-      hideIcon: ''
     };
   },
   computed: {
@@ -84,12 +74,6 @@ export default {
     },
     passwordErrorVisible() {
       return !!this.passwordError;
-    },
-    passwordFieldType() {
-      return this.passwordVisible ? 'text' : 'password';
-    },
-    passwordToggleIcon() {
-      return this.passwordVisible ? this.hideIcon : this.eyeIcon;
     },
     passwordFieldType() {
       return this.passwordVisible ? 'text' : 'password';
@@ -233,46 +217,9 @@ export default {
     },
     getImageUrl(imageName) {
       return `http://localhost/new-hotel-website/src/assets/${imageName}`;
-    },
-    togglePasswordVisibility() {
-      this.passwordVisible = !this.passwordVisible;
-    },
-    async fetchImages() {
-      try {
-        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
-        const images = await response.json();
-
-        const registrationImage = images.find(img => img.category === 'login' && img.image_name === 'login.png');
-        const eyeIconImage = images.find(img => img.category === 'login' && img.image_name === 'eye.png');
-        const hideIconImage = images.find(img => img.category === 'login' && img.image_name === 'hide.png');
-
-        if (registrationImage) {
-          this.backgroundImage = this.getImageUrl(registrationImage.image_name);
-        } else {
-          console.error('Registration background image not found.');
-        }
-
-        if (eyeIconImage) {
-          this.eyeIcon = this.getImageUrl(eyeIconImage.image_name);
-        } else {
-          console.error('Eye icon image not found.');
-        }
-
-        if (hideIconImage) {
-          this.hideIcon = this.getImageUrl(hideIconImage.image_name);
-        } else {
-          console.error('Hide icon image not found.');
-        }
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      }
-    },
-    getImageUrl(imageName) {
-      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     }
   },
   mounted() {
-    this.fetchImages();
     this.fetchImages();
     document.title = 'Amethyst Hotel | Registration';
   }
@@ -315,7 +262,6 @@ export default {
 }
 
 .login-form h2 {
-.login-form h2 {
   margin-bottom: 20px;
   color: #6a0dad;
   text-align: center;
@@ -333,27 +279,12 @@ export default {
 }
 
 .form-group input {
-.form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
-}
-
-.password-wrapper {
-  position: relative;
-}
-
-.password-toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
 }
 
 .password-wrapper {
@@ -392,19 +323,6 @@ button:hover {
   color: red;
 }
 
-.registration-link {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.register-link {
-  color: #6a0dad;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.register-link:hover {
-  text-decoration: underline;
 .registration-link {
   text-align: center;
   margin-top: 10px;

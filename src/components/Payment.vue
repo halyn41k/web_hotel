@@ -1,6 +1,5 @@
 <template>
   <div class="payment-wrapper" :style="{ backgroundImage: `url(${backgroundImage})` }">
-  <div class="payment-wrapper" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="payment-form">
       <h2>Оплата</h2>
       <div>

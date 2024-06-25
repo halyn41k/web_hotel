@@ -1,32 +1,5 @@
-<<<<<<< Updated upstream
 <template>
   <div class="room-list">
-    <h3 class="sort-header">
-      <span class="filter-label">Фільтр</span>
-      <img :src="filterIcon" @click="toggleSortDropdown('rooms')" alt="Sort" class="sort-icon">
-    </h3>
-    <div v-if="showSortRoomsDropdown" class="sort-dropdown">
-      <ul>
-        <li @click="sortRooms('price', 'asc')">Ціна за зростанням</li>
-        <li @click="sortRooms('price', 'desc')">Ціна за спаданням</li>
-        <li @click="sortRooms('bedType', 'asc')">Тип ліжка за зростанням</li>
-        <li @click="sortRooms('bedType', 'desc')">Тип ліжка за спаданням</li>
-      </ul>
-    </div>
-    <div class="rooms-container">
-      <div v-for="(room, index) in rooms" :key="index" class="room-card">
-        <img :src="room.photo" class="room-photo" :alt="room.name" @click="toggleZoom(index)" />
-        <div class="room-details">
-          <h2 class="room-name">{{ room.name }}</h2>
-          <p class="room-description">{{ room.description }}</p>
-          <p class="room-price">Ціна за ніч: {{ room.price }} грн</p>
-          <p class="room-bed-type">Тип ліжка: {{ room.bedType }}</p>
-          <p class="room-availability">Доступність: {{ room.availability }}</p>
-          <p class="room-max-guests">Максимальна кількість гостей: {{ room.maxGuests }}</p>
-          <p class="room-additional-services">Додаткові послуги: {{ room.additionalServices }}</p>
-          <div class="button-container">
-            <button class="details-button" @click="openBookingForm(room)">Забронювати</button>
-          </div>
     <h3 class="sort-header">
       <span class="filter-label">Фільтр</span>
       <img :src="filterIcon" @click="toggleSortDropdown('rooms')" alt="Sort" class="sort-icon">
@@ -70,15 +43,9 @@ export default {
       sortField: '',
       sortOrder: '',
       filterIcon: '',
-      isZoomed: [],
-      showSortRoomsDropdown: false,
-      sortField: '',
-      sortOrder: '',
-      filterIcon: '',
     };
   },
   mounted() {
-    console.log("Component mounted");
     console.log("Component mounted");
     this.fetchRooms();
     document.title = 'Amethyst Hotel | Room List';
@@ -94,17 +61,7 @@ export default {
           }
           return response.json();
         })
-      console.log("Fetching rooms");
-      fetch('http://localhost/new-hotel-website/backend/room.php')
-        .then(response => {
-          console.log("Room fetch response received");
-          if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-          }
-          return response.json();
-        })
         .then(data => {
-          console.log("Room data:", data);
           console.log("Room data:", data);
           this.rooms = data;
           this.isZoomed = new Array(data.length).fill(false);
@@ -254,8 +211,6 @@ export default {
 .room-photo {
   width: 50%;
   height: auto;
-  width: 50%;
-  height: auto;
   border-radius: 10px;
   margin-right: 20px;
 }
@@ -353,4 +308,3 @@ export default {
   }
 }
 </style>
-

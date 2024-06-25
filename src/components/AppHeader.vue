@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable */ 
 <template>
   <header class="header" :class="{ 'sticky': isSticky }">
     <div class="header-container">
@@ -15,7 +13,6 @@
       <div class="auth-container" v-if="!authStore.isLoggedIn">
         <div class="auth-content">
           <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
-          <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
           <router-link to="/login" class="auth-link" exact-active-class="active">Увійти в кабінет</router-link>
         </div>
       </div>
@@ -23,7 +20,7 @@
         <span class="welcome-message">Вітаємо, {{ authStore.user.name }}!</span>
         <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
         <router-link
-          :to="getProfileLink"
+          :to="authStore.user.role === 'admin' ? '/admin' : '/user'"
           class="nav-link"
           exact-active-class="active">
           Профіль
@@ -40,20 +37,16 @@
 </template>
 
 <script>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
   name: 'AppHeader',
-  name: 'AppHeader',
   setup() {
     const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
-    const headerImages = ref({
-      loginIcon: ''
-    });
     const headerImages = ref({
       loginIcon: ''
     });
@@ -76,7 +69,6 @@ export default {
       const userData = localStorage.getItem('userData');
       if (userData) {
         authStore.setUser(JSON.parse(userData));
-        console.log('User data set:', authStore.user); // Log user data
       } else {
         authStore.clearUser();
       }
@@ -101,37 +93,21 @@ export default {
       return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     };
 
-    const getProfileLink = () => {
-      console.log('User role:', authStore.user.role); // Log user role
-      switch (authStore.user.role) {
-        case 'admin':
-          return '/admin';
-        case 'manager':
-          return '/manager';
-        default:
-          return '/user';
-      }
-    };
-
     watch(
       () => authStore.isLoggedIn,
       (newVal) => {
         if (newVal) {
-          console.log('User logged in with role:', authStore.user.role); // Log role on login
+          // Handle actions when user logs in
+        } else {
+          // Handle actions when user logs out
         }
       },
       { immediate: true }
     );
 
-    onMounted(() => {
-      window.addEventListener('scroll', handleScroll);
-      checkAuth();
-      fetchHeaderImages();
-    });
-
-    onUnmounted(() => {
-      window.removeEventListener('scroll', handleScroll);
-    });
+    window.addEventListener('scroll', handleScroll);
+    checkAuth();
+    fetchHeaderImages();
 
     return {
       isSticky,
@@ -139,14 +115,14 @@ export default {
       toggleMenu,
       logout,
       authStore,
-      headerImages,
-      getProfileLink
+      headerImages
     };
+  },
+  unmounted() { /* eslint-disable */ 
+    window.removeEventListener('scroll', handleScroll); /* eslint-disable */ 
   }
 };
 </script>
-
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
