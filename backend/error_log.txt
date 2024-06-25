@@ -1,0 +1,57 @@
+[24-Jun-2024 13:23:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:18
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[24-Jun-2024 14:13:58 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 14:13:58 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 14:13:58 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 14:14:01 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 14:14:02 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 14:14:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'image_url' in 'field list' in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:29
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(29): mysqli->prepare('SELECT image_na...')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 29
+[24-Jun-2024 15:05:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:18
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[24-Jun-2024 15:05:56 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:18
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[24-Jun-2024 15:06:00 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:18
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[24-Jun-2024 15:09:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\new-hotel-website\backend\get_images.php:18
+Stack trace:
+#0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
+#1 {main}
+  thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[25-Jun-2024 20:57:03 Europe/Berlin] User role: admin
+[25-Jun-2024 20:57:19 Europe/Berlin] User role: manager

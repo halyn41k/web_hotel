@@ -1,3 +1,5 @@
+vue
+Копіювати код
 <template>
   <div class="contact">
     <div class="about-us">
@@ -5,8 +7,8 @@
       <p>Готель "Аметист" - це сучасний, елегантний готель, розташований у самому серці міста. Ми пропонуємо розкішні номери, чудовий сервіс та затишну атмосферу, де кожен гість почувається особливим.</p>
       <p>Наша мета - забезпечити вам комфортний та незабутній відпочинок, незалежно від того, чи приїхали ви до нас у справах чи на відпочинок. Ми дбаємо про ваш комфорт і забезпечуємо високий рівень обслуговування.</p>
       <p>У нашому готелі ви знайдете все необхідне для ідеального відпочинку: сучасні зручності, вишукану кухню та привітний персонал, готовий допомогти у будь-який момент. Вибираючи готель "Аметист", ви обираєте якість та комфорт.</p>
-      <img src="@/assets/Знімок екрана 2024-05-31 165903.png" alt="Hotel Image" class="left-image" />
-      <img src="@/assets/Знімок екрана 2024-05-31 165924.png" alt="Hotel Image" class="right-image" />
+      <img :src="images.leftImage" alt="Hotel Image" class="left-image" />
+      <img :src="images.rightImage" alt="Hotel Image" class="right-image" />
     </div>
     <div class="our-history">
       <h2>Наша історія</h2>
@@ -41,20 +43,24 @@
 
 <script>
 export default {
-  name: 'Contact',
+  name: 'AboutUs',
   data() {
     return {
       form: {
         name: '',
         email: '',
         message: ''
+      },
+      images: {
+        leftImage: '',
+        rightImage: ''
       }
     };
   },
   methods: {
     async submitForm() {
       try {
-        const response = await fetch('http://localhost/path/to/submit_wish.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/submit_wish.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -76,10 +82,37 @@ export default {
         alert('An error occurred while submitting the form.');
         console.error(error);
       }
+    },
+    async fetchImages() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        const images = await response.json();
+
+        console.log('Fetched images:', images); // Log fetched images
+
+        const leftImage = images.find(img => img.category === 'aboutus' && img.image_name === 'aboutus1.png');
+        const rightImage = images.find(img => img.category === 'aboutus' && img.image_name === 'aboutus2.png');
+
+        if (leftImage) {
+          this.images.leftImage = this.getImageUrl(leftImage.image_name);
+        }
+        if (rightImage) {
+          this.images.rightImage = this.getImageUrl(rightImage.image_name);
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     }
   },
   mounted() {
     document.title = 'Amethyst Hotel | About Us';
+    this.fetchImages();
   }
 }
 </script>

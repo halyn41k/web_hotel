@@ -4,20 +4,20 @@
       <span class="hotel-name">AMETHYST</span>
     </div>
     <div class="contact-info">
-      <div class="contact-item">
-        <img src="@/assets/image-removebg-preview.png" alt="Phone Icon" class="icon">
+      <div class="contact-item" v-if="footerImages.phoneIcon1">
+        <img :src="footerImages.phoneIcon1" alt="Phone Icon" class="icon">
         <p class="phone">+380900000000</p>
       </div>
-      <div class="contact-item">
-        <img src="@/assets/image-removebg-preview.png" alt="Phone Icon" class="icon">
+      <div class="contact-item" v-if="footerImages.phoneIcon2">
+        <img :src="footerImages.phoneIcon2" alt="Phone Icon" class="icon">
         <p class="phone">+380600600600</p>
       </div>
-      <div class="contact-item">
-        <img src="@/assets/Gue1ChAowFiEPm89QHEDF-transformed.png" alt="Address Icon" class="icon">
+      <div class="contact-item" v-if="footerImages.addressIcon">
+        <img :src="footerImages.addressIcon" alt="Address Icon" class="icon">
         <p class="phone">Коломия, вул. Бульвар Лесі Українки, 7</p>
       </div>
-      <div class="contact-item">
-        <img src="@/assets/image-removebg-preview (1).png" alt="Email Icon" class="icon">
+      <div class="contact-item" v-if="footerImages.emailIcon">
+        <img :src="footerImages.emailIcon" alt="Email Icon" class="icon">
         <p class="phone">Email: amethysthotel@email.com</p>
       </div>
     </div>
@@ -29,7 +29,39 @@
 
 <script>
 export default {
-  name: 'Footer'
+  name: 'AppFooter',
+  data() {
+    return {
+      footerImages: {
+        phoneIcon1: '',
+        phoneIcon2: '',
+        addressIcon: '',
+        emailIcon: ''
+      }
+    };
+  },
+  methods: {
+    async fetchFooterImages() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+
+        // Assign images based on their names
+        this.footerImages.phoneIcon1 = this.getImageUrl(images.find(img => img.category === 'footer' && img.image_name === 'image-removebg-preview.png').image_name);
+        this.footerImages.phoneIcon2 = this.getImageUrl(images.find(img => img.category === 'footer' && img.image_name === 'image-removebg-preview.png').image_name);
+        this.footerImages.addressIcon = this.getImageUrl(images.find(img => img.category === 'footer' && img.image_name === 'Gue1ChAowFiEPm89QHEDF-transformed.png').image_name);
+        this.footerImages.emailIcon = this.getImageUrl(images.find(img => img.category === 'footer' && img.image_name === 'image-removebg-preview (1).png').image_name);
+      } catch (error) {
+        console.error('Error fetching footer images:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
+    }
+  },
+  mounted() {
+    this.fetchFooterImages();
+  }
 };
 </script>
 

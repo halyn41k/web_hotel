@@ -1,6 +1,6 @@
 <template>
   <div class="registration-wrapper">
-    <div id="background-image"></div>
+    <div id="background-image" :style="{ backgroundImage: `url(${backgroundImage})` }"></div>
     <div class="registration-form">
       <h2>Реєстрація</h2>
       <form @submit.prevent="register">
@@ -26,15 +26,11 @@
         </div>
         <div class="form-group">
           <label for="password">Пароль:</label>
-          <input type="password" v-model="password" @input="validatePassword" required>
+          <div class="password-wrapper">
+            <input :type="passwordFieldType" v-model="password" @input="validatePassword" required>
+            <img :src="passwordToggleIcon" @click="togglePasswordVisibility" class="password-toggle-icon" />
+          </div>
           <span v-if="passwordError" class="error-message" v-show="passwordErrorVisible">{{ passwordError }}</span>
-        </div>
-        <div class="form-group">
-          <label for="payment">Спосіб оплати:</label>
-          <select v-model="payment" required>
-            <option value="card">Картка</option>
-            <option value="hotel">Оплата в готелі</option>
-          </select>
         </div>
         <button type="submit" id="submit">Завершити реєстрацію</button>
       </form>
@@ -52,12 +48,15 @@ export default {
       phone: '',
       email: '',
       password: '',
-      payment: 'card',
       nameError: '',
       surnameError: '',
       phoneError: '',
       emailError: '',
-      passwordError: ''
+      passwordError: '',
+      passwordVisible: false,
+      backgroundImage: '',
+      eyeIcon: '',
+      hideIcon: ''
     };
   },
   computed: {
@@ -75,6 +74,12 @@ export default {
     },
     passwordErrorVisible() {
       return !!this.passwordError;
+    },
+    passwordFieldType() {
+      return this.passwordVisible ? 'text' : 'password';
+    },
+    passwordToggleIcon() {
+      return this.passwordVisible ? this.hideIcon : this.eyeIcon;
     }
   },
   methods: {
@@ -86,16 +91,15 @@ export default {
       if (!this.validatePassword()) return;
 
       try {
-        const response = await fetch('http://localhost/new-hotel-website/register.php', {
+        const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: this.name,
             surname: this.surname,
-            phone: this.phone,
+            phone: this.phone, // Ensure phone is included
             email: this.email,
-            password: this.password,
-            payment: this.payment
+            password: this.password
           })
         });
         const data = await response.json();
@@ -103,7 +107,8 @@ export default {
           localStorage.setItem('userData', JSON.stringify({
             name: this.name,
             surname: this.surname,
-            email: this.email
+            email: this.email,
+            phone: this.phone // Ensure phone is stored
           }));
           this.$router.push({ name: 'UserDashboard' });
         } else {
@@ -176,13 +181,51 @@ export default {
         this.passwordError = '';
         return true;
       }
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    },
+    async fetchImages() {
+      try {
+        const response = await fetch('http://localhost/new-hotel-website/backend/get_images.php');
+        const images = await response.json();
+
+        const registrationImage = images.find(img => img.category === 'login' && img.image_name === 'login.png');
+        const eyeIconImage = images.find(img => img.category === 'login' && img.image_name === 'eye.png');
+        const hideIconImage = images.find(img => img.category === 'login' && img.image_name === 'hide.png');
+
+        if (registrationImage) {
+          this.backgroundImage = this.getImageUrl(registrationImage.image_name);
+        } else {
+          console.error('Registration background image not found.');
+        }
+
+        if (eyeIconImage) {
+          this.eyeIcon = this.getImageUrl(eyeIconImage.image_name);
+        } else {
+          console.error('Eye icon image not found.');
+        }
+
+        if (hideIconImage) {
+          this.hideIcon = this.getImageUrl(hideIconImage.image_name);
+        } else {
+          console.error('Hide icon image not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    },
+    getImageUrl(imageName) {
+      return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     }
   },
   mounted() {
+    this.fetchImages();
     document.title = 'Amethyst Hotel | Registration';
   }
 };
 </script>
+
 
 <style scoped>
 .registration-wrapper {
@@ -201,7 +244,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('@/assets/Знімок екрана 2024-06-03 111151.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
@@ -219,7 +261,7 @@ export default {
   box-sizing: border-box;
 }
 
-.registration-form h2 {
+.login-form h2 {
   margin-bottom: 20px;
   color: #6a0dad;
   text-align: center;
@@ -236,14 +278,27 @@ export default {
   margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group select {
+.form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
 }
 
 button {
@@ -268,25 +323,18 @@ button:hover {
   color: red;
 }
 
-@media (max-width: 768px) {
-  .registration-form {
-    padding: 15px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 8px 15px;
-  }
+.registration-link {
+  text-align: center;
+  margin-top: 10px;
 }
 
-@media (max-width: 480px) {
-  .registration-form {
-    padding: 10px;
-  }
+.register-link {
+  color: #6a0dad;
+  font-weight: bold;
+  text-decoration: none;
+}
 
-  button {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
+.register-link:hover {
+  text-decoration: underline;
 }
 </style>

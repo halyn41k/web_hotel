@@ -1,0 +1,3 @@
+2024-06-25 09:18:45 - PDO error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'booking_id' in 'field list'
+2024-06-25 09:18:49 - PDO error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'booking_id' in 'field list'
+2024-06-25 09:23:58 - PDO error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'booking_id' in 'field list'
