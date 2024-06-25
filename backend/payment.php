@@ -42,10 +42,16 @@ function encryptData($data, $key, $method) {
 // Process the input data
 $data = json_decode($inputData, true);
 
+// Log detailed data for debugging
+file_put_contents('payment_log.txt', date('Y-m-d H:i:s') . " - Decoded data: " . print_r($data, true) . PHP_EOL, FILE_APPEND);
+
 // Validate input data
-if (!isset($data['selectedPaymentMethod'], $data['totalCost'], $data['user_id'])) {
-    echo json_encode(['success' => false, 'error' => 'Invalid input data']);
-    exit();
+$requiredFields = ['selectedPaymentMethod', 'totalCost', 'user_id', 'room_id', 'checkin', 'checkout', 'price'];
+foreach ($requiredFields as $field) {
+    if (!isset($data[$field])) {
+        echo json_encode(['success' => false, 'error' => "Invalid input data: Missing field $field"]);
+        exit();
+    }
 }
 
 // Additional validation for card payments
@@ -76,9 +82,32 @@ if ($data['selectedPaymentMethod'] === 'card') {
 
 // Save the payment data to the database
 try {
-    $stmt = $pdo->prepare("INSERT INTO payments (booking_id, payment_method, card_number, expiry_date, cvv, amount) VALUES (:booking_id, :payment_method, :card_number, :expiry_date, :cvv, :amount)");
+    $pdo->beginTransaction();
+
+    // Check if the booking already exists to prevent duplicates
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM bookings WHERE user_id = ? AND room_id = ? AND checkin = ? AND checkout = ?");
+    $stmt->execute([$data['user_id'], $data['room_id'], $data['checkin'], $data['checkout']]);
+    $existingBookingCount = $stmt->fetchColumn();
+
+    if ($existingBookingCount > 0) {
+        throw new Exception('Duplicate booking detected.');
+    }
+
+    // Insert booking into database
+    $stmt = $pdo->prepare("INSERT INTO bookings (user_id, room_id, checkin, checkout, price) VALUES (:user_id, :room_id, :checkin, :checkout, :price)");
     $stmt->execute([
-        ':booking_id' => $data['booking_id'],
+        ':user_id' => $data['user_id'],
+        ':room_id' => $data['room_id'],
+        ':checkin' => $data['checkin'],
+        ':checkout' => $data['checkout'],
+        ':price' => $data['price']
+    ]);
+
+    $booking_id = $pdo->lastInsertId(); // Retrieve the last inserted booking_id
+
+    // Insert payment into database
+    $stmt = $pdo->prepare("INSERT INTO payments (payment_method, card_number, expiry_date, cvv, amount) VALUES (:payment_method, :card_number, :expiry_date, :cvv, :amount)");
+    $stmt->execute([
         ':payment_method' => $data['selectedPaymentMethod'],
         ':card_number' => $data['cardNumber'],
         ':expiry_date' => $data['expiryDate'],
@@ -88,18 +117,41 @@ try {
 
     $payment_id = $pdo->lastInsertId(); // Retrieve the last inserted payment_id
 
-    // Update the users table with the payment_id
-    $stmt = $pdo->prepare("UPDATE users SET payment_id = :payment_id WHERE id = :user_id");
+    // Log the payment_id and booking_id
+    file_put_contents('payment_log.txt', date('Y-m-d H:i:s') . " - Booking ID: $booking_id, Payment ID: $payment_id" . PHP_EOL, FILE_APPEND);
+
+    // Update the bookings table with the payment_id
+    $stmt = $pdo->prepare("UPDATE bookings SET payment_id = :payment_id WHERE id = :booking_id");
     $stmt->execute([
+        ':payment_id' => $payment_id,
+        ':booking_id' => $booking_id
+    ]);
+
+    // Update the users table with the booking_id and payment_id
+    $stmt = $pdo->prepare("UPDATE users SET booking_id = :booking_id, payment_id = :payment_id WHERE id = :user_id");
+    $stmt->execute([
+        ':booking_id' => $booking_id,
         ':payment_id' => $payment_id,
         ':user_id' => $data['user_id']
     ]);
 
+    // Log the user_id, booking_id, and payment_id for debugging
+    file_put_contents('payment_log.txt', date('Y-m-d H:i:s') . " - Updated user ID: " . $data['user_id'] . " with Booking ID: " . $booking_id . " and Payment ID: " . $payment_id . PHP_EOL, FILE_APPEND);
+
+    $pdo->commit();
+
     echo json_encode(['success' => true]);
 } catch (PDOException $e) {
+    $pdo->rollBack();
     // Log PDO error
     file_put_contents('payment_error_log.txt', date('Y-m-d H:i:s') . " - PDO error: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
     echo json_encode(['success' => false, 'error' => 'Database query failed', 'details' => $e->getMessage()]);
+    exit();
+} catch (Exception $e) {
+    $pdo->rollBack();
+    // Log general error
+    file_put_contents('payment_error_log.txt', date('Y-m-d H:i:s') . " - Error: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
+    echo json_encode(['success' => false, 'error' => 'Duplicate booking detected.']);
     exit();
 }
 ?>

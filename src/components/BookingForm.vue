@@ -45,7 +45,7 @@
         </div>
       </div>
       <div v-else-if="step === 4">
-        <!-- Additional steps can be added here -->
+        <p>Бронювання завершено. Ви будете перенаправлені на сторінку оплати.</p>
       </div>
     </div>
   </div>
@@ -90,12 +90,12 @@ export default {
     this.fetchBackgroundImage();
   },
   methods: {
-  async checkAvailability() {
-    if (!this.checkin || !this.checkout || this.adults < 1) {
-      this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
-      return;
-    }
-    this.errorMessage = '';
+    async checkAvailability() {
+      if (!this.checkin || !this.checkout || this.adults < 1) {
+        this.errorMessage = 'Будь ласка, заповніть всі поля форми коректно.';
+        return;
+      }
+      this.errorMessage = '';
 
       try {
         const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
@@ -184,39 +184,9 @@ export default {
 
       console.log('Booking Data:', bookingData);
 
-      try {
-        const response = await fetch('http://localhost/new-hotel-website/backend/booking.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(bookingData)
-        });
-        const data = await response.json();
-        console.log('Response Data:', data);
-
-        if (data.success) {
-          userData.bookings = userData.bookings || [];
-          const newBooking = {
-            id: data.booking_id,
-            checkin: this.checkin,
-            checkout: this.checkout,
-            room: room.name,
-            price: room.price,
-            paid: false
-          };
-          userData.bookings.push(newBooking);
-          localStorage.setItem('userData', JSON.stringify(userData));
-          localStorage.setItem('bookingData', JSON.stringify(bookingData));
-
-          this.step = 3;
-        } else {
-          this.errorMessage = data.error;
-        }
-      } catch (error) {
-        console.error('Помилка бронювання:', error);
-        this.errorMessage = 'Сталася помилка під час бронювання.';
-      }
+      localStorage.setItem('bookingData', JSON.stringify(bookingData));
+      this.selectedRoom = room;
+      this.step = 3;
     },
     goBack() {
       this.step = 2;
@@ -228,7 +198,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
@@ -299,10 +268,11 @@ button {
   margin-top: 10px;
 }
 
+button:hover {
+  background-color: #d35400;
+}
+
 .room-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
   display: flex;
   align-items: center;
   margin-bottom: 15px;
@@ -318,22 +288,8 @@ button {
   object-fit: cover;
   margin-right: 15px;
   border-radius: 5px;
-  background: #fff;
 }
 
-.room-photo {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  margin-right: 15px;
-  border-radius: 5px;
-}
-
-.room-details {
-  flex: 1;
-}
-
-.room-details h4 {
 .room-details {
   flex: 1;
 }
@@ -342,7 +298,6 @@ button {
   margin-bottom: 10px;
 }
 
-.room-details p {
 .room-details p {
   margin: 5px 0;
 }
@@ -372,8 +327,6 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-  border: none;
-  cursor: pointer;
 }
 
 .back-button {
@@ -386,6 +339,44 @@ button {
 .error-message {
   color: red;
   margin-top: 10px;
-  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .booking-form {
+    padding: 15px;
+    max-width: 90%;
+  }
+
+  .form-group input {
+    width: calc(100% - 10px);
+    margin-right: 5px;
+  }
+
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .room-photo {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .room-option {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .room-photo {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
 }
 </style>

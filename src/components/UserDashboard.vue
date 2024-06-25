@@ -35,7 +35,7 @@ export default {
       name: '',
       surname: '',
       email: '',
-      phone: '',
+      phone: '', // Ensure phone is part of data
       bookings: [],
       userId: '',
       backgroundImage: ''
@@ -102,7 +102,7 @@ export default {
       this.name = userData.name;
       this.surname = userData.surname;
       this.email = userData.email;
-      this.phone = userData.phone;
+      this.phone = userData.phone; // Ensure phone is retrieved
       this.userId = userData.id;
     },
     async fetchBackgroundImage() {

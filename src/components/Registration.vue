@@ -92,15 +92,13 @@ export default {
 
       try {
         const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
-        const response = await fetch('http://localhost/new-hotel-website/backend/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: this.name,
             surname: this.surname,
-            phone: this.phone,
+            phone: this.phone, // Ensure phone is included
             email: this.email,
-            password: this.password
             password: this.password
           })
         });
@@ -109,7 +107,8 @@ export default {
           localStorage.setItem('userData', JSON.stringify({
             name: this.name,
             surname: this.surname,
-            email: this.email
+            email: this.email,
+            phone: this.phone // Ensure phone is stored
           }));
           this.$router.push({ name: 'UserDashboard' });
         } else {
@@ -227,6 +226,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .registration-wrapper {
   position: relative;
@@ -338,4 +338,3 @@ button:hover {
   text-decoration: underline;
 }
 </style>
-

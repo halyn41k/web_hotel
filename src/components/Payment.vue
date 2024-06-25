@@ -43,6 +43,7 @@
 <script>
 export default {
   name: 'GetPayment',
+  name: 'GetPayment',
   data() {
     return {
       selectedPaymentMethod: 'cash',
@@ -55,7 +56,6 @@ export default {
       isValidCardNumber: true,
       isValidExpiryDate: true,
       isValidCvv: true,
-      bookingId: null, // Add bookingId to data
       backgroundImage: '' // Add backgroundImage to data
     };
   },
@@ -89,8 +89,12 @@ export default {
         return;
       }
 
+      console.log('Booking Data:', bookingData);
+
       try {
         const user_id = bookingData.user_id; // Ensure user_id is part of bookingData
+
+        console.log('User ID:', user_id);
 
         const response = await fetch('http://localhost/new-hotel-website/backend/payment.php', {
           method: 'POST',
@@ -100,8 +104,11 @@ export default {
           body: JSON.stringify({
             selectedPaymentMethod: this.selectedPaymentMethod,
             totalCost: this.price,
-            booking_id: this.bookingId, // Send bookingId
             user_id: user_id, // Send user_id
+            room_id: bookingData.room_id, // Send room_id
+            checkin: bookingData.checkin, // Send checkin
+            checkout: bookingData.checkout, // Send checkout
+            price: bookingData.price, // Send price
             cardNumber: this.selectedPaymentMethod === 'card' ? this.cardNumber.replace(/\s/g, '') : null,
             expiryDate: this.selectedPaymentMethod === 'card' ? this.expiryDate : null,
             cvv: this.selectedPaymentMethod === 'card' ? this.cvv : null
@@ -116,15 +123,25 @@ export default {
           setTimeout(() => {
             this.$router.push('/user');
           }, 3000); // Redirect to /user after 3 seconds
-          setTimeout(() => {
-            this.$router.push('/user');
-          }, 3000); // Redirect to /user after 3 seconds
         } else {
           console.error('Помилка обробки платежу:', data.error);
         }
       } catch (error) {
         console.error('Помилка зв\'язку з сервером:', error);
       }
+    },
+    fetchBackgroundImage() {
+      fetch('http://localhost/new-hotel-website/backend/get_images.php')
+        .then(response => response.json())
+        .then(images => {
+          const paymentImage = images.find(img => img.category === 'payment' && img.image_name === 'payment.png');
+          if (paymentImage) {
+            this.backgroundImage = `http://localhost/new-hotel-website/src/assets/${paymentImage.image_name}`;
+          } else {
+            console.error('Payment background image not found.');
+          }
+        })
+        .catch(error => console.error('Error fetching images:', error));
     },
     fetchBackgroundImage() {
       fetch('http://localhost/new-hotel-website/backend/get_images.php')
@@ -151,9 +168,11 @@ export default {
       console.error('Дані про бронювання відсутні у localStorage.');
     }
     this.fetchBackgroundImage(); // Fetch background image on mount
+    this.fetchBackgroundImage(); // Fetch background image on mount
   }
 };
 </script>
+
 
 <style scoped>
 .payment-wrapper {

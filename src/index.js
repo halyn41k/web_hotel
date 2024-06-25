@@ -55,8 +55,27 @@ const routes = [
     path: '/payment',
     name: 'Payment',
     component: () => import('@/components/Payment.vue')
-  }
-  
+  },
+  {
+    path:'/add-room',
+    name: 'AddRoom',
+    component: () => import('@/components/AddRoom.vue')
+  },
+  {
+    path:'/change-room',
+    name: 'ChangeRoom',
+    component: () => import('@/components/ChangeRoom.vue')
+  },
+  {
+    path:'/delete-room',
+    name: 'DeleteRoom',
+    component: () => import('@/components/DeleteRoom.vue')
+  },
+  {
+    path:'/manager',
+    name: 'Manager',
+    component: () => import('@/components/Manager.vue')
+  },
 ];
 
 const router = createRouter({

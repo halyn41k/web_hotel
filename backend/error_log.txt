@@ -53,3 +53,5 @@ Stack trace:
 #0 C:\xampp\htdocs\new-hotel-website\backend\get_images.php(18): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'hotel_w')
 #1 {main}
   thrown in C:\xampp\htdocs\new-hotel-website\backend\get_images.php on line 18
+[25-Jun-2024 20:57:03 Europe/Berlin] User role: admin
+[25-Jun-2024 20:57:19 Europe/Berlin] User role: manager

@@ -82,3 +82,549 @@
 2024-06-24 20:25:57 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
 2024-06-24 20:26:30 - Received data: 
 2024-06-24 20:26:30 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 07:39:07 - Received data: 
+2024-06-25 07:39:07 - Received data: {"selectedPaymentMethod":"cash","totalCost":"3000.00","user_id":"10","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 07:59:22 - Received data: 
+2024-06-25 07:59:22 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 08:01:51 - Received data: 
+2024-06-25 08:01:51 - Decoded data: 
+2024-06-25 08:01:51 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 08:01:51 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 08:06:13 - Received data: 
+2024-06-25 08:06:13 - Decoded data: 
+2024-06-25 08:06:13 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 08:06:13 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 08:06:20 - Received data: 
+2024-06-25 08:06:20 - Decoded data: 
+2024-06-25 08:06:20 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 08:06:20 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 09:18:45 - Received data: 
+2024-06-25 09:18:45 - Decoded data: 
+2024-06-25 09:18:45 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2525245425435245","expiryDate":"03/25","cvv":"312"}
+2024-06-25 09:18:45 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2525245425435245
+    [expiryDate] => 03/25
+    [cvv] => 312
+)
+
+2024-06-25 09:18:49 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2525245425435245","expiryDate":"03/25","cvv":"312"}
+2024-06-25 09:18:49 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2525245425435245
+    [expiryDate] => 03/25
+    [cvv] => 312
+)
+
+2024-06-25 09:23:58 - Received data: 
+2024-06-25 09:23:58 - Decoded data: 
+2024-06-25 09:23:58 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 09:23:58 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 09:35:21 - Received data: 
+2024-06-25 09:35:21 - Decoded data: 
+2024-06-25 09:35:21 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 09:35:21 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 09:36:02 - Received data: 
+2024-06-25 09:36:02 - Decoded data: 
+2024-06-25 09:36:02 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2342352345252462","expiryDate":"03/25","cvv":"423"}
+2024-06-25 09:36:02 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2342352345252462
+    [expiryDate] => 03/25
+    [cvv] => 423
+)
+
+2024-06-25 09:41:01 - Received data: 
+2024-06-25 09:41:01 - Decoded data: 
+2024-06-25 09:41:01 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 09:41:01 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 09:41:12 - Received data: 
+2024-06-25 09:41:12 - Decoded data: 
+2024-06-25 09:41:12 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3235452525252525","expiryDate":"03/26","cvv":""}
+2024-06-25 09:41:12 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3235452525252525
+    [expiryDate] => 03/26
+    [cvv] => 
+)
+
+2024-06-25 09:41:14 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3235452525252525","expiryDate":"03/26","cvv":"234"}
+2024-06-25 09:41:14 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3235452525252525
+    [expiryDate] => 03/26
+    [cvv] => 234
+)
+
+2024-06-25 09:47:24 - Received data: 
+2024-06-25 09:47:24 - Decoded data: 
+2024-06-25 09:47:24 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2349289348283589","expiryDate":"03/45","cvv":"124"}
+2024-06-25 09:47:24 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2349289348283589
+    [expiryDate] => 03/45
+    [cvv] => 124
+)
+
+2024-06-25 09:58:41 - Received data: 
+2024-06-25 09:58:41 - Decoded data: 
+2024-06-25 09:58:41 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"12","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2340234023490239","expiryDate":"03/26","cvv":"121"}
+2024-06-25 09:58:41 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 12
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2340234023490239
+    [expiryDate] => 03/26
+    [cvv] => 121
+)
+
+2024-06-25 09:59:49 - Received data: 
+2024-06-25 09:59:49 - Decoded data: 
+2024-06-25 09:59:49 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"11","room_id":1,"checkin":"2024-06-26","checkout":"2024-06-27","price":"2500.00","cardNumber":"3242402402950290","expiryDate":"03/25","cvv":"325"}
+2024-06-25 09:59:49 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 11
+    [room_id] => 1
+    [checkin] => 2024-06-26
+    [checkout] => 2024-06-27
+    [price] => 2500.00
+    [cardNumber] => 3242402402950290
+    [expiryDate] => 03/25
+    [cvv] => 325
+)
+
+2024-06-25 10:08:20 - Received data: 
+2024-06-25 10:08:20 - Decoded data: 
+2024-06-25 10:08:20 - Received data: {"selectedPaymentMethod":"card","totalCost":"4000.00","user_id":"12","room_id":5,"checkin":"2024-06-26","checkout":"2024-06-27","price":"4000.00","cardNumber":"1234234242425151","expiryDate":"03/25","cvv":"324"}
+2024-06-25 10:08:20 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 4000.00
+    [user_id] => 12
+    [room_id] => 5
+    [checkin] => 2024-06-26
+    [checkout] => 2024-06-27
+    [price] => 4000.00
+    [cardNumber] => 1234234242425151
+    [expiryDate] => 03/25
+    [cvv] => 324
+)
+
+2024-06-25 10:15:07 - Received data: 
+2024-06-25 10:15:07 - Decoded data: 
+2024-06-25 10:15:07 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"11","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2349032949324903","expiryDate":"02/26","cvv":"134"}
+2024-06-25 10:15:07 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 11
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2349032949324903
+    [expiryDate] => 02/26
+    [cvv] => 134
+)
+
+2024-06-25 10:15:07 - Booking ID: 70, Payment ID: 38
+2024-06-25 10:15:07 - Updated user ID: 11 with Payment ID: 38
+2024-06-25 10:20:04 - Received data: 
+2024-06-25 10:20:04 - Decoded data: 
+2024-06-25 10:20:04 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"11","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2343982984893289","expiryDate":"03/26","cvv":"234"}
+2024-06-25 10:20:04 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 11
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2343982984893289
+    [expiryDate] => 03/26
+    [cvv] => 234
+)
+
+2024-06-25 10:20:04 - Booking ID: 71, Payment ID: 39
+2024-06-25 10:20:04 - Updated user ID: 11 with Payment ID: 39
+2024-06-25 10:27:51 - Received data: 
+2024-06-25 10:27:51 - Decoded data: 
+2024-06-25 10:27:51 - Received data: {"selectedPaymentMethod":"card","totalCost":"4000.00","user_id":"11","room_id":5,"checkin":"2024-06-26","checkout":"2024-06-27","price":"4000.00","cardNumber":"3243924349029424","expiryDate":"03/26","cvv":"123"}
+2024-06-25 10:27:51 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 4000.00
+    [user_id] => 11
+    [room_id] => 5
+    [checkin] => 2024-06-26
+    [checkout] => 2024-06-27
+    [price] => 4000.00
+    [cardNumber] => 3243924349029424
+    [expiryDate] => 03/26
+    [cvv] => 123
+)
+
+2024-06-25 10:27:51 - Booking ID: 72, Payment ID: 40
+2024-06-25 10:27:51 - Updated user ID: 11 with Payment ID: 40
+2024-06-25 10:33:48 - Received data: 
+2024-06-25 10:33:48 - Decoded data: 
+2024-06-25 10:33:48 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2399583948025098","expiryDate":"03/25","cvv":"453"}
+2024-06-25 10:33:48 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2399583948025098
+    [expiryDate] => 03/25
+    [cvv] => 453
+)
+
+2024-06-25 10:33:49 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2399583948025098","expiryDate":"03/25","cvv":"453"}
+2024-06-25 10:33:49 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2399583948025098
+    [expiryDate] => 03/25
+    [cvv] => 453
+)
+
+2024-06-25 10:33:49 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2399583948025098","expiryDate":"03/25","cvv":"453"}
+2024-06-25 10:33:49 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2399583948025098
+    [expiryDate] => 03/25
+    [cvv] => 453
+)
+
+2024-06-25 10:34:29 - Received data: 
+2024-06-25 10:34:29 - Decoded data: 
+2024-06-25 10:34:29 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3289848284832895","expiryDate":"03/26","cvv":"324"}
+2024-06-25 10:34:29 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3289848284832895
+    [expiryDate] => 03/26
+    [cvv] => 324
+)
+
+2024-06-25 10:34:29 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3289848284832895","expiryDate":"03/26","cvv":"324"}
+2024-06-25 10:34:29 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3289848284832895
+    [expiryDate] => 03/26
+    [cvv] => 324
+)
+
+2024-06-25 10:34:29 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3289848284832895","expiryDate":"03/26","cvv":"324"}
+2024-06-25 10:34:29 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3289848284832895
+    [expiryDate] => 03/26
+    [cvv] => 324
+)
+
+2024-06-25 10:35:20 - Received data: 
+2024-06-25 10:35:20 - Decoded data: 
+2024-06-25 10:35:20 - Received data: {"selectedPaymentMethod":"cash","totalCost":"2500.00","user_id":"13","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":null,"expiryDate":null,"cvv":null}
+2024-06-25 10:35:20 - Decoded data: Array
+(
+    [selectedPaymentMethod] => cash
+    [totalCost] => 2500.00
+    [user_id] => 13
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 
+    [expiryDate] => 
+    [cvv] => 
+)
+
+2024-06-25 10:35:20 - Booking ID: 73, Payment ID: 41
+2024-06-25 10:35:20 - Updated user ID: 13 with Payment ID: 41
+2024-06-25 10:38:02 - Received data: 
+2024-06-25 10:38:02 - Decoded data: 
+2024-06-25 10:38:02 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"13","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-25","price":"2500.00","cardNumber":"3298498234982895","expiryDate":"03/25","cvv":"242"}
+2024-06-25 10:38:02 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 13
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-25
+    [price] => 2500.00
+    [cardNumber] => 3298498234982895
+    [expiryDate] => 03/25
+    [cvv] => 242
+)
+
+2024-06-25 10:38:02 - Booking ID: 74, Payment ID: 42
+2024-06-25 10:38:02 - Updated user ID: 13 with Payment ID: 42
+2024-06-25 10:42:04 - Received data: 
+2024-06-25 10:42:04 - Decoded data: 
+2024-06-25 10:42:04 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"13","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"4539459290590249","expiryDate":"03/25","cvv":"234"}
+2024-06-25 10:42:04 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 13
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 4539459290590249
+    [expiryDate] => 03/25
+    [cvv] => 234
+)
+
+2024-06-25 10:42:04 - Booking ID: 75, Payment ID: 43
+2024-06-25 10:42:04 - Updated user ID: 13 with Booking ID: 75
+2024-06-25 16:21:08 - Received data: 
+2024-06-25 16:21:08 - Decoded data: 
+2024-06-25 16:21:08 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"12","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2398489238948928","expiryDate":"03/26","cvv":"123"}
+2024-06-25 16:21:08 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 12
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2398489238948928
+    [expiryDate] => 03/26
+    [cvv] => 123
+)
+
+2024-06-25 16:21:08 - Booking ID: 76, Payment ID: 44
+2024-06-25 16:21:08 - Updated user ID: 12 with Booking ID: 76
+2024-06-25 16:22:30 - Received data: 
+2024-06-25 16:22:30 - Decoded data: 
+2024-06-25 16:22:30 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"1","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"2349294902359034","expiryDate":"03/26","cvv":"324"}
+2024-06-25 16:22:30 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 1
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 2349294902359034
+    [expiryDate] => 03/26
+    [cvv] => 324
+)
+
+2024-06-25 16:22:30 - Booking ID: 77, Payment ID: 45
+2024-06-25 16:22:30 - Updated user ID: 1 with Booking ID: 77
+2024-06-25 16:23:07 - Received data: 
+2024-06-25 16:23:07 - Decoded data: 
+2024-06-25 16:23:07 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"9","room_id":1,"checkin":"2024-06-26","checkout":"2024-06-27","price":"2500.00","cardNumber":"3248949858934598","expiryDate":"03/26","cvv":"342"}
+2024-06-25 16:23:07 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 9
+    [room_id] => 1
+    [checkin] => 2024-06-26
+    [checkout] => 2024-06-27
+    [price] => 2500.00
+    [cardNumber] => 3248949858934598
+    [expiryDate] => 03/26
+    [cvv] => 342
+)
+
+2024-06-25 16:23:07 - Booking ID: 78, Payment ID: 46
+2024-06-25 16:23:07 - Updated user ID: 9 with Booking ID: 78
+2024-06-25 16:29:02 - Received data: 
+2024-06-25 16:29:02 - Decoded data: 
+2024-06-25 16:29:02 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"9","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-27","price":"2500.00","cardNumber":"4385834895904306","expiryDate":"03/26","cvv":"123"}
+2024-06-25 16:29:02 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 9
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-27
+    [price] => 2500.00
+    [cardNumber] => 4385834895904306
+    [expiryDate] => 03/26
+    [cvv] => 123
+)
+
+2024-06-25 16:29:02 - Booking ID: 79, Payment ID: 47
+2024-06-25 16:29:02 - Updated user ID: 9 with Booking ID: 79 and Payment ID: 47
+2024-06-25 16:32:31 - Received data: 
+2024-06-25 16:32:31 - Decoded data: 
+2024-06-25 16:32:31 - Received data: {"selectedPaymentMethod":"card","totalCost":"2500.00","user_id":"8","room_id":1,"checkin":"2024-06-25","checkout":"2024-06-26","price":"2500.00","cardNumber":"3432524598425988","expiryDate":"03/25","cvv":"235"}
+2024-06-25 16:32:31 - Decoded data: Array
+(
+    [selectedPaymentMethod] => card
+    [totalCost] => 2500.00
+    [user_id] => 8
+    [room_id] => 1
+    [checkin] => 2024-06-25
+    [checkout] => 2024-06-26
+    [price] => 2500.00
+    [cardNumber] => 3432524598425988
+    [expiryDate] => 03/25
+    [cvv] => 235
+)
+
+2024-06-25 16:32:31 - Booking ID: 80, Payment ID: 48
+2024-06-25 16:32:31 - Updated user ID: 8 with Booking ID: 80 and Payment ID: 48
+2024-06-25 20:01:09 - Received data: 
+2024-06-25 20:01:09 - Decoded data: 

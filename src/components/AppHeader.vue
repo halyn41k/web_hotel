@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable */ 
 <template>
   <header class="header" :class="{ 'sticky': isSticky }">
     <div class="header-container">
@@ -41,13 +39,11 @@
 <script>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
 export default {
   name: 'AppHeader',
   setup() {
-    const router = useRouter();
     const router = useRouter();
     const isSticky = ref(false);
     const isMenuOpen = ref(false);
@@ -66,7 +62,6 @@ export default {
     const logout = () => {
       localStorage.removeItem('userData');
       authStore.clearUser();
-      router.push('/login');
       router.push('/login');
     };
 
@@ -103,9 +98,7 @@ export default {
       (newVal) => {
         if (newVal) {
           // Handle actions when user logs in
-          // Handle actions when user logs in
         } else {
-          // Handle actions when user logs out
           // Handle actions when user logs out
         }
       },
@@ -172,7 +165,7 @@ html, body {
 }
 
 .hotel-name {
-  margin-right:200px;
+  margin-right: 200px;
   color: #fff;
   text-decoration: none;
   font-family: 'Voltaire', sans-serif;
@@ -306,6 +299,7 @@ html, body {
     background: none;
     border: none;
     cursor: pointer;
+    margin-right: 15px;
   }
 
   .welcome-message {
@@ -313,11 +307,22 @@ html, body {
   }
 
   .auth-content {
-    display: none;
+    display: flex;
   }
 
   .login-icon {
     display: none;
+  }
+
+  .profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .logout-button {
+    margin-top: 10px;
   }
 }
 

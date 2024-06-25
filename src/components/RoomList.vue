@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 <template>
   <div class="room-list">
     <h3 class="sort-header">
@@ -67,7 +66,6 @@ export default {
           this.rooms = data;
           this.isZoomed = new Array(data.length).fill(false);
 
-          // Fetch images for rooms
           return fetch('http://localhost/new-hotel-website/backend/get_images.php');
         })
         .then(response => {
@@ -79,9 +77,8 @@ export default {
         })
         .then(images => {
           console.log("Images data:", images);
-          // Assign images to the respective rooms
           this.rooms.forEach(room => {
-            const image = images.find(img => parseInt(img.room_id) === room.id); // Приведення room_id до числа
+            const image = images.find(img => parseInt(img.room_id) === room.id);
             if (image) {
               room.photo = this.getImageUrl(image.image_name);
               console.log(`Assigned image ${image.image_name} to room ${room.name}`);
@@ -90,7 +87,6 @@ export default {
             }
           });
 
-          // Assign filter icon image
           const filterIconImage = images.find(img => img.category === 'admin' && img.image_name === 'image-removebg-preview 213.png');
           if (filterIconImage) {
             this.filterIcon = this.getImageUrl(filterIconImage.image_name);
@@ -102,9 +98,8 @@ export default {
         .catch(error => console.error('Error fetching data:', error));
     },
     getImageUrl(imageName) {
-      // Переконайтеся, що шляхи зображень правильні
       const imageUrl = `http://localhost/new-hotel-website/src/assets/${imageName}`;
-      console.log("Image URL:", imageUrl);  // Логування URL для перевірки
+      console.log("Image URL:", imageUrl);
       return imageUrl;
     },
     toggleZoom(index) {
@@ -130,26 +125,7 @@ export default {
         }
         return order === 'asc' ? comparison : -comparison;
       });
-      this.showSortRoomsDropdown = false; // Hide the dropdown after sorting
-    }
-    toggleSortDropdown(section) {
-      if (section === 'rooms') {
-        this.showSortRoomsDropdown = !this.showSortRoomsDropdown;
-      }
-    },
-    sortRooms(field, order) {
-      this.sortField = field;
-      this.sortOrder = order;
-      this.rooms.sort((a, b) => {
-        let comparison = 0;
-        if (a[field] > b[field]) {
-          comparison = 1;
-        } else if (a[field] < b[field]) {
-          comparison = -1;
-        }
-        return order === 'asc' ? comparison : -comparison;
-      });
-      this.showSortRoomsDropdown = false; // Hide the dropdown after sorting
+      this.showSortRoomsDropdown = false;
     }
   }
 };
@@ -157,12 +133,9 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gabriela&display=swap');
 
 .room-list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   flex-direction: column;
   align-items: center;
   padding: 90px 10px;
@@ -217,63 +190,12 @@ export default {
   width: 100%;
 }
 
-.sort-header {
-  display: flex;
-  align-items: center;
-}
-
-.filter-label {
-  font-family: 'Gabriela', serif;
-  font-size: 1.5em;
-  margin-right: 10px;
-}
-
-.sort-icon {
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-}
-
-.sort-dropdown {
-  position: absolute;
-  background-color: #fff;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.sort-dropdown ul {
-  list-style-type: none;
-  padding: 10px;
-}
-
-.sort-dropdown li {
-  font-family: 'Gabriela', serif;
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.sort-dropdown li:hover {
-  background-color: #f0f0f0;
-}
-
-.rooms-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 100%;
-}
-
 .room-card {
-  display: flex;
-  flex-direction: row;
   display: flex;
   flex-direction: row;
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
-  width: calc(50% - 50px);
   width: calc(50% - 50px);
   box-sizing: border-box;
   background-color: #fff;
@@ -291,7 +213,6 @@ export default {
   height: auto;
   border-radius: 10px;
   margin-right: 20px;
-  margin-right: 20px;
 }
 
 .room-details {
@@ -307,7 +228,6 @@ export default {
 .room-availability,
 .room-max-guests,
 .room-additional-services {
-  font-family: 'Gabriela', serif;
   font-family: 'Gabriela', serif;
   margin: 4px 0;
 }
@@ -344,6 +264,47 @@ export default {
 }
 
 .details-button:hover {
-  background-color: #6a5acd;
+  background-color: #d35400;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .room-card {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .room-photo {
+    width: 100%;
+    height: auto;
+    margin: 0 0 20px 0;
+  }
+
+  .room-details {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-label {
+    font-size: 1.2em;
+  }
+
+  .sort-dropdown li {
+    font-size: 0.9em;
+  }
+
+  .room-name {
+    font-size: 1.2em;
+  }
+
+  .room-price {
+    font-size: 16px;
+  }
+
+  .details-button {
+    font-size: 16px;
+  }
 }
 </style>

@@ -23,21 +23,41 @@ $data = json_decode(file_get_contents('php://input'), true);
 $id = $data['id'];
 $type = $data['type'];
 
-if ($type == 'booking') {
-    // Delete booking
-    $query = "DELETE FROM bookings WHERE id = ?";
-} else if ($type == 'wish') {
-    // Delete wish
-    $query = "DELETE FROM wishes WHERE id = ?";
-}
+$conn->autocommit(FALSE); // Disable autocommit mode
 
-$stmt = $conn->prepare($query);
-$stmt->bind_param('i', $id);
+try {
+    if ($type == 'booking') {
+        // Remove foreign key references in users table before deleting the booking
+        $updateUserQuery = "UPDATE users SET booking_id = NULL WHERE booking_id = ?";
+        $stmt = $conn->prepare($updateUserQuery);
+        $stmt->bind_param('i', $id);
+        if (!$stmt->execute()) {
+            throw new Exception('Помилка при оновленні користувачів.');
+        }
+        $stmt->close();
 
-if ($stmt->execute()) {
+        // Delete booking
+        $deleteBookingQuery = "DELETE FROM bookings WHERE id = ?";
+        $stmt = $conn->prepare($deleteBookingQuery);
+        $stmt->bind_param('i', $id);
+        if (!$stmt->execute()) {
+            throw new Exception('Помилка при видаленні бронювання.');
+        }
+    } else if ($type == 'wish') {
+        // Delete wish
+        $deleteWishQuery = "DELETE FROM wishes WHERE id = ?";
+        $stmt = $conn->prepare($deleteWishQuery);
+        $stmt->bind_param('i', $id);
+        if (!$stmt->execute()) {
+            throw new Exception('Помилка при видаленні бажання.');
+        }
+    }
+
+    $conn->commit(); // Commit the transaction
     echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['error' => 'Помилка при видаленні.']);
+} catch (Exception $e) {
+    $conn->rollback(); // Rollback the transaction on error
+    echo json_encode(['error' => $e->getMessage()]);
 }
 
 $stmt->close();
