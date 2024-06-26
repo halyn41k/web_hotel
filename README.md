@@ -1,21 +1,49 @@
 
-# new-hotel-website
+# New Hotel Website
+
 [![GitHub open issues](https://img.shields.io/github/issues/halyn41k/new-hotel-website.svg?maxAge=2592000)](https://github.com/halyn41k/new-hotel-website/issues)
 [![Npm version](https://img.shields.io/npm/v/new-hotel-website.svg?maxAge=2592000)](https://www.npmjs.com/package/new-hotel-website)
 
-## Usage
-```HTML
-<HomePage :text="hello"></HomePage>
-```
-```javascript
-import { HomePage } from 'new-hotel-website'
+## Overview
 
-export default {
-  components: {
-    HomePage
-  }
-}
-```
+The New Hotel Website project is a modern, fully-responsive web application designed to manage hotel bookings, display hotel information, and provide a seamless user experience for both guests and administrators. This project is built using Vue.js and offers features such as user registration, booking management, and an admin dashboard.
+
+## Features
+
+- **Responsive Design**: Fully responsive layout that adapts to different screen sizes.
+- **User Management**: User registration, login, and profile management.
+- **Booking System**: View, create, and manage bookings.
+- **Admin Dashboard**: Admin panel to manage rooms, bookings, and users.
+- **Dynamic Content**: Easily updateable content through a content management system.
+
+## Demo
+
+[Link to Demo](#) (Replace with actual link)
+
+## Installation
+
+To install the project locally, follow these steps:
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/halyn41k/new-hotel-website.git
+    cd new-hotel-website
+    ```
+
+2. **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+## Project Setup
+
+### Compiles and Hot-reloads for Development
+
+```bash
+npm run serve
+
 ## API
 
 ## Installation
