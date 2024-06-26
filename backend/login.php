@@ -63,5 +63,4 @@ if ($result) {
 }
 
 $conn->close();
-
 ?>

@@ -20,7 +20,7 @@
         <span class="welcome-message">Вітаємо, {{ authStore.user.name }}!</span>
         <img :src="headerImages.loginIcon" alt="Login Icon" class="login-icon"/>
         <router-link
-          :to="authStore.user.role === 'admin' ? '/admin' : '/user'"
+          :to="profileLink"
           class="nav-link"
           exact-active-class="active">
           Профіль
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '@/authStore';
 
@@ -93,6 +93,21 @@ export default {
       return `http://localhost/new-hotel-website/src/assets/${imageName}`;
     };
 
+    const profileLink = computed(() => {
+      if (!authStore.user || !authStore.user.role) {
+        console.error('User role is not defined or user is not authenticated.');
+        return '/';  // Return a default safe route
+      }
+      switch (authStore.user.role) {
+        case 'admin':
+          return '/admin';
+        case 'manager':
+          return '/manager';
+        default:
+          return '/user';
+      }
+    });
+
     watch(
       () => authStore.isLoggedIn,
       (newVal) => {
@@ -115,14 +130,16 @@ export default {
       toggleMenu,
       logout,
       authStore,
-      headerImages
+      headerImages,
+      profileLink
     };
   },
-  unmounted() { /* eslint-disable */ 
-    window.removeEventListener('scroll', handleScroll); /* eslint-disable */ 
+  unmounted() { /* eslint-disable */
+    window.removeEventListener('scroll', handleScroll); /* eslint-disable */
   }
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');

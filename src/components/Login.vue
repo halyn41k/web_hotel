@@ -75,6 +75,8 @@ export default {
           localStorage.setItem('userData', JSON.stringify(data.user));
           if (data.role === 'admin') {
             this.$router.push({ name: 'AdminDashboard' });
+          } else if (data.role === 'manager') {
+            this.$router.push({ name: 'ManagerDashboard' });
           } else {
             this.$router.push({ name: 'UserDashboard' });
           }

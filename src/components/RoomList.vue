@@ -210,7 +210,9 @@ export default {
 
 .room-photo {
   width: 50%;
-  height: auto;
+  height: 300px;
+  object-fit: cover;
+  cursor: pointer;
   border-radius: 10px;
   margin-right: 20px;
 }

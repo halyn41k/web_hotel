@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:8080");
-header("Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -46,14 +46,14 @@ ORDER BY $field";
 $bookingsResult = $conn->query($bookingsQuery);
 
 $bookings = [];
-
-if ($bookingsResult->num_rows > 0) {
+if ($bookingsResult) {
     while ($row = $bookingsResult->fetch_assoc()) {
         $bookings[] = $row;
     }
+} else {
+    error_log('Bookings query error: ' . $conn->error);
 }
 
 echo json_encode(['bookings' => $bookings]);
-
 $conn->close();
 ?>

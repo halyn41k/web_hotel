@@ -58,18 +58,12 @@ if ($bookingsResult->num_rows > 0) {
     while ($row = $bookingsResult->fetch_assoc()) {
         $bookings[] = $row;
     }
-} else {
-    echo json_encode(['error' => 'Немає активних бронювань.']);
-    exit;
 }
 
 if ($wishesResult->num_rows > 0) {
     while ($row = $wishesResult->fetch_assoc()) {
         $wishes[] = $row;
     }
-} else {
-    echo json_encode(['error' => 'Немає побажань користувачів.']);
-    exit;
 }
 
 echo json_encode([

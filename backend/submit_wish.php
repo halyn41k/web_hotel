@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
@@ -14,7 +14,7 @@ $conn = new mysqli($host, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    echo json_encode(['error' => 'Database connection error.']);
+    echo json_encode(['error' => 'Помилка з\'єднання з базою даних.']);
     exit;
 }
 
@@ -22,9 +22,9 @@ if ($conn->connect_error) {
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (isset($data['name']) && isset($data['email']) && isset($data['message'])) {
-    $name = $data['name'];
-    $email = $data['email'];
-    $message = $data['message'];
+    $name = $conn->real_escape_string($data['name']);
+    $email = $conn->real_escape_string($data['email']);
+    $message = $conn->real_escape_string($data['message']);
 
     $stmt = $conn->prepare("INSERT INTO wishes (name, email, message) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $email, $message);

@@ -73,8 +73,16 @@ const routes = [
   },
   {
     path:'/manager',
-    name: 'Manager',
+    name: 'ManagerDashboard',
     component: () => import('@/components/Manager.vue')
+  },
+  { path: '/add-admin',
+    name: 'AddAdmin',
+    component: () => import('@/components/AddAdmin.vue')
+  },
+  { path: '/delete-admin', 
+    name: 'DeleteAdmin',
+    component: () => import('@/components/DeleteAdmin.vue') 
   },
 ];
 
